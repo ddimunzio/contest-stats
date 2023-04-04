@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
+   <children>
+      <MenuBar fx:id="menuBar" layoutY="-1.0" prefHeight="25.0" prefWidth="484.0" stylesheets="@main-window-view.css">
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="Import contest (ADIF)" />
+                  <MenuItem mnemonicParsing="false" text="Open Contest" />
+                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Charts">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="Total Qso By Hour" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="Total QSO By Op" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="Qso By Hour &amp; Operator" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="Qso By Hour &amp; Operator Area" />
+                  <MenuItem mnemonicParsing="false" text="Rates By Op/Hour" />
+                  <MenuItem mnemonicParsing="false" text="Total Qso By Band/Op" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Compare Contest" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

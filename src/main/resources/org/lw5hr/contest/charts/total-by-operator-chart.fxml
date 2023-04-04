@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ChartTotalByOpController">
+   <children>
+      <BarChart fx:id="totalByOp" alternativeColumnFillVisible="true" animated="false" barGap="3.0" categoryGap="2.0" title="Total QSO By Operator" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <xAxis>
+          <CategoryAxis label="Operator" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Total Qso" side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </children>
+</AnchorPane>
