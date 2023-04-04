@@ -1,0 +1,10 @@
+.menu-bar {
+    -fx-background-color: #ea1414, linear-gradient(to bottom, #ecf4fa 0%, #ced4d9 100%);
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #1179d5;
+}
+
+

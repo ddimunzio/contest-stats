@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ByHourAndOperatorAreaController">
+   <children>
+      <StackedAreaChart fx:id="byHourAndOperatorArea" layoutX="43.0" layoutY="-7.0" title="Total By Hour And Operator" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <xAxis>
+          <CategoryAxis fx:id="categoryAxis" label="Hours" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="numberAxis" label="Qso's" side="LEFT" />
+        </yAxis>
+      </StackedAreaChart>
+   </children>
+</AnchorPane>
