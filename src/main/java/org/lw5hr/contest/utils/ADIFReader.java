@@ -23,20 +23,22 @@ public class ADIFReader {
         this.file = new File(filePath);
     }
 
-    public List<Qso> read() throws Exception {
+    public List<Qso> read(String contestName) throws Exception {
         ADIFParser parser = new ADIFParser();
         BufferedReader r = new BufferedReader(new FileReader(file));
         String line;
         boolean read = false;
         boolean gotRecord = false;
         StringBuffer record = new StringBuffer();
+
         Session session = HibernateUtil.getSessionFactory().openSession();
 
+        session.beginTransaction();
         Contest contest = new Contest();
-        contest.setContestName("test");
+        contest.setContestName(contestName);
         session.save(contest);
 
-        session.beginTransaction();
+
         while ((line = r.readLine()) != null) {
             line = line.trim();
             if (line.toUpperCase().indexOf("<EOH>") > -1) {

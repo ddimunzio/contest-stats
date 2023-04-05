@@ -14,6 +14,8 @@ public class ImportContest extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(ImportContest.class.getResource("import-adif.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Import a new contest");
         stage.show();
     }
 }

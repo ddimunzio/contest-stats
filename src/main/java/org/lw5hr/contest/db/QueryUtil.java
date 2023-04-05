@@ -29,4 +29,14 @@ public class QueryUtil {
         return allQuery.getResultList().stream().filter(q -> q.getContest().getId() == contestId)
                 .sorted(Comparator.comparing(Qso::getDate)).toList();
     }
+
+    public Boolean contestExist(String name) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+        CriteriaQuery<Contest> contest = criteriaBuilder.createQuery(Contest.class);
+        Root<Contest> root = contest.from(Contest.class);
+        contest.select(root);
+        TypedQuery<Contest> allQuery = s.createQuery(contest);
+        return allQuery.getResultList().stream().anyMatch(c -> c.getContestName().equalsIgnoreCase(name));
+    }
 }

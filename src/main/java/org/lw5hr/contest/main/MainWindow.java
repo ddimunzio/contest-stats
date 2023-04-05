@@ -27,7 +27,7 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception {
         setPrimaryStage(primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 200);
+        Scene scene = new Scene(fxmlLoader.load(), 500, 300);
         primaryStage.setTitle("Contest Stats by LW5HR");
         primaryStage.setScene(scene);
         primaryStage.show();
