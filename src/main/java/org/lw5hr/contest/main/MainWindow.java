@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class MainWindow extends Application {
 
     private static Stage primaryStage;
@@ -25,9 +28,10 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+       // ResourceBundle i18nBundle = ResourceBundle.getBundle("Bundle.properties", new Locale("en", "US"));
         setPrimaryStage(primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 300);
+        Scene scene = new Scene(fxmlLoader.load(), 800, 500);
         primaryStage.setTitle("Contest Stats by LW5HR");
         primaryStage.setScene(scene);
         primaryStage.show();

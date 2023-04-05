@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
+<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="443.0" prefWidth="871.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.lw5hr.contest.controllers.MenuController">
    <children>
       <MenuBar fx:id="menuBar" layoutY="-1.0" prefHeight="25.0" prefWidth="484.0">
          <menus>
@@ -38,5 +42,13 @@
             </Menu>
          </menus>
       </MenuBar>
+      <BarChart layoutX="14.0" layoutY="36.0" prefHeight="400.0" prefWidth="832.0" title="Total QSO's">
+        <xAxis>
+          <CategoryAxis label="Contest Name" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Total QSO" side="LEFT" />
+        </yAxis>
+      </BarChart>
    </children>
 </AnchorPane>

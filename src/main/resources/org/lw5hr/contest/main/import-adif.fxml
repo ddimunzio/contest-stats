@@ -16,11 +16,11 @@
       <Button fx:id="cancelButton" cancelButton="true" layoutX="374.0" layoutY="187.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="30.0" prefWidth="93.0" text="Cancel" />
       <TextField fx:id="filePathField" layoutX="134.0" layoutY="42.0" prefHeight="25.0" prefWidth="255.0" />
       <Button layoutX="406.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleBrowse" text="Browse" />
-      <Label layoutX="27.0" layoutY="46.0" text="Select ADIF File">
+      <Label layoutX="27.0" layoutY="46.0" text="%key.import.select.file">
          <font>
             <Font size="13.0" />
          </font></Label>
-      <Label layoutX="27.0" layoutY="89.0" text="Contest Name">
+      <Label layoutX="27.0" layoutY="89.0" text="%key.import.contest.name">
          <font>
             <Font size="13.0" />
          </font></Label>

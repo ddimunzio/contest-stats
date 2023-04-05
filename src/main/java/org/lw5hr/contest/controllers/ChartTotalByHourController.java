@@ -25,6 +25,7 @@ public class ChartTotalByHourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         QueryUtil queryUtil = new QueryUtil();
+        /** Get all Qso's for a specific contest */
         List<Qso> qsos = queryUtil.getQsoByContest(1L);
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourData = st.getTotalsByHour(qsos);
