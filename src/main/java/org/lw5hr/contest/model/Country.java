@@ -4,6 +4,8 @@
  */
 package org.lw5hr.contest.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,11 +14,15 @@ import java.util.List;
 
 /**
  *
- * @author diego
+ * @author ddimunzio
  */
+
+@Entity
+@Table(name = "COUNTRY")
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
 
     private String name;

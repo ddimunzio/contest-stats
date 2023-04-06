@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.lw5hr.contest.db.HibernateUtil;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -28,7 +29,7 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-       // ResourceBundle i18nBundle = ResourceBundle.getBundle("Bundle.properties", new Locale("en", "US"));
+       //ResourceBundle i18nBundle = ResourceBundle.getBundle("Bundle.properties", new Locale("en", "US"));
         setPrimaryStage(primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 500);
@@ -38,6 +39,7 @@ public class MainWindow extends Application {
     }
 
     public static void main(String[] args) {
+        HibernateUtil.getSessionFactory().openSession();
         launch();
     }
 

@@ -33,6 +33,7 @@
 
         <mapping class="org.lw5hr.contest.model.Contest"/>
         <mapping class="org.lw5hr.contest.model.Qso"/>
+        <mapping class="org.lw5hr.contest.model.Settings"/>
 
 
     </session-factory>
