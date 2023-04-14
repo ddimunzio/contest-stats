@@ -1,9 +1,14 @@
 package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -23,6 +28,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController extends BorderPane implements Initializable {
@@ -37,24 +44,6 @@ public class MenuController extends BorderPane implements Initializable {
     Stage importStage = new Stage();
     ImportContest ic = new ImportContest();
     ic.start(importStage);
-
-    /*String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setInitialDirectory(new File(currentPath));
-    fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Text Files", "*.ADI")
-            , new FileChooser.ExtensionFilter("HTML Files", "*.ADIF")
-    );
-    File adiFile = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
-    if (adiFile != null) {
-      try {
-        ADIFReader adiReader = new ADIFReader(adiFile.getPath());
-        List<Qso> qsos = adiReader.read();
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }*/
-
   }
 
   @FXML
@@ -85,9 +74,19 @@ public class MenuController extends BorderPane implements Initializable {
     byHourAndOperatorArea.start(stage);
   }
 
-  @Override
-  public void initialize(URL url, ResourceBundle resourceBundle) {
-
+  @FXML
+  private void handleLanguage(final ActionEvent event) throws IOException {
+    EventTarget s = event.getTarget();
+    String id = ((RadioMenuItem) event.getSource()).getId();
+    Locale locale = null;
+    switch (id) {
+      case "en":
+        MainWindow.setLocale(new Locale("en","US"));
+      case "es":
+        MainWindow.setLocale(new Locale("es","ES"));
+    }
   }
-
+  @FXML
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {}
 }
