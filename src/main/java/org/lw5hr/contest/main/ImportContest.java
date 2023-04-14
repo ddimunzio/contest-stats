@@ -13,7 +13,7 @@ public class ImportContest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Locale loc = new Locale("es","ES");
+        Locale loc = MainWindow.getLocale();
         ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", loc);
         FXMLLoader fxmlLoader = new FXMLLoader(ImportContest.class.getResource("import-adif.fxml"), importResources);
         Scene scene = new Scene(fxmlLoader.load());

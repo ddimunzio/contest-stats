@@ -82,8 +82,10 @@ public class MenuController extends BorderPane implements Initializable {
     switch (id) {
       case "en":
         MainWindow.setLocale(new Locale("en","US"));
+        break;
       case "es":
         MainWindow.setLocale(new Locale("es","ES"));
+        break;
     }
   }
   @FXML
