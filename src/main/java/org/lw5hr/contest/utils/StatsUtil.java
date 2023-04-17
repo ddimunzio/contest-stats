@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class StatsUtil {
+private static Integer ONE_DAY_HOURS = 24;
+private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
 
   public Map<LocalDate, List<BarChartHelper>> getRatesByHour(List<Qso> qsos) {
     final Map<LocalDate, Map<Integer, List<Qso>>> grouped = qsos.stream()
@@ -71,7 +73,10 @@ public class StatsUtil {
   }
 
   public ObservableList<XYChart.Series<String, Integer>> getTotalsByHour(List<Qso> qsos) {
+    /** create ObservableList */
     ObservableList<XYChart.Series<String, Integer>> byHourList = FXCollections.observableArrayList();
+
+    /** Group all QSO's by Date and Time */
     Map<LocalDate, Map<Integer, List<Qso>>> groupedByDateAndHour = qsos.stream()
             .collect(Collectors.groupingBy(x -> x.getDate(), Collectors.groupingBy(a -> a.getTime().getHour())));
 
@@ -81,10 +86,10 @@ public class StatsUtil {
       byHourSeries.setName(date.toString());
       map.forEach((hour, qList) -> {
         if (hour == h.get()) {
-          String H = hour < 23 ? hour.toString() : String.valueOf(Integer.sum(hour, 24));
+          String H = hour < ONE_DAY_HOURS_FROM_ZERO ? hour.toString() : String.valueOf(Integer.sum(hour, ONE_DAY_HOURS));
           byHourSeries.getData().add(h.get(), new XYChart.Data<>(H, qList.size()));
         } else {
-          String H = h.get() < 23 ? h.toString() : String.valueOf(Integer.sum(h.get(), 24));
+          String H = h.get() < ONE_DAY_HOURS_FROM_ZERO ? h.toString() : String.valueOf(Integer.sum(h.get(), ONE_DAY_HOURS));
           byHourSeries.getData().add(h.get(), new XYChart.Data<>(H, 0));
           byHourSeries.getData().add(Integer.sum(h.get(), 1), new XYChart.Data<>(String.valueOf(Integer.sum(h.get(), 1)), qList.size()));
         }
@@ -118,7 +123,7 @@ public class StatsUtil {
       }
       sortedTreeMap.forEach((date, hList) -> {
         if (day.get() == 1) {
-          for (int i = 0; i <= 23; i++) {
+          for (int i = 0; i <= ONE_DAY_HOURS_FROM_ZERO; i++) {
             if (hList.get(i) != null) {
               byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i), hList.get(i).size()));
             } else {
@@ -126,11 +131,11 @@ public class StatsUtil {
             }
           }
         } else {
-          for (int i = 0; i <= 23; i++) {
+          for (int i = 0; i <= ONE_DAY_HOURS_FROM_ZERO; i++) {
             if (hList.get(i) != null) {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + 24), hList.get(i).size()));
+              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), hList.get(i).size()));
             } else {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + 24), 0));
+              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), 0));
             }
           }
         }

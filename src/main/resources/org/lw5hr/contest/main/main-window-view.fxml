@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
+<AnchorPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="443.0" prefWidth="871.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.lw5hr.contest.controllers.MenuController">
    <children>
-      <MenuBar fx:id="menuBar" layoutY="-1.0" prefHeight="25.0" prefWidth="484.0">
+      <MenuBar fx:id="menuBar" layoutY="-1.0" prefHeight="25.0" prefWidth="871.0">
          <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="%key.main.menu.menu.file">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="Import contest (ADIF)" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
                   <MenuItem mnemonicParsing="false" text="Open Contest" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu mnemonicParsing="false" text="%key.main.menu.charts">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Delete" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Charts">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="Total Qso By Hour" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="Total QSO By Op" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="Qso By Hour &amp; Operator" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="Qso By Hour &amp; Operator Area" />
-                  <MenuItem mnemonicParsing="false" text="Rates By Op/Hour" />
-                  <MenuItem mnemonicParsing="false" text="Total Qso By Band/Op" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="%key.main.menu.charts.total.by.hour" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="%key.main.menu.charts.total.hour.op" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.toal.hour.op.area" />
+                  <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
+                  <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.total.qso.band.op" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Compare Contest" />
+                  <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Help">
+            <Menu mnemonicParsing="false" text="%key.main.menu.settings" fx:id="menuSettings">
+              <items>
+                  <Menu mnemonicParsing="false" text="%key.main.menu.language" fx:id="menuLanguage">
+                    <items>
+                        <RadioMenuItem fx:id="en" mnemonicParsing="false" text="%key.main.menu.language.english" onAction="#handleLanguage" />
+                        <RadioMenuItem fx:id="es" mnemonicParsing="false" text="%key.main.menu.language.spanish" onAction="#handleLanguage" />
+                    </items>
+                  </Menu>
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%key.main.menu.help">
                <items>
                   <MenuItem mnemonicParsing="false" text="About" />
                </items>
