@@ -17,6 +17,7 @@ import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.charts.ByHourAndOperatorChart;
 import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
+import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.ChangeScenes;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
@@ -33,6 +34,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController extends BorderPane implements Initializable {
+  @FXML
+  public RadioMenuItem en;
+  @FXML
+  public RadioMenuItem es;
   @FXML
   private MenuBar menuBar;
 
@@ -63,12 +68,12 @@ public class MenuController extends BorderPane implements Initializable {
   @FXML
   private void handleQsosByHourAndOperator(final ActionEvent event) throws Exception {
     Stage stage = new Stage();
-    ByHourAndOperatorChart  byHourAndOperator = new ByHourAndOperatorChart();
+    ByHourAndOperatorChart byHourAndOperator = new ByHourAndOperatorChart();
     byHourAndOperator.start(stage);
   }
 
   @FXML
-  private void handleQsosByHourAndOperatorArea(final  ActionEvent event) throws Exception {
+  private void handleQsosByHourAndOperatorArea(final ActionEvent event) throws Exception {
     Stage stage = new Stage();
     ByHourAndOperatorAreaChart byHourAndOperatorArea = new ByHourAndOperatorAreaChart();
     byHourAndOperatorArea.start(stage);
@@ -81,14 +86,30 @@ public class MenuController extends BorderPane implements Initializable {
     Locale locale = null;
     switch (id) {
       case "en":
-        MainWindow.setLocale(new Locale("en","US"));
+        MainWindow.setLocale(new Locale("en", "US"));
+        setSelectedLanguage(id);
         break;
       case "es":
-        MainWindow.setLocale(new Locale("es","ES"));
+        MainWindow.setLocale(new Locale("es", "ES"));
+        setSelectedLanguage(id);
         break;
     }
   }
+
   @FXML
   @Override
-  public void initialize(URL url, ResourceBundle resourceBundle) {}
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    QueryUtil q = new QueryUtil();
+    Locale loc = q.getDefaultLocale();
+    String lang = loc.getLanguage();
+    setSelectedLanguage(lang);
+  }
+
+  private void setSelectedLanguage(String lang) {
+    if (lang.equalsIgnoreCase(en.getId())) {
+      en.setSelected(true);
+    } else if (lang.equalsIgnoreCase(es.getId())) {
+      es.setSelected(true);
+    }
+  }
 }

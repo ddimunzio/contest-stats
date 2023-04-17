@@ -1,17 +1,15 @@
 package org.lw5hr.contest.main;
-
-import com.almasb.fxgl.app.PrimaryStageWindow;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.lw5hr.contest.controllers.MenuController;
 import org.lw5hr.contest.db.HibernateUtil;
 import org.lw5hr.contest.db.QueryUtil;
-import org.lw5hr.contest.main.ImportContest;
+
 
 import java.io.IOException;
 import java.util.Locale;
@@ -30,7 +28,7 @@ public class MainWindow extends Application {
     }
 
     @FXML
-    BorderPane borderPane;
+    MenuBar menuBar;
 
     @FXML
     public static void setLocale(Locale loc) throws IOException {
@@ -48,6 +46,7 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) throws Exception {
         QueryUtil q = new QueryUtil();
         Locale loc = q.getDefaultLocale();
+
         ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", loc);
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
         setPrimaryStage(primaryStage);
