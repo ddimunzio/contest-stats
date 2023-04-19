@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.HibernateUtil;
 import org.lw5hr.contest.db.QueryUtil;
 
@@ -32,26 +33,26 @@ public class MainWindow extends Application {
 
     @FXML
     public static void setLocale(Locale loc) throws IOException {
-        Locale.setDefault(loc);
+        QueryUtil q = new QueryUtil();
+        q.updateSetting(DatabaseConstants.DEFAULT_LANG, loc.toString() );
         ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
         primaryStage.getScene().setRoot(FXMLLoader.load(MainWindow.class.getResource("main-window-view.fxml"),resources));
     }
 
     @FXML
     public static Locale getLocale() {
-        return Locale.getDefault();
+        QueryUtil q = new QueryUtil();
+        Locale loc = q.getDefaultLocale();
+        return loc;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        QueryUtil q = new QueryUtil();
-        Locale loc = q.getDefaultLocale();
-
-        ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", loc);
+        ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", getLocale());
         FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
         setPrimaryStage(primaryStage);
 
-        Scene scene = new Scene(fxmlLoader.load(), 800, 500);
+        Scene scene = new Scene(fxmlLoader.load());
         primaryStage.setTitle(mainResources.getString("key.main.general.title"));
         primaryStage.setScene(scene);
         primaryStage.show();
