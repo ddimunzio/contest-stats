@@ -1,20 +1,16 @@
 package org.lw5hr.contest.db;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.lw5hr.contest.model.Contest;
 import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.model.Settings;
 
 import javax.persistence.Entity;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import javax.persistence.criteria.*;
+import java.util.*;
 
 public class QueryUtil {
     public void saveEntity (Entity entity) {
@@ -52,13 +48,26 @@ public class QueryUtil {
         settings.select(root);
         TypedQuery<Settings> allQuery = s.createQuery(settings);
         Optional<Settings> result = allQuery.getResultList().stream()
-                .filter(se -> se.getSettingName().equalsIgnoreCase("default_lang")).findFirst();
+                .filter(se -> se.getSettingName().equalsIgnoreCase(DatabaseConstants.DEFAULT_LANG)).findFirst();
         if (result.isPresent()) {
             String[] value = result.get().getSettingValue().split("_");
             loc = new Locale(value[0], value[1]);
         } else {
-            loc = new Locale("en", "US");
+            loc = new Locale(DatabaseConstants.DEFAULT_LOCALE_LANGUAGE, DatabaseConstants.DEFAULT_LOCALE_COUNTRY);
         }
         return loc;
+    }
+
+    public void updateSetting(String settingName, String settingValue) {
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaUpdate<Settings> criteriaUpdate = cb.createCriteriaUpdate(Settings.class);
+        Root<Settings> root = criteriaUpdate.from(Settings.class);
+        criteriaUpdate.set("settingValue", settingValue);
+        criteriaUpdate.where(cb.equal(root.get("settingName"), settingName));
+
+        Transaction transaction = s.beginTransaction();
+        s.createQuery(criteriaUpdate).executeUpdate();
+        transaction.commit();
     }
 }

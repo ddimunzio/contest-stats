@@ -3,13 +3,17 @@ package org.lw5hr.contest.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.main.ImportContest;
+import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.utils.ADIFReader;
 
 import java.io.File;
@@ -36,6 +40,7 @@ public class ImportController implements Initializable {
 
     private File adiFile;
 
+    ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -58,8 +63,11 @@ public class ImportController implements Initializable {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+
         } else {
-            errorLabel.setText("Contest Already Exist");
+            errorLabel.setText(importResources.getString("key.import.contest.exist"));
             errorLabel.setVisible(true);
         }
     }
@@ -77,6 +85,7 @@ public class ImportController implements Initializable {
         if (adiFile != null) {
             try {
                 filePathField.setText(adiFile.getAbsolutePath());
+                contestNameField.setText(adiFile.getName().substring(0, adiFile.getName().indexOf(".")));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

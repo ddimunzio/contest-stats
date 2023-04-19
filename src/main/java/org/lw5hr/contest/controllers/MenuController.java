@@ -99,17 +99,13 @@ public class MenuController extends BorderPane implements Initializable {
   @FXML
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    QueryUtil q = new QueryUtil();
-    Locale loc = q.getDefaultLocale();
-    String lang = loc.getLanguage();
+    String lang = MainWindow.getLocale().getLanguage();
     setSelectedLanguage(lang);
   }
 
   private void setSelectedLanguage(String lang) {
-    if (lang.equalsIgnoreCase(en.getId())) {
-      en.setSelected(true);
-    } else if (lang.equalsIgnoreCase(es.getId())) {
-      es.setSelected(true);
-    }
+      en.setSelected(en.getId().equalsIgnoreCase(lang));
+      es.setSelected(es.getId().equalsIgnoreCase(lang));
+
   }
 }
