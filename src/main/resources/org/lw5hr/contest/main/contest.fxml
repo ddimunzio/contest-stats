@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.cell.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<Pane prefHeight="405.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ContestManagerController">
+   <children>
+      <TableView fx:id="contestTable" layoutX="4.0" layoutY="7.0" prefHeight="393.0" prefWidth="534.0">
+         <columns>
+            <TableColumn fx:id="contestName" prefWidth="200.0" text="%key.contest.table.name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="contestName" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="contestDescription" prefWidth="166.0" text="%key.contest.table.description">
+               <cellValueFactory>
+                  <PropertyValueFactory property="contestDescription" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="selectRow" prefWidth="167.0" text="%key.contest.table.select" />
+         </columns>
+      </TableView>
+   </children>
+</Pane>

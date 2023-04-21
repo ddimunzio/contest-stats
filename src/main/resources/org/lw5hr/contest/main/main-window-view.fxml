@@ -13,7 +13,12 @@
                <Menu mnemonicParsing="false" text="%key.main.menu.menu.file">
                    <items>
                        <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
-                       <MenuItem mnemonicParsing="false" text="Open Contest" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="%key.main.menu.contest">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="%key.main.menu.contest.select" onAction="#handleSelectContest"/>
+                    </items>
+                  </Menu>
                    </items>
                </Menu>
                <Menu mnemonicParsing="false" text="%key.main.menu.charts">
@@ -21,7 +26,7 @@
                        <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="%key.main.menu.charts.total.by.hour" />
                        <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
                        <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="%key.main.menu.charts.total.hour.op" />
-                       <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.toal.hour.op.area" />
+                       <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.total.hour.op.area" />
                        <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
                        <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.total.qso.band.op" />
                        <SeparatorMenuItem mnemonicParsing="false" />
@@ -40,7 +45,7 @@
                </Menu>
                <Menu mnemonicParsing="false" text="%key.main.menu.help">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="About" />
+                       <MenuItem mnemonicParsing="false" text="%key.menu.help.about" />
                    </items>
                </Menu>
            </menus>

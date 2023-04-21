@@ -1,5 +1,7 @@
 package org.lw5hr.contest.db;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
@@ -18,9 +20,16 @@ public class QueryUtil {
         s.save(entity);
     }
 
+    private Session getSession () {
+        return HibernateUtil.getSessionFactory().openSession();
+    }
+
+    private static CriteriaBuilder getCriteriaBuilder(Session s) {
+        return s.getCriteriaBuilder();
+    }
     public List<Qso> getQsoByContest(Long contestId) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+        Session s = getSession();
+        CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
         CriteriaQuery<Qso> cq = criteriaBuilder.createQuery(Qso.class);
         Root<Qso> root = cq.from(Qso.class);
         cq.select(root);
@@ -30,8 +39,8 @@ public class QueryUtil {
     }
 
     public Boolean contestExist(String name) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+        Session s = getSession();
+        CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
         CriteriaQuery<Contest> contest = criteriaBuilder.createQuery(Contest.class);
         Root<Contest> root = contest.from(Contest.class);
         contest.select(root);
@@ -39,10 +48,22 @@ public class QueryUtil {
         return allQuery.getResultList().stream().anyMatch(c -> c.getContestName().equalsIgnoreCase(name));
     }
 
+    public ObservableList<Contest> getContestList() {
+        Session s = getSession();
+        ObservableList<Contest> result = FXCollections.observableArrayList();
+        CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+        CriteriaQuery<Contest> contest = criteriaBuilder.createQuery(Contest.class);
+        Root<Contest> root = contest.from(Contest.class);
+        contest.select(root);
+        TypedQuery<Contest> allQuery = s.createQuery(contest);
+        result.addAll(allQuery.getResultList());
+        return result;
+    }
+
     public Locale getDefaultLocale() {
         Locale loc;
-        Session s = HibernateUtil.getSessionFactory().openSession();
-        CriteriaBuilder criteriaBuilder = s.getCriteriaBuilder();
+        Session s = getSession();
+        CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
         CriteriaQuery<Settings> settings = criteriaBuilder.createQuery(Settings.class);
         Root<Settings> root = settings.from(Settings.class);
         settings.select(root);
@@ -59,7 +80,7 @@ public class QueryUtil {
     }
 
     public void updateSetting(String settingName, String settingValue) {
-        Session s = HibernateUtil.getSessionFactory().openSession();
+        Session s = getSession();
         CriteriaBuilder cb = s.getCriteriaBuilder();
         CriteriaUpdate<Settings> criteriaUpdate = cb.createCriteriaUpdate(Settings.class);
         Root<Settings> root = criteriaUpdate.from(Settings.class);

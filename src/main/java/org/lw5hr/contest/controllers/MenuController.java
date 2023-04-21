@@ -19,6 +19,7 @@ import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.ChangeScenes;
+import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Qso;
@@ -94,6 +95,13 @@ public class MenuController extends BorderPane implements Initializable {
         setSelectedLanguage(id);
         break;
     }
+  }
+
+  @FXML
+  private void handleSelectContest(final ActionEvent event) throws Exception {
+    Stage stage = new Stage();
+    ContestManager contestManager = new ContestManager();
+    contestManager.start(stage);
   }
 
   @FXML

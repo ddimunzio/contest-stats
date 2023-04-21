@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChartTotalByHourController implements Initializable {
-    CategoryAxis xAxis ;
-    @FXML
-    NumberAxis yAxis;
     @FXML
     BarChart<String, Integer> totalByHour;
 
