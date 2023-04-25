@@ -56,6 +56,7 @@ public class MainWindow extends Application {
         primaryStage.setTitle(mainResources.getString("key.main.general.title"));
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {

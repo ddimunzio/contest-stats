@@ -10,13 +10,13 @@
    <top>
        <MenuBar fx:id="menuBar" layoutY="-1.0">
            <menus>
-               <Menu mnemonicParsing="false" text="%key.main.menu.menu.file">
+               <Menu mnemonicParsing="false" text="%key.main.menu.file">
                    <items>
                        <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu mnemonicParsing="false" text="%key.main.menu.contest">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="%key.main.menu.contest.select" onAction="#handleSelectContest"/>
+                        <MenuItem mnemonicParsing="false" text="%key.main.menu.contest.manage" onAction="#handleSelectContest"/>
                     </items>
                   </Menu>
                    </items>

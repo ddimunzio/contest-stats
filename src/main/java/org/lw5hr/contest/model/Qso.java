@@ -57,7 +57,7 @@ public class Qso implements Serializable {
     @Transient
     Collection<Qso> workedAlso = new ArrayList<Qso>();
     
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
     private Contest contest;
 
     public Long getId() {

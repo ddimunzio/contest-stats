@@ -4,46 +4,32 @@ import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.charts.ByHourAndOperatorChart;
 import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
-import org.lw5hr.contest.db.QueryUtil;
-import org.lw5hr.contest.main.ChangeScenes;
 import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
-import org.lw5hr.contest.model.Qso;
-import org.lw5hr.contest.utils.ADIFReader;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController extends BorderPane implements Initializable {
   @FXML
-  public RadioMenuItem en;
-  @FXML
-  public RadioMenuItem es;
-  @FXML
-  private MenuBar menuBar;
+  private RadioMenuItem en;
 
   @FXML
-  private AnchorPane mainPanel;
+  private RadioMenuItem es;
+
+  @FXML
+  private MenuBar menuBar;
 
   @FXML
   private void handleImportAdifAction(final ActionEvent event) throws Exception {

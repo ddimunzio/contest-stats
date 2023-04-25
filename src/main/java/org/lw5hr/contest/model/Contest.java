@@ -1,10 +1,12 @@
 package org.lw5hr.contest.model;
 
 
+import javafx.scene.control.Button;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -24,7 +26,8 @@ public class Contest implements Serializable {
     @Column(name = "contestDescription")
     private String contestDescription;
 
-
+    @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    List<Qso> qsos;
     public Long getId() {
         return id;
     }
@@ -47,5 +50,13 @@ public class Contest implements Serializable {
 
     public void setContestDescription(String contestDescription) {
         this.contestDescription = contestDescription;
+    }
+
+    public List<Qso> getQsos() {
+        return qsos;
+    }
+
+    public void setQsos(List<Qso> qsos) {
+        this.qsos = qsos;
     }
 }

@@ -7,6 +7,7 @@ package org.lw5hr.contest.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "COUNTRY")
-public class Country {
+public class Country implements CountryInterface, Serializable {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -47,11 +48,6 @@ public class Country {
         return prefixes;
     }
 
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return name;
-    }
 
     public void setPrefixes(String str) {
         str = str.substring(0, str.length() - 1);// remove the ;
@@ -93,5 +89,10 @@ public class Country {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String countrytoString() {
+        return "Name: " + this.name + " Cq Zone: " + getCQZone();
     }
 }
