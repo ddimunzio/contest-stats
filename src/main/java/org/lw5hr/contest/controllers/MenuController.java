@@ -73,18 +73,25 @@ public class MenuController extends BorderPane implements Initializable {
     Locale locale = null;
     switch (id) {
       case "en":
-        MainWindow.setLocale(new Locale("en", "US"));
+        MainWindow.setLocale(Locale.of("en", "US"));
         setSelectedLanguage(id);
         break;
       case "es":
-        MainWindow.setLocale(new Locale("es", "ES"));
+        MainWindow.setLocale(Locale.of("es", "ES"));
         setSelectedLanguage(id);
         break;
     }
   }
 
   @FXML
-  private void handleSelectContest(final ActionEvent event) throws Exception {
+  private void handleManageContest(final ActionEvent event) throws Exception {
+    Stage stage = new Stage();
+    ContestManager contestManager = new ContestManager();
+    contestManager.start(stage);
+  }
+
+  @FXML
+  public void handleSelectContest(ActionEvent actionEvent) throws Exception {
     Stage stage = new Stage();
     ContestManager contestManager = new ContestManager();
     contestManager.start(stage);

@@ -1,14 +1,14 @@
 package org.lw5hr.contest.controllers;
-import com.dlsc.formsfx.view.controls.SimpleRadioButtonControl;
-import javafx.beans.property.SimpleBooleanProperty;
+
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
@@ -29,17 +29,20 @@ public class ContestManagerController implements Initializable {
 
   @FXML
   TableColumn<Contest, Contest> contest_action;
+  private final QueryUtil q = MainWindow.getQ();
+  ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
-  private QueryUtil q = new QueryUtil();
   @FXML
   public void initialize(URL location, ResourceBundle resources) {
     initializeCols();
+    populateTable();
+  }
+  private void populateTable() {
     QueryUtil q = new QueryUtil();
     contestTable.setItems(q.getContestList());
     contestTable.setEditable(true);
   }
 
-  ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
   private void initializeCols() {
     contest_name.setCellValueFactory(new PropertyValueFactory<>("contestName"));
     contest_description.setCellValueFactory(new PropertyValueFactory<>("contestDescription"));
@@ -61,15 +64,18 @@ public class ContestManagerController implements Initializable {
       test.setContestDescription(e.getNewValue());
       q.updateContest(test);
     });
-
-    contest_action.setCellFactory(column -> new TableCell<Contest, Contest>() {
+    contest_action.setCellFactory(column -> new TableCell<>() {
       private final Button button = new Button(mainResources.getString("key.contest.table.delete"));
       {
         button.setOnAction(e -> {
           Contest contest = getItem();
           q.deleteContest(contest);
+          /*clean all items from the table and re-populate it*/
+          contestTable.getItems().clear();
+          populateTable();
         });
       }
+
       @Override
       protected void updateItem(Contest item, boolean empty) {
         super.updateItem(item, empty);
@@ -83,5 +89,4 @@ public class ContestManagerController implements Initializable {
 
     contestTable.setEditable(true);
   }
-
 }

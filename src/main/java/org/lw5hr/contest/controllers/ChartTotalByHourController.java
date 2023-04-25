@@ -8,6 +8,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.utils.StatsUtil;
 
@@ -21,9 +22,9 @@ public class ChartTotalByHourController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        QueryUtil queryUtil = new QueryUtil();
+        QueryUtil q = MainWindow.getQ();
         /** Get all Qso's for a specific contest */
-        List<Qso> qsos = queryUtil.getQsoByContest(1L);
+        List<Qso> qsos = q.getQsoByContest(q.getSelectedContest());
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourData = st.getTotalsByHour(qsos);
         totalByHour.setData(byHourData);

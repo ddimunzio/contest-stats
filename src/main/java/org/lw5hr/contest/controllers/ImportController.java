@@ -48,8 +48,8 @@ public class ImportController implements Initializable {
     /*TODO: Validate Fields*/
     @FXML
     private void handleSave(final ActionEvent event) throws Exception {
-        QueryUtil qu = new QueryUtil();
-        if (adiFile != null && !qu.contestExist(contestNameField.getText())) {
+        QueryUtil q = MainWindow.getQ();
+        if (adiFile != null && !q.contestExist(contestNameField.getText())) {
             errorLabel.setVisible(false);
             try {
                 ADIFReader adiReader = new ADIFReader(adiFile.getPath());

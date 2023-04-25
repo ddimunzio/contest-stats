@@ -30,23 +30,20 @@ public class ADIFReader {
         boolean read = false;
         boolean gotRecord = false;
         StringBuffer record = new StringBuffer();
-
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Contest contest = new Contest();
         contest.setContestName(contestName);
         session.save(contest);
 
-
         while ((line = r.readLine()) != null) {
             line = line.trim();
-            if (line.toUpperCase().indexOf("<EOH>") > -1) {
+            if (line.toUpperCase().contains("<EOH>")) {
                 read = true;
             } else {
                 if (read) {
                     record.append(line);
-                    if (line.toUpperCase().indexOf("<EOR>") > -1) {
+                    if (line.toUpperCase().contains("<EOR>")) {
                         gotRecord = true;
                     }
                 }
