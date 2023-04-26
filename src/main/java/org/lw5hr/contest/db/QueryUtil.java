@@ -62,6 +62,19 @@ public class QueryUtil {
     return res;
   }
 
+  public Contest getContest(final Long id) {
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Contest> contest = criteriaBuilder.createQuery(Contest.class);
+    Root<Contest> root = contest.from(Contest.class);
+    contest.select(root);
+    TypedQuery<Contest> allQuery = s.createQuery(contest);
+    Optional<Contest> res = allQuery.getResultList().stream().filter(co -> co.getId().equals(id)).findFirst();
+    s.getTransaction().commit();
+    return res.orElseGet(Contest::new);
+  }
+
   public ObservableList<Contest> getContestList() {
     Session s = getSession();
     s.beginTransaction();
@@ -122,8 +135,7 @@ public class QueryUtil {
     Optional<Settings> result = allQuery.getResultList().stream()
             .filter(se -> se.getSettingName().equalsIgnoreCase(DatabaseConstants.CURRENT_CONTEST)).findFirst();
     s.getTransaction().commit();
-    return result.map(value -> Long.valueOf(value.getSettingValue())).orElse(null);
-
+    return result.map(Settings::getId).orElse(null);
   }
 
   public void updateSetting(String settingName, String settingValue) {

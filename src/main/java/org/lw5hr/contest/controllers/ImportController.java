@@ -38,7 +38,7 @@ public class ImportController implements Initializable {
 
     private File adiFile;
 
-    ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
+    private final ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
     @FXML
     private void handleCancel(final ActionEvent event) throws Exception {
         Stage stage = (Stage) cancelButton.getScene().getWindow();

@@ -4,7 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -12,16 +15,23 @@ import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.charts.ByHourAndOperatorChart;
 import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
+import org.lw5hr.contest.db.DatabaseConstants;
+import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
+import org.lw5hr.contest.model.Contest;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MenuController extends BorderPane implements Initializable {
+  @FXML
+  private Menu menuContestList;
+
   @FXML
   private RadioMenuItem en;
 
@@ -90,23 +100,42 @@ public class MenuController extends BorderPane implements Initializable {
     contestManager.start(stage);
   }
 
-  @FXML
-  public void handleSelectContest(ActionEvent actionEvent) throws Exception {
-    Stage stage = new Stage();
-    ContestManager contestManager = new ContestManager();
-    contestManager.start(stage);
+  private void handleSelectContest(final ActionEvent event) throws Exception {
+    QueryUtil q = MainWindow.getQ();
+    final RadioMenuItem source = (RadioMenuItem) event.getSource();
+    q.updateSetting(DatabaseConstants.CURRENT_CONTEST, source.getId());
+  }
+  private void addContestItems() {
+    QueryUtil q = MainWindow.getQ();
+    Long selectedContest = q.getSelectedContest();
+    List<Contest> contestList = q.getContestList();
+    contestList.forEach(c -> {
+      RadioMenuItem r = new RadioMenuItem(c.getContestName());
+      r.setId(c.getId().toString());
+      r.setSelected(c.getId().equals(selectedContest));
+      r.setOnAction(event -> {
+        try {
+          handleSelectContest(event);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      });
+      menuContestList.getItems().add(r);
+    });
+
   }
 
   @FXML
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     String lang = MainWindow.getLocale().getLanguage();
+    addContestItems();
     setSelectedLanguage(lang);
   }
 
   private void setSelectedLanguage(String lang) {
-      en.setSelected(en.getId().equalsIgnoreCase(lang));
-      es.setSelected(es.getId().equalsIgnoreCase(lang));
+    en.setSelected(en.getId().equalsIgnoreCase(lang));
+    es.setSelected(es.getId().equalsIgnoreCase(lang));
 
   }
 }

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.HibernateUtil;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.utils.UDPListener;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -46,8 +47,11 @@ public class MainWindow extends Application {
         primaryStage.show();
 
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         HibernateUtil.getSessionFactory().getCurrentSession();
+        UDPListener udp = new UDPListener();
+        udp.listen();
+
         launch();
     }
     public static QueryUtil getQ() {

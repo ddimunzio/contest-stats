@@ -7,7 +7,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
    <top>
        <MenuBar fx:id="menuBar" layoutY="-1.0">
            <menus>
@@ -17,7 +18,7 @@
                          <items>
                             <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
                              <MenuItem mnemonicParsing="false" onAction="#handleManageContest" text="%key.main.menu.contest.manage" />
-                             <MenuItem mnemonicParsing="false" onAction="#handleSelectContest" text="%key.main.menu.contest.select" />
+                             <Menu fx:id="menuContestList" mnemonicParsing="false" text="%key.main.menu.contest.select"/>
                          </items>
                       </Menu>
                   </items>
@@ -37,10 +38,10 @@
                <Menu fx:id="menuSettings" mnemonicParsing="false" text="%key.main.menu.settings">
                   <items>
                       <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%key.main.menu.language">
-                          <items>
-                              <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.english" />
-                              <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.spanish" />
-                          </items>
+                          <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage"
+                                         text="%key.main.menu.language.english"/>
+                          <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage"
+                                         text="%key.main.menu.language.spanish"/>
                       </Menu>
                   </items>
                </Menu>
