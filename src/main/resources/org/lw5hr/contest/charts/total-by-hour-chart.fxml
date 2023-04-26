@@ -5,20 +5,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ChartTotalByHourController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ChartTotalByHourController">
    <children>
-      <BarChart fx:id="totalByHour" categoryGap="5.0" layoutX="40.0" title="Total By Hour" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <BarChart fx:id="totalByHour" layoutX="40.0" title="%key.main.menu.charts.total.by.hour" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <xAxis>
-          <CategoryAxis label="Hour" side="BOTTOM">
-               <tickLabelFont>
-                  <Font name="Blackadder ITC" size="9.0" />
-               </tickLabelFont></CategoryAxis>
+          <CategoryAxis fx:id="categoryAxis" label="%key.main.menu.charts.total.by.hour" side="BOTTOM"/>
         </xAxis>
         <yAxis>
-          <NumberAxis label="Total Qso" side="LEFT">
-               <tickLabelFont>
-                  <Font size="9.0" />
-               </tickLabelFont></NumberAxis>
+          <NumberAxis fx:id="numberAxis" label="Total QSO" side="LEFT"/>
         </yAxis>
       </BarChart>
    </children>

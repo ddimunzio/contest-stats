@@ -1,10 +1,14 @@
 package org.lw5hr.contest.model;
-
-
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -21,6 +25,11 @@ public class Contest implements Serializable {
     @Column(name = "contestName")
     private String contestName;
 
+    @Column(name = "contestDescription")
+    private String contestDescription;
+
+    @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    List<Qso> qsos;
     public Long getId() {
         return id;
     }
@@ -36,7 +45,20 @@ public class Contest implements Serializable {
     public void setContestName(String contestName) {
         this.contestName = contestName;
     }
-    
-    
-    
+
+    public String getContestDescription() {
+        return contestDescription;
+    }
+
+    public void setContestDescription(String contestDescription) {
+        this.contestDescription = contestDescription;
+    }
+
+    public List<Qso> getQsos() {
+        return qsos;
+    }
+
+    public void setQsos(List<Qso> qsos) {
+        this.qsos = qsos;
+    }
 }

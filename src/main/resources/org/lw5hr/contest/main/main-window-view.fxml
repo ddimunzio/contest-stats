@@ -1,79 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
    <top>
        <MenuBar fx:id="menuBar" layoutY="-1.0">
            <menus>
-               <Menu mnemonicParsing="false" text="%key.main.menu.menu.file">
-                   <items>
-                       <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
-                       <MenuItem mnemonicParsing="false" text="Open Contest" />
-                   </items>
+               <Menu mnemonicParsing="false" text="%key.main.menu.file">
+                  <items>
+                      <Menu mnemonicParsing="false" text="%key.main.menu.contest">
+                         <items>
+                            <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
+                             <MenuItem mnemonicParsing="false" onAction="#handleManageContest" text="%key.main.menu.contest.manage" />
+                             <Menu fx:id="menuContestList" mnemonicParsing="false" text="%key.main.menu.contest.select"/>
+                         </items>
+                      </Menu>
+                  </items>
                </Menu>
                <Menu mnemonicParsing="false" text="%key.main.menu.charts">
-                   <items>
-                       <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="%key.main.menu.charts.total.by.hour" />
-                       <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
-                       <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="%key.main.menu.charts.total.hour.op" />
-                       <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.toal.hour.op.area" />
-                       <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
-                       <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.total.qso.band.op" />
-                       <SeparatorMenuItem mnemonicParsing="false" />
-                       <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" />
-                   </items>
+                  <items>
+                      <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="%key.main.menu.charts.total.by.hour" />
+                      <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
+                      <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="%key.main.menu.charts.total.hour.op" />
+                      <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.total.hour.op.area" />
+                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
+                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.total.qso.band.op" />
+                      <SeparatorMenuItem mnemonicParsing="false" />
+                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" />
+                  </items>
                </Menu>
                <Menu fx:id="menuSettings" mnemonicParsing="false" text="%key.main.menu.settings">
-                   <items>
-                       <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%key.main.menu.language">
-                           <items>
-                               <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.english" />
-                               <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.spanish" />
-                           </items>
-                       </Menu>
-                   </items>
+                  <items>
+                      <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%key.main.menu.language">
+                          <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage"
+                                         text="%key.main.menu.language.english"/>
+                          <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage"
+                                         text="%key.main.menu.language.spanish"/>
+                      </Menu>
+                  </items>
                </Menu>
                <Menu mnemonicParsing="false" text="%key.main.menu.help">
-                   <items>
-                       <MenuItem mnemonicParsing="false" text="About" />
-                   </items>
+                  <items>
+                      <MenuItem mnemonicParsing="false" text="%key.menu.help.about" />
+                  </items>
                </Menu>
            </menus>
        </MenuBar>
    </top>
    <center>
-      <ScatterChart BorderPane.alignment="CENTER">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </ScatterChart>
+      <Canvas height="200.0" width="200.0" BorderPane.alignment="CENTER" />
    </center>
-   <left>
-      <AreaChart BorderPane.alignment="CENTER">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </AreaChart>
-   </left>
-   <right>
-      <BubbleChart BorderPane.alignment="CENTER">
-        <xAxis>
-          <NumberAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BubbleChart>
-   </right>
 </BorderPane>

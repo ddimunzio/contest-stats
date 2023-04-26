@@ -4,45 +4,42 @@ import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.charts.ByHourAndOperatorChart;
 import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
+import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
-import org.lw5hr.contest.main.ChangeScenes;
+import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
-import org.lw5hr.contest.model.Qso;
-import org.lw5hr.contest.utils.ADIFReader;
+import org.lw5hr.contest.model.Contest;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController extends BorderPane implements Initializable {
   @FXML
-  public RadioMenuItem en;
-  @FXML
-  public RadioMenuItem es;
-  @FXML
-  private MenuBar menuBar;
+  private Menu menuContestList;
 
   @FXML
-  private AnchorPane mainPanel;
+  private RadioMenuItem en;
+
+  @FXML
+  private RadioMenuItem es;
+
+  @FXML
+  private MenuBar menuBar;
 
   @FXML
   private void handleImportAdifAction(final ActionEvent event) throws Exception {
@@ -86,26 +83,59 @@ public class MenuController extends BorderPane implements Initializable {
     Locale locale = null;
     switch (id) {
       case "en":
-        MainWindow.setLocale(new Locale("en", "US"));
+        MainWindow.setLocale(Locale.of("en", "US"));
         setSelectedLanguage(id);
         break;
       case "es":
-        MainWindow.setLocale(new Locale("es", "ES"));
+        MainWindow.setLocale(Locale.of("es", "ES"));
         setSelectedLanguage(id);
         break;
     }
   }
 
   @FXML
+  private void handleManageContest(final ActionEvent event) throws Exception {
+    Stage stage = new Stage();
+    ContestManager contestManager = new ContestManager();
+    contestManager.start(stage);
+  }
+
+  private void handleSelectContest(final ActionEvent event) throws Exception {
+    QueryUtil q = MainWindow.getQ();
+    final RadioMenuItem source = (RadioMenuItem) event.getSource();
+    q.updateSetting(DatabaseConstants.CURRENT_CONTEST, source.getId());
+  }
+  private void addContestItems() {
+    QueryUtil q = MainWindow.getQ();
+    Long selectedContest = q.getSelectedContest();
+    List<Contest> contestList = q.getContestList();
+    contestList.forEach(c -> {
+      RadioMenuItem r = new RadioMenuItem(c.getContestName());
+      r.setId(c.getId().toString());
+      r.setSelected(c.getId().equals(selectedContest));
+      r.setOnAction(event -> {
+        try {
+          handleSelectContest(event);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      });
+      menuContestList.getItems().add(r);
+    });
+
+  }
+
+  @FXML
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     String lang = MainWindow.getLocale().getLanguage();
+    addContestItems();
     setSelectedLanguage(lang);
   }
 
   private void setSelectedLanguage(String lang) {
-      en.setSelected(en.getId().equalsIgnoreCase(lang));
-      es.setSelected(es.getId().equalsIgnoreCase(lang));
+    en.setSelected(en.getId().equalsIgnoreCase(lang));
+    es.setSelected(es.getId().equalsIgnoreCase(lang));
 
   }
 }

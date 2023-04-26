@@ -1,8 +1,6 @@
 package org.lw5hr.contest.model;
 
 import org.hibernate.annotations.GenericGenerator;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -57,7 +55,7 @@ public class Qso implements Serializable {
     @Transient
     Collection<Qso> workedAlso = new ArrayList<Qso>();
     
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.ALL})
     private Contest contest;
 
     public Long getId() {

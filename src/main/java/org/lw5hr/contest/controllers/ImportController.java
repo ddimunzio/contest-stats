@@ -10,9 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.lw5hr.contest.db.QueryUtil;
-import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.utils.ADIFReader;
 
@@ -40,11 +38,7 @@ public class ImportController implements Initializable {
 
     private File adiFile;
 
-    ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
+    private final ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
     @FXML
     private void handleCancel(final ActionEvent event) throws Exception {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -54,8 +48,8 @@ public class ImportController implements Initializable {
     /*TODO: Validate Fields*/
     @FXML
     private void handleSave(final ActionEvent event) throws Exception {
-        QueryUtil qu = new QueryUtil();
-        if (adiFile != null && !qu.contestExist(contestNameField.getText())) {
+        QueryUtil q = MainWindow.getQ();
+        if (adiFile != null && !q.contestExist(contestNameField.getText())) {
             errorLabel.setVisible(false);
             try {
                 ADIFReader adiReader = new ADIFReader(adiFile.getPath());
@@ -91,5 +85,9 @@ public class ImportController implements Initializable {
             }
 
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
     }
 }
