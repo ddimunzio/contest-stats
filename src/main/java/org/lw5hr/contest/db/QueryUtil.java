@@ -135,7 +135,12 @@ public class QueryUtil {
     Optional<Settings> result = allQuery.getResultList().stream()
             .filter(se -> se.getSettingName().equalsIgnoreCase(DatabaseConstants.CURRENT_CONTEST)).findFirst();
     s.getTransaction().commit();
-    return result.map(Settings::getId).orElse(null);
+    if (result.isPresent() && result.get().getSettingValue() != null) {
+      return result.map(x -> Long.valueOf(x.getSettingValue())).orElse(null);
+    } else {
+      return null;
+    }
+
   }
 
   public void updateSetting(String settingName, String settingValue) {
@@ -149,4 +154,27 @@ public class QueryUtil {
     s.createQuery(criteriaUpdate).executeUpdate();
     transaction.commit();
   }
+
+  public Boolean settingsExist(String name) {
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Settings> setting = criteriaBuilder.createQuery(Settings.class);
+    Root<Settings> root = setting.from(Settings.class);
+    setting.select(root);
+    TypedQuery<Settings> allQuery = s.createQuery(setting);
+    boolean res = allQuery.getResultList().stream().anyMatch(c -> c.getSettingName().equalsIgnoreCase(name));
+    s.getTransaction().commit();
+    return res;
+  }
+  public void initSetting(final String settingName, final String settingValue) {
+    Settings settings = new Settings();
+    settings.setSettingName(settingName);
+    settings.setSettingValue(settingValue);
+    Session s = getSession();
+    s.beginTransaction();
+    s.saveOrUpdate(settings);
+    s.getTransaction().commit();
+  }
+
 }
