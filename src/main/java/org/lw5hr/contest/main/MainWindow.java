@@ -49,9 +49,15 @@ public class MainWindow extends Application {
     }
     public static void main(String[] args) throws Exception {
         HibernateUtil.getSessionFactory().getCurrentSession();
-        UDPListener udp = new UDPListener();
-        udp.listen();
-
+        //UDPListener udp = new UDPListener();
+        //udp.listen();
+        if (!getQ().settingsExist(DatabaseConstants.DEFAULT_LANG)) {
+            getQ().initSetting(DatabaseConstants.DEFAULT_LANG,
+                    DatabaseConstants.DEFAULT_LOCALE_LANGUAGE + "_" + DatabaseConstants.DEFAULT_LOCALE_COUNTRY);
+        }
+        if (!getQ().settingsExist(DatabaseConstants.CURRENT_CONTEST)) {
+            getQ().initSetting(DatabaseConstants.CURRENT_CONTEST, "1");
+        }
         launch();
     }
     public static QueryUtil getQ() {
