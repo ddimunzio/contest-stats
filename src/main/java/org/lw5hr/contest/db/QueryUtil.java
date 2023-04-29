@@ -135,7 +135,7 @@ public class QueryUtil {
     Optional<Settings> result = allQuery.getResultList().stream()
             .filter(se -> se.getSettingName().equalsIgnoreCase(DatabaseConstants.CURRENT_CONTEST)).findFirst();
     s.getTransaction().commit();
-    return result.map(Settings::getId).orElse(null);
+    return result.map(x -> Long.valueOf(x.getSettingValue())).orElse(null);
   }
 
   public void updateSetting(String settingName, String settingValue) {
@@ -148,5 +148,25 @@ public class QueryUtil {
     criteriaUpdate.where(cb.equal(root.get("settingName"), settingName));
     s.createQuery(criteriaUpdate).executeUpdate();
     transaction.commit();
+  }
+
+  public void saveNewQso(final Qso qso) {
+    qso.setContest(getContest(9L));
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Qso> localQsos = criteriaBuilder.createQuery(Qso.class);
+    Root<Qso> root = localQsos.from(Qso.class);
+    localQsos.select(root);
+    TypedQuery<Qso> allQuery = s.createQuery(localQsos);
+    Optional<Qso> localQso = allQuery.getResultList().stream()
+            .filter(q -> q.getDate().equals(qso.getDate()))
+            .filter(q -> q.getTime().equals(qso.getTime())).findFirst();
+    if (localQso.isEmpty()) {
+      s.saveOrUpdate(qso);
+    } else {
+      System.out.println(qso.getCall() + " Already on database");
+    }
+    s.getTransaction().commit();
   }
 }

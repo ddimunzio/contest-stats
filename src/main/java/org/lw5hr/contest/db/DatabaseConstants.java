@@ -5,4 +5,6 @@ public class DatabaseConstants {
   public static String CURRENT_CONTEST = "current_contest";
   public static String DEFAULT_LOCALE_LANGUAGE = "en";
   public static String DEFAULT_LOCALE_COUNTRY = "US";
+  public static String NO_OPERATOR_SET = "NO OPERATOR SET";
+  public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 }
