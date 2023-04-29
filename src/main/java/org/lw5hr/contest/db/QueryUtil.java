@@ -187,6 +187,7 @@ public class QueryUtil {
     s.getTransaction().commit();
     return res;
   }
+
   public void initSetting(final String settingName, final String settingValue) {
     Settings settings = new Settings();
     settings.setSettingName(settingName);
@@ -197,4 +198,17 @@ public class QueryUtil {
     s.getTransaction().commit();
   }
 
+  public Optional<Settings> getSetting(final String settingName) {
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Settings> setting = criteriaBuilder.createQuery(Settings.class);
+    Root<Settings> root = setting.from(Settings.class);
+    setting.select(root);
+    TypedQuery<Settings> allQuery = s.createQuery(setting);
+    Optional<Settings> result = allQuery.getResultList().stream()
+            .filter(se -> se.getSettingName().equalsIgnoreCase(settingName)).findFirst();
+    s.getTransaction().commit();
+    return result;
+  }
 }

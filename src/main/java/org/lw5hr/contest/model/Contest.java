@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
- * @author Diego - LW5HR
+ * Created by ddimunzio on 21.06.2017.
  */
+
 @Entity
 @Table(name = "CONTEST")
 public class Contest implements Serializable {
