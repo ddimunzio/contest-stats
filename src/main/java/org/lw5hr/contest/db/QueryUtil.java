@@ -155,6 +155,26 @@ public class QueryUtil {
     transaction.commit();
   }
 
+  public void saveNewQso(final Qso qso) {
+    qso.setContest(getContest(9L));
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Qso> localQsos = criteriaBuilder.createQuery(Qso.class);
+    Root<Qso> root = localQsos.from(Qso.class);
+    localQsos.select(root);
+    TypedQuery<Qso> allQuery = s.createQuery(localQsos);
+    Optional<Qso> localQso = allQuery.getResultList().stream()
+            .filter(q -> q.getDate().equals(qso.getDate()))
+            .filter(q -> q.getTime().equals(qso.getTime())).findFirst();
+    if (localQso.isEmpty()) {
+      s.saveOrUpdate(qso);
+    } else {
+      System.out.println(qso.getCall() + " Already on database");
+    }
+    s.getTransaction().commit();
+  }
+
   public Boolean settingsExist(String name) {
     Session s = getSession();
     s.beginTransaction();

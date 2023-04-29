@@ -47,4 +47,8 @@ public class UDPListener {
       e.printStackTrace();
     }
   }
+
+  public void close() {
+    socket.close();
+  }
 }

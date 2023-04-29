@@ -6,17 +6,33 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.lw5hr.contest.db.DatabaseConstants;
+import org.lw5hr.contest.db.HibernateSqlUtil;
 import org.lw5hr.contest.db.HibernateUtil;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.db.QueryUtilSql;
+import org.lw5hr.contest.model.dxlog.QsoData;
 import org.lw5hr.contest.utils.UDPListener;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainWindow extends Application {
+
+    private static final UDPListener udpListener;
+
+    static {
+        try {
+            udpListener = new UDPListener();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static Stage primaryStage;
     public static void setPrimaryStage(Stage primaryStage) {
@@ -47,6 +63,20 @@ public class MainWindow extends Application {
         primaryStage.show();
 
     }
+    /**
+     * This method is called when the application should stop, and provides a convenient place to prepare for application exit and destroy resources.
+     * The implementation of this method provided by the Application class does nothing.
+     * An application may override this method to perform any shutdown operations.
+     * The stop method will be called on the JavaFX Application Thread.
+     * @throws Exception
+     */
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        HibernateUtil.getSessionFactory().close();
+        udpListener.close();
+    }
+
     public static void main(String[] args) throws Exception {
         HibernateUtil.getSessionFactory().getCurrentSession();
         //UDPListener udp = new UDPListener();
@@ -58,8 +88,11 @@ public class MainWindow extends Application {
         if (!getQ().settingsExist(DatabaseConstants.CURRENT_CONTEST)) {
             getQ().initSetting(DatabaseConstants.CURRENT_CONTEST, "1");
         }
+        QueryUtilSql qs = new QueryUtilSql();
+        qs.getAllLoggedQso();
         launch();
-    }
+        udpListener.listen();
+}
     public static QueryUtil getQ() {
         return q;
     }

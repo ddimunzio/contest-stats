@@ -17,6 +17,7 @@ import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.main.About;
 import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
@@ -100,11 +101,20 @@ public class MenuController extends BorderPane implements Initializable {
     contestManager.start(stage);
   }
 
+  @FXML
   private void handleSelectContest(final ActionEvent event) throws Exception {
     QueryUtil q = MainWindow.getQ();
     final RadioMenuItem source = (RadioMenuItem) event.getSource();
     q.updateSetting(DatabaseConstants.CURRENT_CONTEST, source.getId());
   }
+
+  @FXML
+  private void handleAbout(final ActionEvent event) throws Exception {
+    Stage stage = new Stage();
+    About about = new About();
+    about.start(stage);
+  }
+
   private void addContestItems() {
     QueryUtil q = MainWindow.getQ();
     Long selectedContest = q.getSelectedContest();
