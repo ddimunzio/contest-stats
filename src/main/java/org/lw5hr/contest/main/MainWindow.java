@@ -90,8 +90,9 @@ public class MainWindow extends Application {
         }
         QueryUtilSql qs = new QueryUtilSql();
         qs.getAllLoggedQso();
-        launch();
         udpListener.listen();
+        launch();
+
 }
     public static QueryUtil getQ() {
         return q;
