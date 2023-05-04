@@ -8,14 +8,21 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+/**
+ * Created by ddimunzio on 21.06.2017.
+ */
 public class ADIFParser {
 
     private static final DateFormat formater = new SimpleDateFormat("yyyyMMdd HHmmss");
 
+    /**
+     * Parse ADIF line and return QSO object
+     * @param line
+     * @return Qso
+     */
     public Qso parseLine(String line) {
-
         HashMap<String, String> fieldsValues = new HashMap<String, String>();
-        Integer pos = 0;
+        int pos = 0;
         String field = null;
         Integer start = null;
         Integer end = null;
@@ -40,7 +47,7 @@ public class ADIFParser {
             if (end != null) {
                 if ((twoPoints != null) && (twoPoints > start)) {
                     field = line.substring(start + 1, twoPoints);
-                    if (field.indexOf("DATE") > -1) {
+                    if (field.contains("DATE")) {
                         leng = Integer.parseInt(line.substring(twoPoints + 1, twoPoints + 2));
                     } else {
                         leng = Integer.parseInt(line.substring(twoPoints + 1, end));

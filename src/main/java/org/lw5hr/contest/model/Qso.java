@@ -1,13 +1,19 @@
 package org.lw5hr.contest.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.lw5hr.contest.model.dxlog.QsoData;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static org.lw5hr.contest.db.DatabaseConstants.DATE_FORMAT;
+import static org.lw5hr.contest.db.DatabaseConstants.NO_OPERATOR_SET;
 
 @Entity
 @Table( name = "QSOS" )
@@ -236,4 +242,21 @@ public class Qso implements Serializable {
     public void setContest(Contest contest) {
         this.contest = contest;
     }
+
+  public Qso convertQsoDataToQso(final QsoData qsoData) {
+    setCall(qsoData.getCallsign());
+    setBand(qsoData.getBand());
+    setFrequency(qsoData.getFrequency().toString());
+    setMode(qsoData.getMode());
+    setExchangeTx(qsoData.getNr().toString());
+    setExchangeRx(qsoData.getRcvd().split(" ")[0]);
+    setOperator(qsoData.getOperator().length() > 0  ? qsoData.getOperator() : NO_OPERATOR_SET);
+    /*DxLog date format = 2023-04-26 20:16:01.9999329Z*/
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    LocalDate date = LocalDate.parse(qsoData.getQsotime().substring(0, qsoData.getQsotime().indexOf(".")), formatter);
+    LocalTime time = LocalTime.parse(qsoData.getQsotime().substring(0, qsoData.getQsotime().indexOf(".")), formatter);
+    setDate(date);
+    setTime(time);
+    return this;
+  }
 }

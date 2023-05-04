@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
-
+/**
+ * Created by ddimunzio on 21.06.2017.
+ */
 public class ContestManager extends Application {
   @Override
   public void start(Stage stage) throws Exception {

@@ -1,7 +1,6 @@
 package org.lw5hr.contest.utils;
 
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,8 +9,8 @@ import java.net.InetAddress;
 
 public class UDPListener {
   private static final int PORT = 12060;
-  private DatagramSocket socket;
-  private byte[] buffer = new byte[1024];
+  private final DatagramSocket socket;
+  private final byte[] buffer = new byte[1024];
 
   public UDPListener() throws IOException {
     socket = new DatagramSocket(PORT);
@@ -27,14 +26,16 @@ public class UDPListener {
         String message = new String(packet.getData(), 0, packet.getLength());
         InetAddress address = packet.getAddress();
         int port = packet.getPort();
-        dxLogParser.parse(message);
+        try {
+          dxLogParser.parse(message);
+        } catch (SAXException e) {
+          throw new RuntimeException(e);
+        }
         System.out.println("Received message from " + address.getHostAddress() + ":" + port + " - " + message);
       }
     } catch (IOException ignored) {
 
     } catch (ParserConfigurationException e) {
-      throw new RuntimeException(e);
-    } catch (SAXException e) {
       throw new RuntimeException(e);
     }
   }
@@ -46,5 +47,9 @@ public class UDPListener {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void close() {
+    socket.close();
   }
 }

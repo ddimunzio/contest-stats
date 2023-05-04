@@ -13,12 +13,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class StatsUtil {
-private static Integer ONE_DAY_HOURS = 24;
-private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
+private static final Integer ONE_DAY_HOURS = 24;
+private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
 
   public Map<LocalDate, List<BarChartHelper>> getRatesByHour(List<Qso> qsos) {
     final Map<LocalDate, Map<Integer, List<Qso>>> grouped = qsos.stream()
-            .collect(Collectors.groupingBy(x -> x.getDate(), Collectors.groupingBy(a -> a.getTime().getHour())));
+            .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(a -> a.getTime().getHour())));
 
     List<BarChartHelper> topRatesHelper = new ArrayList<>();
     grouped.forEach((g, i) -> {
@@ -37,7 +37,7 @@ private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
 
   public void totalQsoByHourAndOperator(List<Qso> qsos) {
     Map<Object, Map<Object, Map<Object, List<Qso>>>> totalByHour = qsos.stream()
-            .collect(Collectors.groupingBy(q -> q.getDate(), Collectors.groupingBy(q -> q.getTime().getHour(), Collectors.groupingBy(q -> q.getOperator()))));
+            .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(q -> q.getTime().getHour(), Collectors.groupingBy(Qso::getOperator))));
     totalByHour.forEach((day, hourOperatorList) -> {
       System.out.print(System.getProperty("line.separator"));
       System.out.print("Day " + day);
@@ -54,17 +54,11 @@ private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
     });
   }
 
-
-  public void groupByMinutes(List<Qso> qsos) {
-    final Map<Integer, IntSummaryStatistics> a = qsos.stream()
-            .collect(Collectors.groupingBy(q -> q.getTime().getMinute(), Collectors.summarizingInt(x -> 1)));
-  }
-
   public ObservableList<XYChart.Series<String, Integer>> getTotalsByOp(List<Qso> qsos) {
     ObservableList<XYChart.Series<String, Integer>> byOpList = FXCollections.observableArrayList();
-    Map<String, List<Qso>> byOp = qsos.stream().collect(Collectors.groupingBy(q -> q.getOperator()));
+    Map<String, List<Qso>> byOp = qsos.stream().collect(Collectors.groupingBy(Qso::getOperator));
     byOp.forEach((op, l) -> {
-      XYChart.Series<String, Integer> ByOpSeries = new XYChart.Series();
+      XYChart.Series<String, Integer> ByOpSeries = new XYChart.Series<>();
       ByOpSeries.getData().add(new XYChart.Data<>(op, l.size()));
       ByOpSeries.setName(op);
       byOpList.add(ByOpSeries);
@@ -73,19 +67,19 @@ private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
   }
 
   public ObservableList<XYChart.Series<String, Integer>> getTotalsByHour(List<Qso> qsos) {
-    /** create ObservableList */
+    /* create ObservableList */
     ObservableList<XYChart.Series<String, Integer>> byHourList = FXCollections.observableArrayList();
 
-    /** Group all QSO's by Date and Time */
+    /* Group all QSO's by Date and Time */
     Map<LocalDate, Map<Integer, List<Qso>>> groupedByDateAndHour = qsos.stream()
-            .collect(Collectors.groupingBy(x -> x.getDate(), Collectors.groupingBy(a -> a.getTime().getHour())));
+            .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(a -> a.getTime().getHour())));
 
     groupedByDateAndHour.forEach((date, map) -> {
       AtomicReference<Integer> h = new AtomicReference<>(0);
-      XYChart.Series<String, Integer> byHourSeries = new XYChart.Series();
+      XYChart.Series<String, Integer> byHourSeries = new XYChart.Series<>();
       byHourSeries.setName(date.toString());
       map.forEach((hour, qList) -> {
-        if (hour == h.get()) {
+        if (Objects.equals(hour, h.get())) {
           String H = hour < ONE_DAY_HOURS_FROM_ZERO ? hour.toString() : String.valueOf(Integer.sum(hour, ONE_DAY_HOURS));
           byHourSeries.getData().add(h.get(), new XYChart.Data<>(H, qList.size()));
         } else {
@@ -104,21 +98,20 @@ private static Integer ONE_DAY_HOURS_FROM_ZERO = 23;
     ObservableList<XYChart.Series<String, Integer>> byHourAndOperatorList = FXCollections.observableArrayList();
 
     Map<String, Map<LocalDate, Map<Integer, Set<Qso>>>> groupedByDateOperatorAndHour = qsos.stream()
-            .collect(Collectors.groupingBy(q -> q.getOperator(), Collectors.groupingBy(q -> q.getDate(),
+            .collect(Collectors.groupingBy(Qso::getOperator, Collectors.groupingBy(Qso::getDate,
                     Collectors.groupingBy(q -> q.getTime().getHour(), TreeMap::new, Collectors.toSet()))));
 
     AtomicReference<XYChart.Series<String, Integer>> byHourOperatorSeries = new AtomicReference<>();
     groupedByDateOperatorAndHour.forEach((operator, dates) -> {
       AtomicInteger day = new AtomicInteger(1);
-      Map<LocalDate, Map<Integer, Set<Qso>>> sortedTreeMap = new TreeMap<>();
-      sortedTreeMap.putAll(dates);
+      Map<LocalDate, Map<Integer, Set<Qso>>> sortedTreeMap = new TreeMap<>(dates);
       Optional<XYChart.Series<String, Integer>> series = byHourAndOperatorList.stream()
               .filter(s -> s.getName().equalsIgnoreCase(operator)).findFirst();
 
       if (series.isPresent()) {
         byHourOperatorSeries.set(series.get());
       } else {
-        byHourOperatorSeries.set(new XYChart.Series());
+        byHourOperatorSeries.set(new XYChart.Series<>());
         byHourOperatorSeries.get().setName(operator);
       }
       sortedTreeMap.forEach((date, hList) -> {

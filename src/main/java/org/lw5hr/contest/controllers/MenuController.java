@@ -1,13 +1,11 @@
 package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,6 +15,7 @@ import org.lw5hr.contest.charts.TotalByHourChart;
 import org.lw5hr.contest.charts.TotalByOperatorChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
+import org.lw5hr.contest.main.About;
 import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
@@ -37,9 +36,6 @@ public class MenuController extends BorderPane implements Initializable {
 
   @FXML
   private RadioMenuItem es;
-
-  @FXML
-  private MenuBar menuBar;
 
   @FXML
   private void handleImportAdifAction(final ActionEvent event) throws Exception {
@@ -100,11 +96,20 @@ public class MenuController extends BorderPane implements Initializable {
     contestManager.start(stage);
   }
 
+  @FXML
   private void handleSelectContest(final ActionEvent event) throws Exception {
     QueryUtil q = MainWindow.getQ();
     final RadioMenuItem source = (RadioMenuItem) event.getSource();
     q.updateSetting(DatabaseConstants.CURRENT_CONTEST, source.getId());
   }
+
+  @FXML
+  private void handleAbout(final ActionEvent event) throws Exception {
+    Stage stage = new Stage();
+    About about = new About();
+    about.start(stage);
+  }
+
   private void addContestItems() {
     QueryUtil q = MainWindow.getQ();
     Long selectedContest = q.getSelectedContest();
@@ -137,5 +142,14 @@ public class MenuController extends BorderPane implements Initializable {
     en.setSelected(en.getId().equalsIgnoreCase(lang));
     es.setSelected(es.getId().equalsIgnoreCase(lang));
 
+  }
+
+  /**
+   * This method is called when the menu is shown.  It is used to update the list of contests.
+   * @param event not used but required by JavaFX
+   */
+  public void handleShow(Event event) {
+    menuContestList.getItems().clear();
+    addContestItems();
   }
 }
