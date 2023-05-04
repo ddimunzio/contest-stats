@@ -14,10 +14,7 @@
       <TextField fx:id="filePathField" layoutX="134.0" layoutY="42.0" prefHeight="25.0" prefWidth="255.0" />
       <Button layoutX="406.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleBrowse" text="%key.import.btn.browse" />
       <Label layoutX="27.0" layoutY="46.0" text="%key.import.text.select.file" />
-      <Label layoutX="27.0" layoutY="89.0" text="%key.import.text.contest.name">
-         <font>
-            <Font size="13.0" />
-         </font></Label>
+      <Label layoutX="27.0" layoutY="89.0" text="%key.import.text.contest.name"/>
       <TextField fx:id="contestNameField" layoutX="134.0" layoutY="85.0" prefHeight="25.0" prefWidth="255.0" />
       <Label fx:id="errorLabel" contentDisplay="CENTER" layoutX="68.0" layoutY="143.0" prefHeight="20.0" textFill="#d71010" visible="false" />
    </children>

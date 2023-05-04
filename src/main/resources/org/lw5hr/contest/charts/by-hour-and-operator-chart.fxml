@@ -5,18 +5,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ByHourAndOperatorController">
-   <children>
-      <StackedBarChart fx:id="byHourAndOperator" layoutX="38.0" layoutY="14.0" title="Total By Hour And Op" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-        <xAxis>
-          <CategoryAxis label="Hours" side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis label="Total QSO's" side="LEFT">
-               <tickLabelFont>
-                  <Font size="11.0" />
-               </tickLabelFont></NumberAxis>
-        </yAxis>
-      </StackedBarChart>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.lw5hr.contest.controllers.ByHourAndOperatorController">
+    <StackedBarChart fx:id="byHourAndOperator" layoutX="38.0" layoutY="14.0" title="%key.main.menu.charts.total.by.op"
+              AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
+              AnchorPane.topAnchor="10.0">
+      <xAxis>
+          <CategoryAxis label="%key.main.charts.hours" side="BOTTOM"/>
+      </xAxis>
+      <yAxis>
+          <NumberAxis label="Total QSO's" side="LEFT"/>
+      </yAxis>
+    </StackedBarChart>
 </AnchorPane>

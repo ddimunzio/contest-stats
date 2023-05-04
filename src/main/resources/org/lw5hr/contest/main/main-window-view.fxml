@@ -11,7 +11,7 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.MenuController">
    <top>
        <MenuBar fx:id="menuBar" layoutY="-1.0">
-           <Menu mnemonicParsing="false" text="%key.main.menu.file">
+           <Menu mnemonicParsing="false" text="%key.main.menu.file" onShowing="#handleShow">
                <Menu mnemonicParsing="false" text="%key.main.menu.contest">
                    <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction"
                              text="%key.main.menu.import"/>

@@ -26,9 +26,6 @@ public class ByHourAndOperatorAreaController implements Initializable {
         List<Qso> qsos = q.getQsoByContest(q.getSelectedContest());
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourAndOpAreaData = st.getByHourAndOperator(qsos);
-        numberAxis.setAutoRanging(false);
-        numberAxis.setUpperBound(600);
-        numberAxis.setTickUnit(100);
         byHourAndOperatorArea.getData().addAll(byHourAndOpAreaData);
     }
 }

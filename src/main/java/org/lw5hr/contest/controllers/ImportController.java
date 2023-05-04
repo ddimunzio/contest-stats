@@ -59,7 +59,6 @@ public class ImportController implements Initializable {
             }
             Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
             stage.close();
-
         } else {
             errorLabel.setText(importResources.getString("key.import.contest.exist"));
             errorLabel.setVisible(true);

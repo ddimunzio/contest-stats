@@ -18,7 +18,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+/**
+ * Created by ddimunzio on 2023.
+ */
 public class MainWindow extends Application {
 
   private static final UDPListener udpListener;
@@ -95,6 +97,7 @@ public class MainWindow extends Application {
     }
     QueryUtilSql qs = new QueryUtilSql();
     Optional<Settings> liveContest = getQ().getSetting(DatabaseConstants.LIVE_CONTEST_ON);
+
     if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
       qs.getAllLoggedQso();
       udpListener.listen();

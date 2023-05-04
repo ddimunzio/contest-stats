@@ -1,13 +1,11 @@
 package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -38,9 +36,6 @@ public class MenuController extends BorderPane implements Initializable {
 
   @FXML
   private RadioMenuItem es;
-
-  @FXML
-  private MenuBar menuBar;
 
   @FXML
   private void handleImportAdifAction(final ActionEvent event) throws Exception {
@@ -147,5 +142,14 @@ public class MenuController extends BorderPane implements Initializable {
     en.setSelected(en.getId().equalsIgnoreCase(lang));
     es.setSelected(es.getId().equalsIgnoreCase(lang));
 
+  }
+
+  /**
+   * This method is called when the menu is shown.  It is used to update the list of contests.
+   * @param event not used but required by JavaFX
+   */
+  public void handleShow(Event event) {
+    menuContestList.getItems().clear();
+    addContestItems();
   }
 }
