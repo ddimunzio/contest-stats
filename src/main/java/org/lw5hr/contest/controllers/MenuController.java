@@ -6,6 +6,7 @@ import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,17 +18,24 @@ import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.About;
 import org.lw5hr.contest.main.ContestManager;
+import org.lw5hr.contest.main.DxLogConnectionForm;
 import org.lw5hr.contest.main.ImportContest;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.model.Settings;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static org.lw5hr.contest.main.MainWindow.getQ;
+
 public class MenuController extends BorderPane implements Initializable {
+  @FXML
+  private RadioMenuItem liveContestMenu;
   @FXML
   private Menu menuContestList;
 
@@ -98,7 +106,7 @@ public class MenuController extends BorderPane implements Initializable {
 
   @FXML
   private void handleSelectContest(final ActionEvent event) throws Exception {
-    QueryUtil q = MainWindow.getQ();
+    QueryUtil q = getQ();
     final RadioMenuItem source = (RadioMenuItem) event.getSource();
     q.updateSetting(DatabaseConstants.CURRENT_CONTEST, source.getId());
   }
@@ -111,7 +119,7 @@ public class MenuController extends BorderPane implements Initializable {
   }
 
   private void addContestItems() {
-    QueryUtil q = MainWindow.getQ();
+    QueryUtil q = getQ();
     Long selectedContest = q.getSelectedContest();
     List<Contest> contestList = q.getContestList();
     contestList.forEach(c -> {
@@ -136,6 +144,10 @@ public class MenuController extends BorderPane implements Initializable {
     String lang = MainWindow.getLocale().getLanguage();
     addContestItems();
     setSelectedLanguage(lang);
+    Optional<Settings> liveContest = getQ().getSetting(DatabaseConstants.LIVE_CONTEST_ON);
+    if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
+      liveContestMenu.setSelected(true);
+    }
   }
 
   private void setSelectedLanguage(String lang) {
@@ -151,5 +163,14 @@ public class MenuController extends BorderPane implements Initializable {
   public void handleShow(Event event) {
     menuContestList.getItems().clear();
     addContestItems();
+  }
+
+  public void handleLiveContest(ActionEvent actionEvent) throws Exception {
+    getQ().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
+    if (liveContestMenu.isSelected()) {
+      Stage stage = new Stage();
+      DxLogConnectionForm dxLogContest = new DxLogConnectionForm();
+      dxLogContest.start(stage);
+    }
   }
 }

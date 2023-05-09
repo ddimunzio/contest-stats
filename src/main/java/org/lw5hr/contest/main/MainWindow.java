@@ -99,10 +99,10 @@ public class MainWindow extends Application {
     Optional<Settings> liveContest = getQ().getSetting(DatabaseConstants.LIVE_CONTEST_ON);
 
     if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
-      qs.getAllLoggedQso();
-      udpListener.listen();
+      Optional<Settings> setting = getQ().getSetting(DatabaseConstants.DXLOG_DB_PATH);
+      setting.ifPresent(settings -> qs.getAllLoggedQso(settings.getSettingValue()));
+   //   udpListener.listen();
     }
-
 
   }
 

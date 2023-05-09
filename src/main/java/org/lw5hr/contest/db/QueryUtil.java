@@ -50,6 +50,7 @@ public class QueryUtil {
   }
 
   public Boolean contestExist(String name) {
+    boolean res = false;
     Session s = getSession();
     s.beginTransaction();
     CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
@@ -57,7 +58,7 @@ public class QueryUtil {
     Root<Contest> root = contest.from(Contest.class);
     contest.select(root);
     TypedQuery<Contest> allQuery = s.createQuery(contest);
-    boolean res = allQuery.getResultList().stream().anyMatch(c -> c.getContestName().equalsIgnoreCase(name));
+    res = allQuery.getResultList().stream().anyMatch(c -> c.getContestName().equalsIgnoreCase(name));
     s.getTransaction().commit();
     return res;
   }
@@ -75,6 +76,18 @@ public class QueryUtil {
     return res.orElseGet(Contest::new);
   }
 
+  public Contest getCurrentLiveContest() {
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Contest> contest = criteriaBuilder.createQuery(Contest.class);
+    Root<Contest> root = contest.from(Contest.class);
+    contest.select(root);
+    TypedQuery<Contest> allQuery = s.createQuery(contest);
+    Optional<Contest> res = allQuery.getResultList().stream().filter(co -> co.getLive().equals(true)).findFirst();
+    s.getTransaction().commit();
+    return res.orElse(null);
+  }
   public ObservableList<Contest> getContestList() {
     Session s = getSession();
     s.beginTransaction();
@@ -156,7 +169,7 @@ public class QueryUtil {
   }
 
   public void saveNewQso(final Qso qso) {
-    qso.setContest(getContest(9L));
+    qso.setContest(getCurrentLiveContest());
     Session s = getSession();
     s.beginTransaction();
     CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);

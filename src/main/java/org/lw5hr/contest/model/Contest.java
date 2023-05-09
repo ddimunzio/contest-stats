@@ -17,6 +17,13 @@ import java.util.List;
 @Entity
 @Table(name = "CONTEST")
 public class Contest implements Serializable {
+
+    public Contest() {}
+    public Contest(final String contestName, final Boolean live) {
+        this.contestName = contestName;
+        this.live = live;
+    }
+
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -27,6 +34,17 @@ public class Contest implements Serializable {
 
     @Column(name = "contestDescription")
     private String contestDescription;
+
+    @Column(name = "live")
+    private Boolean live;
+
+    public Boolean getLive() {
+        return live;
+    }
+
+    public void setLive(Boolean live) {
+        this.live = live;
+    }
 
     @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true)
     List<Qso> qsos;

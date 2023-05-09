@@ -41,6 +41,8 @@
                    <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage"
                                   text="%key.main.menu.language.spanish"/>
                </Menu>
+               <SeparatorMenuItem mnemonicParsing="false"/>
+               <RadioMenuItem fx:id="liveContestMenu" onAction="#handleLiveContest" mnemonicParsing="false" text="%key.main.menu.live.contest"/>
            </Menu>
            <Menu mnemonicParsing="false" text="%key.main.menu.help">
                <MenuItem mnemonicParsing="false" text="%key.menu.help.about" onAction="#handleAbout"/>

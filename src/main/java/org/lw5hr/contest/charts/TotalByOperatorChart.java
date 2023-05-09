@@ -14,7 +14,7 @@ public class TotalByOperatorChart extends Application  {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(TotalByOperatorChart.class.getResource("total-by-operator-chart.fxml"), mainResources);
-        Scene scene = new Scene(fxmlLoader.load(), 700, 300);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
         stage.setScene(scene);
         stage.show();
     }
