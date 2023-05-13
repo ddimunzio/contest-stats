@@ -12,10 +12,10 @@
               AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
               AnchorPane.topAnchor="10.0">
       <xAxis>
-          <CategoryAxis label="%key.main.charts.hours" side="BOTTOM"/>
+          <CategoryAxis fx:id="xAxis" label="%key.main.charts.hours" side="BOTTOM"/>
       </xAxis>
       <yAxis>
-          <NumberAxis label="Total QSO's" side="LEFT"/>
+          <NumberAxis fx:id="yAxis" label="Total QSO's" side="LEFT"/>
       </yAxis>
     </StackedBarChart>
 </AnchorPane>

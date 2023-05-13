@@ -3,10 +3,15 @@ package org.lw5hr.contest.controllers;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Qso;
@@ -30,7 +35,7 @@ public class ChartTotalByHourController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        QueryUtil q = MainWindow.getQ();
+        QueryUtil q = MainWindow.getQueryUtil();
 
         /** Get all Qso's for a specific contest */
         Long selectedContest = q.getSelectedContest();
@@ -41,5 +46,22 @@ public class ChartTotalByHourController implements Initializable {
         titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
         totalByHour.setTitle(titleLabel);
         totalByHour.setData(byHourData);
+        totalByHour.setBarGap(2);
+        addLabelsToBars();
     }
+
+    public void addLabelsToBars() {
+        for (XYChart.Series<String, Integer> series : totalByHour.getData()) {
+            for (XYChart.Data<String, Integer> data : series.getData()) {
+                // add label above bar
+                Label label = new Label(data.getYValue().toString());
+                label.setTextFill(Color.BLACK);
+                StackPane stackPane = (StackPane) data.getNode();
+                stackPane.getChildren().add(label);
+                StackPane.setAlignment(label, Pos.TOP_CENTER);
+                StackPane.setMargin(label, new Insets(-15, 0, 0, 0));
+            }
+        }
+    }
+
 }

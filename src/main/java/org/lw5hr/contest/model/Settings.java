@@ -3,10 +3,11 @@ package org.lw5hr.contest.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "SETTINGS")
-public class Settings {
+public class Settings implements Serializable {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name="increment", strategy = "increment")

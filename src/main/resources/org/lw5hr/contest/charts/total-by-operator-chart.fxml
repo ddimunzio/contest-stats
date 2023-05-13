@@ -10,10 +10,10 @@
     <BarChart fx:id="totalByOp"  layoutX="40.0" title="Total QSO By Operator" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <xAxis>
-            <CategoryAxis label="%key.main.charts.operator" side="BOTTOM"/>
+            <CategoryAxis fx:id="xAxis" label="%key.main.charts.operator" side="BOTTOM"/>
         </xAxis>
         <yAxis>
-            <NumberAxis label="Total Qso" side="LEFT"/>
+            <NumberAxis fx:id="yAxis" label="Total Qso" side="LEFT"/>
         </yAxis>
     </BarChart>
 </AnchorPane>

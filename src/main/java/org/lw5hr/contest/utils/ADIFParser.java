@@ -1,5 +1,7 @@
 package org.lw5hr.contest.utils;
 
+import org.lw5hr.contest.main.MainWindow;
+import org.lw5hr.contest.model.Contest;
 import org.lw5hr.contest.model.Qso;
 
 import java.text.DateFormat;
@@ -20,7 +22,7 @@ public class ADIFParser {
      * @param line
      * @return Qso
      */
-    public Qso parseLine(String line) {
+    public Qso parseLine(String line, Contest contest) {
         HashMap<String, String> fieldsValues = new HashMap<String, String>();
         int pos = 0;
         String field = null;
@@ -71,7 +73,7 @@ public class ADIFParser {
             pos++;
         }
 
-        return getQSO(fieldsValues);
+        return getQSO(fieldsValues, contest);
     }
 
     // <CALL:6>YY5OGI <QSO_DATE:8>19980402 <TIME_ON:6>021500 <BAND:3>10M
@@ -89,7 +91,7 @@ public class ADIFParser {
      * @param fieldsValues
      * @return
      */
-    private Qso getQSO(HashMap<String, String> fieldsValues) {
+    private Qso getQSO(HashMap<String, String> fieldsValues, Contest contest) {
 
         Qso qso = null;
         try {
@@ -157,7 +159,7 @@ public class ADIFParser {
 
                 }
                 if (fieldsValues.get("CONTEST_ID") != null) {
-                    qso.setContestId(fieldsValues.get("CONTEST_ID").trim());
+                    qso.setContest(contest);
 
                 }
                 if (fieldsValues.get("GRIDSQUARE") != null) {

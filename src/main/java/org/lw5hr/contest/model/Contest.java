@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,13 @@ import java.util.List;
 @Entity
 @Table(name = "CONTEST")
 public class Contest implements Serializable {
+
+    public Contest() {}
+    public Contest(final String contestName, final Boolean live) {
+        this.contestName = contestName;
+        this.live = live;
+    }
+
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -27,6 +35,28 @@ public class Contest implements Serializable {
 
     @Column(name = "contestDescription")
     private String contestDescription;
+    @Column(name = "category")
+    private String category;
+    @Column(name = "live")
+    private Boolean live;
+    @Column(name = "sfi")
+    private Double sfi;
+    @Column(name = "kIndex")
+    private Integer kIndex;
+    @Column(name = "aIndex")
+    private Integer aIndex;
+    @Column(name = "dateFrom")
+    private Date dateFrom;
+    @Column(name = "dateTo")
+    private Date dateTO;
+
+    public Boolean getLive() {
+        return live;
+    }
+
+    public void setLive(Boolean live) {
+        this.live = live;
+    }
 
     @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true)
     List<Qso> qsos;
@@ -60,5 +90,53 @@ public class Contest implements Serializable {
 
     public void setQsos(List<Qso> qsos) {
         this.qsos = qsos;
+    }
+
+    public Double getSfi() {
+        return sfi;
+    }
+
+    public void setSfi(Double sfi) {
+        this.sfi = sfi;
+    }
+
+    public Integer getkIndex() {
+        return kIndex;
+    }
+
+    public void setkIndex(Integer kIndex) {
+        this.kIndex = kIndex;
+    }
+
+    public Integer getaIndex() {
+        return aIndex;
+    }
+
+    public void setaIndex(Integer aIndex) {
+        this.aIndex = aIndex;
+    }
+
+    public Date getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(Date dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public Date getDateTO() {
+        return dateTO;
+    }
+
+    public void setDateTO(Date dateTO) {
+        this.dateTO = dateTO;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -6,15 +6,28 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "qsodatacalc")
-public class QsoDataCalc {
+@SecondaryTable(name = "qsodata", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idqso"))
+public class QsoDataCalc implements Serializable {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name="increment", strategy = "increment")
   private int idqso;
+
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = "idqso")
+  private QsoData qsoData;
+
   @Column
   private Integer points;
   @Column
@@ -123,5 +136,13 @@ public class QsoDataCalc {
 
   public void setMultkey(Integer multkey) {
     this.multkey = multkey;
+  }
+
+  public QsoData getQsoData() {
+    return qsoData;
+  }
+
+  public void setQsoData(QsoData qsoData) {
+    this.qsoData = qsoData;
   }
 }

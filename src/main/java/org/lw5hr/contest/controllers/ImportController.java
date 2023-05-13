@@ -2,9 +2,9 @@ package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -12,48 +12,79 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.MainWindow;
+import org.lw5hr.contest.model.Contest;
 import org.lw5hr.contest.utils.ADIFReader;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 
-public class ImportController implements Initializable {
+public class ImportController extends GenericContestController {
+
     @FXML
-    Pane importPane;
+    private  TextField kIndex;
+
     @FXML
-    Button cancelButton;
+    private DatePicker dateTo;
+
+    @FXML
+    private DatePicker dateFrom;
+
+    @FXML
+    private Pane contestPane;
+
+    @FXML
+    private Button cancelButton;
 
     @FXML
     Button saveButton;
-    @FXML
-    TextField filePathField;
 
     @FXML
-    TextField contestNameField;
+    private TextField filePathField;
 
     @FXML
-    Label errorLabel;
+    private TextField contestNameField;
 
-    private File adiFile;
+    @FXML
+    private TextField sfiIndex;
+
+    @FXML
+    private TextField aIndex;
+
+    @FXML
+    private Label errorLabel;
+    private File selectedFile;
 
     private final ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
+    @Override
     @FXML
-    private void handleCancel(final ActionEvent event) throws Exception {
+    public void handleCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     /*TODO: Validate Fields*/
+    @Override
     @FXML
-    private void handleSave(final ActionEvent event) throws Exception {
-        QueryUtil q = MainWindow.getQ();
-        if (adiFile != null && !q.contestExist(contestNameField.getText())) {
+    protected void handleSave(final ActionEvent event) throws Exception {
+        QueryUtil q = MainWindow.getQueryUtil();
+        if (selectedFile != null && !q.contestExist(contestNameField.getText())) {
             errorLabel.setVisible(false);
             try {
-                ADIFReader adiReader = new ADIFReader(adiFile.getPath());
-                adiReader.read(contestNameField.getText());
+                Contest contest = new Contest();
+                ADIFReader adiReader = new ADIFReader(selectedFile.getPath());
+                contest.setContestName(contestNameField.getText());
+                contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                contest.setSfi(Double.valueOf(sfiIndex.getText()));
+                contest.setkIndex(Integer.parseInt(kIndex.getText()));
+                contest.setaIndex(Integer.parseInt(aIndex.getText()));
+
+                adiReader.read(contest);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -65,8 +96,9 @@ public class ImportController implements Initializable {
         }
     }
 
+    @Override
     @FXML
-    private void handleBrowse(final ActionEvent event) throws Exception {
+    protected void handleBrowse(final ActionEvent event) throws Exception {
         String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(currentPath));
@@ -74,11 +106,11 @@ public class ImportController implements Initializable {
                 new FileChooser.ExtensionFilter("Text Files", "*.ADI")
                 , new FileChooser.ExtensionFilter("HTML Files", "*.ADIF")
         );
-        adiFile = fileChooser.showOpenDialog(importPane.getScene().getWindow());
-        if (adiFile != null) {
+        selectedFile = fileChooser.showOpenDialog(contestPane.getScene().getWindow());
+        if (selectedFile != null) {
             try {
-                filePathField.setText(adiFile.getAbsolutePath());
-                contestNameField.setText(adiFile.getName().substring(0, adiFile.getName().indexOf(".")));
+                filePathField.setText(selectedFile.getAbsolutePath());
+                contestNameField.setText(selectedFile.getName().substring(0, selectedFile.getName().indexOf(".")));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -87,6 +119,23 @@ public class ImportController implements Initializable {
     }
 
     @Override
+    protected boolean validateFields() {
+        return false;
+    }
+
+    @Override
+    protected void processFormData() {
+
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
+        dateFrom.setValue(LocalDate.now());
+        dateTo.setValue(LocalDate.now());
+    }
+
+    @Override
+    public Node getStyleableNode() {
+        return super.getStyleableNode();
     }
 }

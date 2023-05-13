@@ -23,7 +23,7 @@ public class ADIFReader {
         this.file = new File(filePath);
     }
 
-    public List<Qso> read(String contestName) throws Exception {
+    public List<Qso> read(final Contest contest) throws Exception {
         ADIFParser parser = new ADIFParser();
         BufferedReader r = new BufferedReader(new FileReader(file));
         String line;
@@ -32,8 +32,6 @@ public class ADIFReader {
         StringBuffer record = new StringBuffer();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        Contest contest = new Contest();
-        contest.setContestName(contestName);
         session.save(contest);
 
         while ((line = r.readLine()) != null) {
@@ -51,7 +49,7 @@ public class ADIFReader {
             }
             if (gotRecord) {
                 try {
-                    Qso qso = parser.parseLine(record.toString().replaceAll("\n", "\\n").toUpperCase());
+                    Qso qso = parser.parseLine(record.toString().replaceAll("\n", "\\n").toUpperCase(), contest);
                     if (qso != null) {
                         // qsoPerBand.put(key, value)
                         qso.setContest(contest);
