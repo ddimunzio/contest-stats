@@ -35,7 +35,7 @@ public class ChartTotalByHourController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        QueryUtil q = MainWindow.getQ();
+        QueryUtil q = MainWindow.getQueryUtil();
 
         /** Get all Qso's for a specific contest */
         Long selectedContest = q.getSelectedContest();

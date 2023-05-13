@@ -19,6 +19,9 @@ import java.util.ResourceBundle;
 public class ContestManagerController implements Initializable {
 
   @FXML
+  private TableColumn<Contest, Contest> edit_contest;
+
+  @FXML
   TableView<Contest> contestTable;
 
   @FXML
@@ -28,8 +31,8 @@ public class ContestManagerController implements Initializable {
   TableColumn<Contest, String> contest_description;
 
   @FXML
-  TableColumn<Contest, Contest> contest_action;
-  private final QueryUtil q = MainWindow.getQ();
+  TableColumn<Contest, Contest> delete_contest;
+  private final QueryUtil q = MainWindow.getQueryUtil();
   ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
   @FXML
@@ -46,7 +49,8 @@ public class ContestManagerController implements Initializable {
   private void initializeCols() {
     contest_name.setCellValueFactory(new PropertyValueFactory<>("contestName"));
     contest_description.setCellValueFactory(new PropertyValueFactory<>("contestDescription"));
-    contest_action.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+    delete_contest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+    edit_contest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
     editableCols();
   }
 
@@ -64,7 +68,7 @@ public class ContestManagerController implements Initializable {
       test.setContestDescription(e.getNewValue());
       q.updateContest(test);
     });
-    contest_action.setCellFactory(column -> new TableCell<>() {
+    delete_contest.setCellFactory(column -> new TableCell<>() {
       private final Button button = new Button(mainResources.getString("key.contest.table.delete"));
       {
         button.setOnAction(e -> {
@@ -75,7 +79,28 @@ public class ContestManagerController implements Initializable {
           populateTable();
         });
       }
+      @Override
+      protected void updateItem(Contest item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setGraphic(null);
+        } else {
+          setGraphic(button);
+        }
+      }
+    });
 
+    edit_contest.setCellFactory(column -> new TableCell<>(){
+      private final Button button = new Button(mainResources.getString("key.contest.table.edit"));
+      {
+        button.setOnAction(e -> {
+          Contest contest = getItem();
+          q.updateContest(contest);
+          /*clean all items from the table and re-populate it*/
+          contestTable.getItems().clear();
+          populateTable();
+        });
+      }
       @Override
       protected void updateItem(Contest item, boolean empty) {
         super.updateItem(item, empty);

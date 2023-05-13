@@ -2,12 +2,16 @@ package org.lw5hr.contest.model.dxlog;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -17,7 +21,11 @@ public class QsoData implements Serializable {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name="increment", strategy = "increment")
+  @Column(name = "idqso")
   private int idqso;
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "qsoData")
+  private QsoDataCalc qsoDataCalc;
 
   @Column
   private String band;
@@ -236,5 +244,13 @@ public class QsoData implements Serializable {
 
   public void setRecfileposition(int recfileposition) {
     this.recfileposition = recfileposition;
+  }
+
+  public QsoDataCalc getQsoDataCalc() {
+    return qsoDataCalc;
+  }
+
+  public void setQsoDataCalc(QsoDataCalc qsoDataCalc) {
+    this.qsoDataCalc = qsoDataCalc;
   }
 }

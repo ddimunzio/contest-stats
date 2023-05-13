@@ -52,9 +52,6 @@ public class Qso implements Serializable {
 
     @Column(name = "exchangeRx")
     private String exchangeRx;
-
-    @Column(name = "contestId")
-    String contestId;
     @Column(name = "operator")
     String operator;
 
@@ -127,16 +124,6 @@ public class Qso implements Serializable {
     public void setRstSent(String rstSent) {
         this.rstSent = rstSent;
     }
-
-    public String getContestId() {
-        return contestId;
-    }
-
-    public void setContestId(String contestId) {
-        this.contestId = contestId;
-    }
-
-
 
     public String getOperator() {
         return operator;
@@ -257,6 +244,7 @@ public class Qso implements Serializable {
     LocalTime time = LocalTime.parse(qsoData.getQsotime().substring(0, qsoData.getQsotime().indexOf(".")), formatter);
     setDate(date);
     setTime(time);
+    setCQzone(qsoData.getQsoDataCalc().getCqzone());
     return this;
   }
 }

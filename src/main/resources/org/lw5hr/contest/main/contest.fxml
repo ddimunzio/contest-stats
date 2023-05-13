@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane prefHeight="405.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ContestManagerController">
+<Pane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ContestManagerController">
    <children>
-      <TableView fx:id="contestTable" layoutX="4.0" layoutY="7.0" prefHeight="393.0" prefWidth="534.0">
+      <TableView fx:id="contestTable" layoutX="4.0" layoutY="7.0" prefHeight="393.0" prefWidth="420">
          <columns>
-            <TableColumn fx:id="contest_name" prefWidth="200.0" text="%key.contest.table.name"/>
-            <TableColumn fx:id="contest_description" prefWidth="166.0" text="%key.contest.table.description"/>
-            <TableColumn fx:id="contest_action" prefWidth="167.0" text="%key.contest.table.delete" />
+            <TableColumn fx:id="contest_name" prefWidth="200.0" text="%key.contest.table.name" />
+            <TableColumn fx:id="contest_description" prefWidth="50.0" text="%key.contest.table.description" />
+            <TableColumn fx:id="delete_contest" prefWidth="70.0" text="%key.contest.table.delete" />
+            <TableColumn fx:id="edit_contest" prefWidth="70.0" text="%key.contest.table.edit" />
          </columns>
       </TableView>
    </children>

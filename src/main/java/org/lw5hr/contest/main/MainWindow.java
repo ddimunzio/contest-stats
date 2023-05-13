@@ -39,18 +39,18 @@ public class MainWindow extends Application {
     MainWindow.primaryStage = primaryStage;
   }
 
-  private static QueryUtil q = new QueryUtil();
+  private static QueryUtil queryUtil = new QueryUtil();
 
   @FXML
   public static void setLocale(Locale loc) throws IOException {
-    q.updateSetting(DatabaseConstants.DEFAULT_LANG, loc.toString());
+    queryUtil.updateSetting(DatabaseConstants.DEFAULT_LANG, loc.toString());
     ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
     primaryStage.getScene().setRoot(FXMLLoader.load(Objects.requireNonNull(MainWindow.class.getResource("main-window-view.fxml")), resources));
   }
 
   @FXML
   public static Locale getLocale() {
-    return q.getDefaultLocale();
+    return queryUtil.getDefaultLocale();
   }
 
   @Override
@@ -85,32 +85,32 @@ public class MainWindow extends Application {
     launch();
   }
   public static void InitApp () throws IOException {
-    if (!getQ().settingsExist(DatabaseConstants.DEFAULT_LANG)) {
-      getQ().initSetting(DatabaseConstants.DEFAULT_LANG,
+    if (!getQueryUtil().settingsExist(DatabaseConstants.DEFAULT_LANG)) {
+      getQueryUtil().initSetting(DatabaseConstants.DEFAULT_LANG,
               DatabaseConstants.DEFAULT_LOCALE_LANGUAGE + "_" + DatabaseConstants.DEFAULT_LOCALE_COUNTRY);
     }
-    if (!getQ().settingsExist(DatabaseConstants.CURRENT_CONTEST)) {
-      getQ().initSetting(DatabaseConstants.CURRENT_CONTEST, "1");
+    if (!getQueryUtil().settingsExist(DatabaseConstants.CURRENT_CONTEST)) {
+      getQueryUtil().initSetting(DatabaseConstants.CURRENT_CONTEST, "1");
     }
-    if (!getQ().settingsExist(DatabaseConstants.LIVE_CONTEST_ON)) {
-      getQ().initSetting(DatabaseConstants.LIVE_CONTEST_ON, "false");
+    if (!getQueryUtil().settingsExist(DatabaseConstants.LIVE_CONTEST_ON)) {
+      getQueryUtil().initSetting(DatabaseConstants.LIVE_CONTEST_ON, "false");
     }
     QueryUtilSql qs = new QueryUtilSql();
-    Optional<Settings> liveContest = getQ().getSetting(DatabaseConstants.LIVE_CONTEST_ON);
+    Optional<Settings> liveContest = getQueryUtil().getSetting(DatabaseConstants.LIVE_CONTEST_ON);
 
     if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
-      Optional<Settings> setting = getQ().getSetting(DatabaseConstants.DXLOG_DB_PATH);
+      Optional<Settings> setting = getQueryUtil().getSetting(DatabaseConstants.DXLOG_DB_PATH);
       setting.ifPresent(settings -> qs.getAllLoggedQso(settings.getSettingValue()));
    //   udpListener.listen();
     }
 
   }
 
-  public static QueryUtil getQ() {
-    return q;
+  public static QueryUtil getQueryUtil() {
+    return queryUtil;
   }
 
-  public static void setQ(QueryUtil q) {
-    MainWindow.q = q;
+  public static void setQueryUtil(QueryUtil queryUtil) {
+    MainWindow.queryUtil = queryUtil;
   }
 }

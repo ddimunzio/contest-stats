@@ -1,25 +1,18 @@
 package org.lw5hr.contest.db;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
 import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.model.dxlog.HeaderInfo;
 import org.lw5hr.contest.model.dxlog.QsoData;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static org.lw5hr.contest.main.MainWindow.getQ;
+import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
 public class QueryUtilSql {
 
@@ -36,7 +29,7 @@ public class QueryUtilSql {
       Root<QsoData> root = qsoData.from(QsoData.class);
       qsoData.select(root);
       List<QsoData> result = sqlS.createQuery(qsoData).stream().toList();
-      result.forEach(o -> getQ().saveNewQso(new Qso().convertQsoDataToQso(o)));
+      result.forEach(o -> getQueryUtil().saveNewQso(new Qso().convertQsoDataToQso(o)));
       sqlS.getTransaction().commit();
     } catch (Exception e) {
       sqlS.getTransaction().rollback();

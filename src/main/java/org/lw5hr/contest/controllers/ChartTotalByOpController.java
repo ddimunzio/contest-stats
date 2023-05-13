@@ -35,7 +35,7 @@ public class ChartTotalByOpController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        QueryUtil q = MainWindow.getQ();
+        QueryUtil q = MainWindow.getQueryUtil();
         Long selectedContest = q.getSelectedContest();
         List<Qso> qsos = q.getQsoByContest(selectedContest);
         StatsUtil st = new StatsUtil();

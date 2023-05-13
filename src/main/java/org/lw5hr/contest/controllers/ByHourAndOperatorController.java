@@ -23,32 +23,34 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ByHourAndOperatorController implements Initializable {
+public class ByHourAndOperatorController extends GenericStackedBarCharController implements Initializable {
     private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
     @FXML
     CategoryAxis xAxis ;
+
     @FXML
     NumberAxis yAxis;
 
     @FXML
-    StackedBarChart<String, Integer> byHourAndOperator;
+    StackedBarChart<String, Integer> chart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        QueryUtil q = MainWindow.getQ();
+        QueryUtil q = MainWindow.getQueryUtil();
         Long selectedContest = q.getSelectedContest();
         List<Qso> qsos = q.getQsoByContest(selectedContest);
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourAndOpData = st.getByHourAndOperator(qsos);
         String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
         titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
-        byHourAndOperator.setTitle(titleLabel);
-        byHourAndOperator.setData(byHourAndOpData);
-        addLabelsToChart(byHourAndOperator);
+        chart.setTitle(titleLabel);
+        chart.setData(byHourAndOpData);
+        addLabelsToChart(chart);
     }
 
     @FXML
-    private void addLabelsToChart(StackedBarChart<String, Integer> chart) {
+    @Override
+    protected void addLabelsToChart(StackedBarChart<String, Integer> chart) {
         for (final XYChart.Series<String, Integer> series : chart.getData()) {
             for (final XYChart.Data<String, Integer> data : series.getData()) {
                 StackPane stackPane = (StackPane) data.getNode();

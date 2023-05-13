@@ -22,7 +22,7 @@ public class ByHourAndOperatorAreaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        QueryUtil q = MainWindow.getQ();
+        QueryUtil q = MainWindow.getQueryUtil();
         List<Qso> qsos = q.getQsoByContest(q.getSelectedContest());
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourAndOpAreaData = st.getByHourAndOperator(qsos);
