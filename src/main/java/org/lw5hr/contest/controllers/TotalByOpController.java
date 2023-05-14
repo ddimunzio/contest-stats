@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ChartTotalByOpController implements Initializable {
+public class TotalByOpController extends GenericBarchartController implements Initializable {
     private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
     @FXML
@@ -31,7 +31,7 @@ public class ChartTotalByOpController implements Initializable {
     @FXML
     NumberAxis yAxis;
     @FXML
-    BarChart<String, Integer> totalByOp;
+    BarChart<String, Integer> chart;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,17 +42,17 @@ public class ChartTotalByOpController implements Initializable {
         ObservableList<XYChart.Series<String, Integer>> byOpData = st.getTotalsByOp(qsos);
         String titleLabel = mainResources.getString("key.main.menu.charts.total.by.op");
         titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
-        totalByOp.setTitle(titleLabel);
-        totalByOp.setData(byOpData);
-        totalByOp.setBarGap(0);
-        totalByOp.setAnimated(false);
-        totalByOp.setCategoryGap(0);
+        chart.setTitle(titleLabel);
+        chart.setData(byOpData);
+        chart.setBarGap(0);
+        chart.setAnimated(false);
+        chart.setCategoryGap(0);
         xAxis.setTickLabelsVisible(false);
-        addLabelsToBars();
+        addLabelsToChart(chart);
     }
-
-    public void addLabelsToBars() {
-        for (XYChart.Series<String, Integer> series : totalByOp.getData()) {
+    @Override
+    protected void addLabelsToChart(BarChart<String, Integer> chart) {
+        for (XYChart.Series<String, Integer> series : chart.getData()) {
             for (XYChart.Data<String, Integer> data : series.getData()) {
                 // add label above bar
                 Label label = new Label(data.getYValue().toString());

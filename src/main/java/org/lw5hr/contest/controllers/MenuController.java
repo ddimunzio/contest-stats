@@ -2,7 +2,6 @@ package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,8 +12,6 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
-import org.lw5hr.contest.charts.TotalByHourChart;
-import org.lw5hr.contest.charts.TotalByOperatorChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.About;
@@ -45,21 +42,44 @@ public class MenuController extends BorderPane implements Initializable {
   private RadioMenuItem es;
 
   @FXML
-  private void handleTotalByOpAction(final ActionEvent event) throws Exception {
-    Stage byOpStage = new Stage();
-    TotalByOperatorChart to = new TotalByOperatorChart();
-    to.start(byOpStage);
+  private void handleTotalByOpAction(final ActionEvent ignoredEvent) throws Exception {
+    Locale loc = MainWindow.getLocale();
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+    TotalByOpController controller = new TotalByOpController();
+    FXMLLoader fxmlLoader;
+    fxmlLoader = new FXMLLoader(MainWindow.class.getResource("generic-bar-chart.fxml"), resources);
+    fxmlLoader.setController(controller);
+    Parent root;
+    try {
+      root = fxmlLoader.load();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 1600, 768));
+    stage.showAndWait();
   }
 
   @FXML
-  private void handleTotalByHourAction(final ActionEvent event) throws Exception {
-    Stage byHourStage = new Stage();
-    TotalByHourChart th = new TotalByHourChart();
-    th.start(byHourStage);
+  private void handleTotalByHourAction(final ActionEvent ignoredEvent) throws Exception {
+    Locale loc = MainWindow.getLocale();
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+    TotalByHourController controller = new TotalByHourController();
+    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("generic-bar-chart.fxml"), resources);
+    fxmlLoader.setController(controller);
+    Parent root;
+    try {
+      root = fxmlLoader.load();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 1600, 768));
+    stage.showAndWait();
   }
 
   @FXML
-  private void handleQsosByHourAndOperator(final ActionEvent event) throws Exception {
+  private void handleQsosByHourAndOperator(final ActionEvent ignoredEvent) throws Exception {
     Locale loc = MainWindow.getLocale();
     ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
     ByHourAndOperatorController controller = new ByHourAndOperatorController();
@@ -77,7 +97,7 @@ public class MenuController extends BorderPane implements Initializable {
   }
 
   @FXML
-  private void handleQsosByHourAndOperatorArea(final ActionEvent event) throws Exception {
+  private void handleQsosByHourAndOperatorArea(final ActionEvent ignoredEvent) throws Exception {
     Stage stage = new Stage();
     ByHourAndOperatorAreaChart byHourAndOperatorArea = new ByHourAndOperatorAreaChart();
     byHourAndOperatorArea.start(stage);
@@ -85,23 +105,21 @@ public class MenuController extends BorderPane implements Initializable {
 
   @FXML
   private void handleLanguage(final ActionEvent event) throws IOException {
-    EventTarget s = event.getTarget();
     String id = ((RadioMenuItem) event.getSource()).getId();
-    Locale locale = null;
     switch (id) {
-      case "en":
+      case "en" -> {
         MainWindow.setLocale(Locale.of("en", "US"));
         setSelectedLanguage(id);
-        break;
-      case "es":
+      }
+      case "es" -> {
         MainWindow.setLocale(Locale.of("es", "ES"));
         setSelectedLanguage(id);
-        break;
+      }
     }
   }
 
   @FXML
-  private void handleManageContest(final ActionEvent event) throws Exception {
+  private void handleManageContest(final ActionEvent ignoredEvent) throws Exception {
     Stage stage = new Stage();
     ContestManager contestManager = new ContestManager();
     contestManager.start(stage);
@@ -115,7 +133,7 @@ public class MenuController extends BorderPane implements Initializable {
   }
 
   @FXML
-  private void handleAbout(final ActionEvent event) throws Exception {
+  private void handleAbout(final ActionEvent ignoredEvent) throws Exception {
     Stage stage = new Stage();
     About about = new About();
     about.start(stage);
@@ -151,6 +169,9 @@ public class MenuController extends BorderPane implements Initializable {
     if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
       liveContestMenu.setSelected(true);
     }
+    if (getQueryUtil().getSetting(DatabaseConstants.DXLOG_DB_PATH).isEmpty()) {
+      liveContestMenu.setDisable(true);
+    }
   }
 
   private void setSelectedLanguage(String lang) {
@@ -161,18 +182,18 @@ public class MenuController extends BorderPane implements Initializable {
 
   /**
    * This method is called when the menu is shown.  It is used to update the list of contests.
-   * @param event not used but required by JavaFX
+   * @param ignoredEvent not used but required by JavaFX
    */
-  public void handleShow(Event event) {
+  public void handleShow(Event ignoredEvent) {
     menuContestList.getItems().clear();
     addContestItems();
   }
   @FXML
-  private void handleImportAdifAction(final ActionEvent event) throws Exception {
+  private void handleImportAdifAction(final ActionEvent ignoredEvent) {
     Locale loc = MainWindow.getLocale();
-    ResourceBundle resources = ResourceBundle.getBundle("i18n/import", loc);
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
     ImportController importController = new ImportController();
-    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("constes-form.fxml"), resources);
+    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("constest-form.fxml"), resources);
     fxmlLoader.setController(importController);
     Parent root;
     try {
@@ -181,16 +202,15 @@ public class MenuController extends BorderPane implements Initializable {
       throw new RuntimeException(e);
     }
     Stage stage = new Stage();
+    stage.setTitle(resources.getString("key.import.add.new"));
     stage.setScene(new Scene(root));
     stage.showAndWait();
   }
 
-  public void handleLiveContest(ActionEvent actionEvent) throws Exception {
-    getQueryUtil().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
-    if (liveContestMenu.isSelected()) {
+  public void handleDxLogConnection(ActionEvent ignoredActionEvent) throws Exception {
       Locale loc = MainWindow.getLocale();
-      ResourceBundle resources = ResourceBundle.getBundle("i18n/import", loc);
-      FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("constes-form.fxml"), resources);
+      ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+      FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("constest-form.fxml"), resources);
       DxLogConnectionController dxLogConnectionController = new DxLogConnectionController();
       loader.setController(dxLogConnectionController);
       Parent root;
@@ -202,6 +222,9 @@ public class MenuController extends BorderPane implements Initializable {
       Stage stage = new Stage();
       stage.setScene(new Scene(root));
       stage.showAndWait();
-    }
+  }
+  public void handleEnableDxLog(ActionEvent ignoredActionEvent) throws Exception {
+    getQueryUtil().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
+
   }
 }

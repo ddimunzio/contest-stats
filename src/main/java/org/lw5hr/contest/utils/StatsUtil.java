@@ -13,10 +13,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class StatsUtil {
-private static final Integer ONE_DAY_HOURS = 24;
-private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
+  private static final Integer ONE_DAY_HOURS = 24;
+  private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
 
-
+@Deprecated
   public Map<LocalDate, List<BarChartHelper>> getRatesByHour(List<Qso> qsos) {
     final Map<LocalDate, Map<Integer, List<Qso>>> grouped = qsos.stream()
             .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(a -> a.getTime().getHour())));
@@ -35,7 +35,8 @@ private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
     return topRatesHelper.stream()
             .collect(Collectors.groupingBy(BarChartHelper::date));
   }
- /**
+
+  /**
    * Get total QSO's by Operator
    *
    * @param qsos List<Qso>
@@ -64,7 +65,7 @@ private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
    * Get total QSO's by Operator
    *
    * @param qsos List<Qso>
-   * @return ObservableList<XYChart.Series<String, Integer>>
+   * @return ObservableList<XYChart.Series < String, Integer>>
    */
   public ObservableList<XYChart.Series<String, Integer>> getTotalsByOp(List<Qso> qsos) {
     ObservableList<XYChart.Series<String, Integer>> byOpList = FXCollections.observableArrayList();
@@ -82,7 +83,7 @@ private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
    * Get total QSO's by Hour
    *
    * @param qsos List<Qso>
-   * @return ObservableList<XYChart.Series<String, Integer>>
+   * @return ObservableList<XYChart.Series < String, Integer>>
    */
   public ObservableList<XYChart.Series<String, Integer>> getTotalsByHour(List<Qso> qsos) {
     /* create ObservableList */
@@ -98,11 +99,9 @@ private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
       byHourSeries.setName(date.toString());
       map.forEach((hour, qList) -> {
         if (Objects.equals(hour, h.get())) {
-          String H = hour < ONE_DAY_HOURS_FROM_ZERO ? hour.toString() : String.valueOf(Integer.sum(hour, ONE_DAY_HOURS));
-          byHourSeries.getData().add(h.get(), new XYChart.Data<>(H, qList.size()));
+          byHourSeries.getData().add(h.get(), new XYChart.Data<>(hour.toString(), qList.size()));
         } else {
-          String H = h.get() < ONE_DAY_HOURS_FROM_ZERO ? h.toString() : String.valueOf(Integer.sum(h.get(), ONE_DAY_HOURS));
-          byHourSeries.getData().add(h.get(), new XYChart.Data<>(H, 0));
+          byHourSeries.getData().add(h.get(), new XYChart.Data<>(hour.toString(), 0));
           byHourSeries.getData().add(Integer.sum(h.get(), 1), new XYChart.Data<>(String.valueOf(Integer.sum(h.get(), 1)), qList.size()));
         }
         h.set(Integer.sum(h.get(), 1));
@@ -111,11 +110,12 @@ private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
     });
     return byHourList.sorted(Comparator.comparing(XYChart.Series::getName));
   }
+
   /**
    * Get total QSO's by Hour and Operator
    *
    * @param qsos List<Qso>
-   * @return ObservableList<XYChart.Series<String, Integer>>
+   * @return ObservableList<XYChart.Series < String, Integer>>
    */
   public ObservableList<XYChart.Series<String, Integer>> getByHourAndOperator(List<Qso> qsos) {
     ObservableList<XYChart.Series<String, Integer>> byHourAndOperatorList = FXCollections.observableArrayList();

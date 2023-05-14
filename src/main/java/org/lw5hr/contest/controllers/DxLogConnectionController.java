@@ -14,11 +14,15 @@ import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.db.QueryUtilSql;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.model.dxlog.HeaderInfo;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DxLogConnectionController extends GenericContestController {
@@ -47,6 +51,9 @@ public class DxLogConnectionController extends GenericContestController {
   private TextField contestNameField;
 
   @FXML
+ private TextField contestCategory;
+
+  @FXML
   private TextField sfiIndex;
 
   @FXML
@@ -60,9 +67,16 @@ public class DxLogConnectionController extends GenericContestController {
   @Override
   @FXML
   protected void handleSave(final ActionEvent event) throws Exception {
-    if (selectedFile != null) {
-      q.updateSetting(DatabaseConstants.DXLOG_DB_PATH, selectedFile.getAbsolutePath());
-      q.updateContest(new Contest(contestNameField.getText(), true));
+    if (validateFields()) {
+      q.initSetting(DatabaseConstants.DXLOG_DB_PATH, selectedFile.getAbsolutePath());
+      Contest contest = new Contest(contestNameField.getText(), true);
+      contest.setCategory(contestCategory.getText());
+      contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      contest.setSfi(Double.valueOf(sfiIndex.getText()));
+      contest.setkIndex(Integer.parseInt(kIndex.getText()));
+      contest.setaIndex(Integer.parseInt(aIndex.getText()));
+      q.updateContest(contest);
     }
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     stage.close();
@@ -88,7 +102,13 @@ public class DxLogConnectionController extends GenericContestController {
       try {
         QueryUtilSql qs = new QueryUtilSql();
         filePathField.setText(selectedFile.getAbsolutePath());
-        contestNameField.setText(qs.getContestName(selectedFile.getAbsolutePath()));
+        List<HeaderInfo> info = qs.getDxLogContest(selectedFile.getAbsolutePath());
+        contestNameField.setText(info.stream()
+                .filter(c -> c.getHdrname().equals(DatabaseConstants.DX_LOG_CONTEST_NAME))
+                .findFirst().get().getHdrvalue());
+        contestCategory.setText(info.stream()
+                .filter(c -> c.getHdrname().equals(DatabaseConstants.DX_LOG_CONTEST_CATEGORY))
+                .findFirst().get().getHdrvalue());
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -97,7 +117,49 @@ public class DxLogConnectionController extends GenericContestController {
 
   @Override
   protected boolean validateFields() {
-    return false;
+    boolean isValid = true;
+
+    if (selectedFile == null) {
+      isValid = false;
+      System.out.println("Error: No file selected.");
+    }
+
+    if (contestNameField.getText().isEmpty()) {
+      isValid = false;
+      System.out.println("Error: Contest name is required.");
+    }
+
+    if (contestCategory.getText().isEmpty()) {
+      isValid = false;
+      System.out.println("Error: Contest category is required.");
+    }
+
+    if (dateFrom.getValue() == null) {
+      isValid = false;
+      System.out.println("Error: Start date is required.");
+    }
+
+    if (dateTo.getValue() == null) {
+      isValid = false;
+      System.out.println("Error: End date is required.");
+    }
+
+    if (sfiIndex.getText().isEmpty() || !sfiIndex.getText().matches("\\d+(\\.\\d+)?")) {
+      isValid = false;
+      System.out.println("Error: SFI index is invalid.");
+    }
+
+    if (kIndex.getText().isEmpty() || !kIndex.getText().matches("\\d+")) {
+      isValid = false;
+      System.out.println("Error: K index is invalid.");
+    }
+
+    if (aIndex.getText().isEmpty() || !aIndex.getText().matches("\\d+")) {
+      isValid = false;
+      System.out.println("Error: A index is invalid.");
+    }
+
+    return isValid;
   }
 
   @Override

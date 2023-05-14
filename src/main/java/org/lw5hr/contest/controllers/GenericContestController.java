@@ -13,27 +13,6 @@ import java.util.ResourceBundle;
 
 public abstract class GenericContestController extends Pane {
 
-  @FXML
-  protected TextField kIndex;
-  @FXML
-  protected DatePicker dateTo;
-  @FXML
-  protected DatePicker dateFrom;
-  @FXML
-  protected TextField filePathField;
-  @FXML
-  protected TextField contestNameField;
-  @FXML
-  protected TextField sfiIndex;
-  @FXML
-  protected TextField aIndex;
-  @FXML
-  protected Label errorLabel;
-  @FXML
-  protected Button cancelButton;
-  @FXML
-  protected Button saveButton;
-
   public GenericContestController() {}
 
   @FXML

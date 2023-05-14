@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
@@ -36,9 +35,9 @@ public class QueryUtilSql {
     }
   }
 
-  public String getContestName(final String dbPath) {
-    String value = "";
+  public List<HeaderInfo> getDxLogContest(final String dbPath) {
     Session sqlS = HibernateSqlUtil.getSessionFactory(dbPath).getCurrentSession();
+    HeaderInfo value;
     try {
       sqlS.beginTransaction();
       CriteriaBuilder criteriaBuilder = getCriteriaBuilder(sqlS);
@@ -46,18 +45,11 @@ public class QueryUtilSql {
       Root<HeaderInfo> root = hi.from(HeaderInfo.class);
       hi.select(root);
       List<HeaderInfo> result = new ArrayList<>(sqlS.createQuery(hi).stream().toList());
-      Optional<HeaderInfo> rs = result.stream()
-              .filter(r -> r.getHdrname().equalsIgnoreCase(DatabaseConstants.DX_LOG_CONTEST_NAME)).findFirst();
       sqlS.getTransaction().commit();
-      if (rs.isPresent()) {
-        value = rs.get().getHdrvalue();
-      } else {
-        value = DatabaseConstants.NEW_CONTEST;
-      }
+      return result;
     } catch (Exception e) {
       sqlS.getTransaction().rollback();
     }
-
-    return value;
+    return null;
   }
 }

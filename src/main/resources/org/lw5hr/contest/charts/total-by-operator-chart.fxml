@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0"
             prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.lw5hr.contest.controllers.ChartTotalByOpController">
+            fx:controller="org.lw5hr.contest.controllers.TotalByOpController">
     <BarChart fx:id="totalByOp"  layoutX="40.0" title="Total QSO By Operator" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <xAxis>

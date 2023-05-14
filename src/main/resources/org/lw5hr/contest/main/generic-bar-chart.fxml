@@ -9,10 +9,10 @@
               AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
               AnchorPane.topAnchor="10.0">
         <xAxis>
-            <CategoryAxis fx:id="categoryAxis" label="%key.main.menu.charts.total.by.hour" side="BOTTOM"/>
+            <CategoryAxis fx:id="xAxis" label="%key.main.menu.charts.total.by.hour" side="BOTTOM"/>
         </xAxis>
         <yAxis>
-            <NumberAxis fx:id="numberAxis" label="Total QSO" side="LEFT"/>
+            <NumberAxis fx:id="yAxis" label="Total QSO" side="LEFT"/>
         </yAxis>
     </BarChart>
 </AnchorPane>

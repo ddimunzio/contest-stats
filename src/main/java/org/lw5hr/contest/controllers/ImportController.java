@@ -25,117 +25,165 @@ import java.util.ResourceBundle;
 
 public class ImportController extends GenericContestController {
 
-    @FXML
-    private  TextField kIndex;
+  @FXML
+  private TextField kIndex;
 
-    @FXML
-    private DatePicker dateTo;
+  @FXML
+  private DatePicker dateTo;
 
-    @FXML
-    private DatePicker dateFrom;
+  @FXML
+  private DatePicker dateFrom;
 
-    @FXML
-    private Pane contestPane;
+  @FXML
+  private Pane contestPane;
 
-    @FXML
-    private Button cancelButton;
+  @FXML
+  private Button cancelButton;
 
-    @FXML
-    Button saveButton;
+  @FXML
+  Button saveButton;
 
-    @FXML
-    private TextField filePathField;
+  @FXML
+  private TextField filePathField;
 
-    @FXML
-    private TextField contestNameField;
+  @FXML
+  private TextField contestNameField;
 
-    @FXML
-    private TextField sfiIndex;
+  @FXML
+  private TextField contestCategory;
 
-    @FXML
-    private TextField aIndex;
+  @FXML
+  private TextField sfiIndex;
 
-    @FXML
-    private Label errorLabel;
-    private File selectedFile;
+  @FXML
+  private TextField aIndex;
 
-    private final ResourceBundle importResources = ResourceBundle.getBundle("i18n/import", MainWindow.getLocale());
-    @Override
-    @FXML
-    public void handleCancel() {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
-    }
+  @FXML
+  private Label errorLabel;
+  private File selectedFile;
 
-    /*TODO: Validate Fields*/
-    @Override
-    @FXML
-    protected void handleSave(final ActionEvent event) throws Exception {
-        QueryUtil q = MainWindow.getQueryUtil();
-        if (selectedFile != null && !q.contestExist(contestNameField.getText())) {
-            errorLabel.setVisible(false);
-            try {
-                Contest contest = new Contest();
-                ADIFReader adiReader = new ADIFReader(selectedFile.getPath());
-                contest.setContestName(contestNameField.getText());
-                contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                contest.setSfi(Double.valueOf(sfiIndex.getText()));
-                contest.setkIndex(Integer.parseInt(kIndex.getText()));
-                contest.setaIndex(Integer.parseInt(aIndex.getText()));
+  private final ResourceBundle resources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
-                adiReader.read(contest);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-            stage.close();
-        } else {
-            errorLabel.setText(importResources.getString("key.import.contest.exist"));
-            errorLabel.setVisible(true);
+  @Override
+  @FXML
+  public void handleCancel() {
+    Stage stage = (Stage) cancelButton.getScene().getWindow();
+    stage.close();
+  }
+
+  /*TODO: Validate Fields*/
+  @Override
+  @FXML
+  protected void handleSave(final ActionEvent event) throws Exception {
+    QueryUtil q = MainWindow.getQueryUtil();
+    if (validateFields() && !q.contestExist(contestNameField.getText())) {
+      errorLabel.setVisible(false);
+      try {
+        if (validateFields()) {
+          Contest contest = new Contest();
+          ADIFReader adiReader = new ADIFReader(selectedFile.getPath());
+          contest.setContestName(contestNameField.getText());
+          contest.setCategory(contestCategory.getText());
+          contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          contest.setSfi(Double.valueOf(sfiIndex.getText()));
+          contest.setkIndex(Integer.parseInt(kIndex.getText()));
+          contest.setaIndex(Integer.parseInt(aIndex.getText()));
+          adiReader.read(contest);
         }
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+      stage.close();
+    } else {
+      errorLabel.setText(resources.getString("key.import.contest.exist"));
+      errorLabel.setVisible(true);
     }
+  }
 
-    @Override
-    @FXML
-    protected void handleBrowse(final ActionEvent event) throws Exception {
-        String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(currentPath));
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.ADI")
-                , new FileChooser.ExtensionFilter("HTML Files", "*.ADIF")
-        );
-        selectedFile = fileChooser.showOpenDialog(contestPane.getScene().getWindow());
-        if (selectedFile != null) {
-            try {
-                filePathField.setText(selectedFile.getAbsolutePath());
-                contestNameField.setText(selectedFile.getName().substring(0, selectedFile.getName().indexOf(".")));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-    }
-
-    @Override
-    protected boolean validateFields() {
-        return false;
-    }
-
-    @Override
-    protected void processFormData() {
+  @Override
+  @FXML
+  protected void handleBrowse(final ActionEvent event) throws Exception {
+    String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setInitialDirectory(new File(currentPath));
+    fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Text Files", "*.ADI")
+            , new FileChooser.ExtensionFilter("HTML Files", "*.ADIF")
+    );
+    selectedFile = fileChooser.showOpenDialog(contestPane.getScene().getWindow());
+    if (selectedFile != null) {
+      try {
+        filePathField.setText(selectedFile.getAbsolutePath());
+        contestNameField.setText(selectedFile.getName().substring(0, selectedFile.getName().indexOf(".")));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
 
     }
+  }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        dateFrom.setValue(LocalDate.now());
-        dateTo.setValue(LocalDate.now());
+  @Override
+  protected boolean validateFields() {
+    boolean isValid = true;
+
+    if (selectedFile == null) {
+      isValid = false;
+      System.out.println("Error: No file selected.");
     }
 
-    @Override
-    public Node getStyleableNode() {
-        return super.getStyleableNode();
+    if (contestNameField.getText().isEmpty()) {
+      isValid = false;
+      System.out.println("Error: Contest name is required.");
     }
+
+    if (contestCategory.getText().isEmpty()) {
+      isValid = false;
+      System.out.println("Error: Contest category is required.");
+    }
+
+    if (dateFrom.getValue() == null) {
+      isValid = false;
+      System.out.println("Error: Start date is required.");
+    }
+
+    if (dateTo.getValue() == null) {
+      isValid = false;
+      System.out.println("Error: End date is required.");
+    }
+
+    if (sfiIndex.getText().isEmpty() || !sfiIndex.getText().matches("\\d+(\\.\\d+)?")) {
+      isValid = false;
+      System.out.println("Error: SFI index is invalid.");
+    }
+
+    if (kIndex.getText().isEmpty() || !kIndex.getText().matches("\\d+")) {
+      isValid = false;
+      System.out.println("Error: K index is invalid.");
+    }
+
+    if (aIndex.getText().isEmpty() || !aIndex.getText().matches("\\d+")) {
+      isValid = false;
+      System.out.println("Error: A index is invalid.");
+    }
+
+    return isValid;
+  }
+
+  @Override
+  protected void processFormData() {
+
+  }
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    dateFrom.setValue(LocalDate.now());
+    dateTo.setValue(LocalDate.now());
+  }
+
+  @Override
+  public Node getStyleableNode() {
+    return super.getStyleableNode();
+  }
 }

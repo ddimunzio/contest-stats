@@ -21,9 +21,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ChartTotalByHourController implements Initializable {
+public class TotalByHourController extends GenericBarchartController implements Initializable {
     @FXML
-    BarChart<String, Integer> totalByHour;
+    BarChart<String, Integer> chart;
 
     @FXML
     NumberAxis numberAxis;
@@ -36,7 +36,6 @@ public class ChartTotalByHourController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         QueryUtil q = MainWindow.getQueryUtil();
-
         /** Get all Qso's for a specific contest */
         Long selectedContest = q.getSelectedContest();
         List<Qso> qsos = q.getQsoByContest(selectedContest);
@@ -44,14 +43,15 @@ public class ChartTotalByHourController implements Initializable {
         ObservableList<XYChart.Series<String, Integer>> byHourData = st.getTotalsByHour(qsos);
         String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
         titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
-        totalByHour.setTitle(titleLabel);
-        totalByHour.setData(byHourData);
-        totalByHour.setBarGap(2);
-        addLabelsToBars();
+        chart.setTitle(titleLabel);
+        chart.setData(byHourData);
+        chart.setBarGap(2);
+        addLabelsToChart(chart);
     }
 
-    public void addLabelsToBars() {
-        for (XYChart.Series<String, Integer> series : totalByHour.getData()) {
+    @Override
+    protected void addLabelsToChart(BarChart<String, Integer> chart) {
+        for (XYChart.Series<String, Integer> series : chart.getData()) {
             for (XYChart.Data<String, Integer> data : series.getData()) {
                 // add label above bar
                 Label label = new Label(data.getYValue().toString());
@@ -63,5 +63,4 @@ public class ChartTotalByHourController implements Initializable {
             }
         }
     }
-
 }

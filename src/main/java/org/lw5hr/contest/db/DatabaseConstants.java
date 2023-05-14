@@ -14,4 +14,7 @@ public class DatabaseConstants {
 
   public static String DX_LOG_CONTEST_NAME = "ContestName";
 
+  public static String DX_LOG_CONTEST_CATEGORY = "ContestCategory";
+
+
 }
