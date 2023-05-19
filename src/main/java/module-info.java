@@ -13,6 +13,9 @@ module org.lw5hr.contest {
   requires java.naming;
   requires java.xml;
   requires java.logging;
+  requires javafx.web;
+  requires jdk.jsobject;
+
 
   exports org.lw5hr.contest.model;
   opens org.lw5hr.contest.model to org.hibernate.orm.core;

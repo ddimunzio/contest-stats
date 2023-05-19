@@ -72,7 +72,7 @@ public class DxLogConnectionController extends GenericContestController {
       Contest contest = new Contest(contestNameField.getText(), true);
       contest.setCategory(contestCategory.getText());
       contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-      contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      contest.setDateTo(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       contest.setSfi(Double.valueOf(sfiIndex.getText()));
       contest.setkIndex(Integer.parseInt(kIndex.getText()));
       contest.setaIndex(Integer.parseInt(aIndex.getText()));

@@ -48,7 +48,7 @@ public class Contest implements Serializable {
     @Column(name = "dateFrom")
     private Date dateFrom;
     @Column(name = "dateTo")
-    private Date dateTO;
+    private Date dateTo;
 
     public Boolean getLive() {
         return live;
@@ -124,12 +124,12 @@ public class Contest implements Serializable {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTO() {
-        return dateTO;
+    public Date getDateTo() {
+        return dateTo;
     }
 
-    public void setDateTO(Date dateTO) {
-        this.dateTO = dateTO;
+    public void setDateTo(Date dateTO) {
+        this.dateTo = dateTO;
     }
 
     public String getCategory() {

@@ -8,10 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.About;
@@ -31,7 +31,14 @@ import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
 public class MenuController extends BorderPane implements Initializable {
   @FXML
+  private MenuItem operator;
+
+  @FXML
+  private MenuItem band;
+
+  @FXML
   private RadioMenuItem liveContestMenu;
+
   @FXML
   private Menu menuContestList;
 
@@ -42,10 +49,11 @@ public class MenuController extends BorderPane implements Initializable {
   private RadioMenuItem es;
 
   @FXML
-  private void handleTotalByOpAction(final ActionEvent ignoredEvent) throws Exception {
+  private void handleTotalByOpAction(final ActionEvent event) throws Exception {
     Locale loc = MainWindow.getLocale();
     ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
-    TotalByOpController controller = new TotalByOpController();
+    MenuItem item = (MenuItem) event.getSource();
+    TotalByProperty controller = new TotalByProperty(item.getId());
     FXMLLoader fxmlLoader;
     fxmlLoader = new FXMLLoader(MainWindow.class.getResource("generic-bar-chart.fxml"), resources);
     fxmlLoader.setController(controller);
@@ -75,14 +83,15 @@ public class MenuController extends BorderPane implements Initializable {
     }
     Stage stage = new Stage();
     stage.setScene(new Scene(root, 1600, 768));
-    stage.showAndWait();
+    stage.show();
   }
 
   @FXML
-  private void handleQsosByHourAndOperator(final ActionEvent ignoredEvent) throws Exception {
+  private void handleQsosXAndOperator(final ActionEvent event) throws Exception {
     Locale loc = MainWindow.getLocale();
     ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
-    ByHourAndOperatorController controller = new ByHourAndOperatorController();
+    MenuItem item = (MenuItem) event.getSource();
+    ByXAndOperatorController controller = new ByXAndOperatorController(item.getId());
     FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("generic-stacked-bar-chart.fxml"), resources);
     fxmlLoader.setController(controller);
     Parent root;
@@ -99,7 +108,7 @@ public class MenuController extends BorderPane implements Initializable {
   @FXML
   private void handleQsosByHourAndOperatorArea(final ActionEvent ignoredEvent) throws Exception {
     Stage stage = new Stage();
-    ByHourAndOperatorAreaChart byHourAndOperatorArea = new ByHourAndOperatorAreaChart();
+    ByHourAndOperatorAreaController byHourAndOperatorArea = new ByHourAndOperatorAreaController();
     byHourAndOperatorArea.start(stage);
   }
 
@@ -192,9 +201,7 @@ public class MenuController extends BorderPane implements Initializable {
   private void handleImportAdifAction(final ActionEvent ignoredEvent) {
     Locale loc = MainWindow.getLocale();
     ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
-    ImportController importController = new ImportController();
-    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("constest-form.fxml"), resources);
-    fxmlLoader.setController(importController);
+    FXMLLoader fxmlLoader = new FXMLLoader(MenuController.class.getResource("contest-import.fxml"), resources);
     Parent root;
     try {
       root = fxmlLoader.load();
@@ -210,9 +217,7 @@ public class MenuController extends BorderPane implements Initializable {
   public void handleDxLogConnection(ActionEvent ignoredActionEvent) throws Exception {
       Locale loc = MainWindow.getLocale();
       ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
-      FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("constest-form.fxml"), resources);
-      DxLogConnectionController dxLogConnectionController = new DxLogConnectionController();
-      loader.setController(dxLogConnectionController);
+      FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("contest-dxlog-connection.fxml"), resources);
       Parent root;
       try {
         root = loader.load();
@@ -225,6 +230,10 @@ public class MenuController extends BorderPane implements Initializable {
   }
   public void handleEnableDxLog(ActionEvent ignoredActionEvent) throws Exception {
     getQueryUtil().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
+
+  }
+
+  public void handleBandAndOperator(ActionEvent actionEvent) throws Exception {
 
   }
 }

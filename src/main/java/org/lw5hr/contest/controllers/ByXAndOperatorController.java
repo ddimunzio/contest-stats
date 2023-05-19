@@ -27,8 +27,21 @@ import org.lw5hr.contest.utils.StatsUtil;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
-public class ByHourAndOperatorController extends GenericStackedBarCharController implements Initializable {
+public class ByXAndOperatorController extends GenericStackedBarCharController implements Initializable {
+  private final Function<Qso, String> BAND_FUNCTION = Qso::getBand;
+  private Function<Qso, String> function;
+
+  public ByXAndOperatorController(final String field) {
+    Function<Qso, String> OPEARATOR_FUNCTION = Qso::getOperator;
+    switch (field) {
+      case "band" -> function = BAND_FUNCTION;
+      case "operator" -> function = OPEARATOR_FUNCTION;
+      default -> throw new IllegalArgumentException("Unknown field: " + field);
+    }
+  }
+
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
   @FXML
   CategoryAxis xAxis;
@@ -45,7 +58,8 @@ public class ByHourAndOperatorController extends GenericStackedBarCharController
     Long selectedContest = q.getSelectedContest();
     List<Qso> qsos = q.getQsoByContest(selectedContest);
     StatsUtil st = new StatsUtil();
-    ObservableList<XYChart.Series<String, Integer>> byHourAndOpData = st.getByHourAndOperator(qsos);
+    ObservableList<XYChart.Series<String, Integer>> byHourAndOpData = st.getByHourAndX(qsos, function);
+
     String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
     titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
     chart.setTitle(titleLabel);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <BarChart fx:id="chart" layoutX="40.0" title="%key.main.menu.charts.total.by.hour"
-              AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0"
-              AnchorPane.topAnchor="10.0">
+
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox fx:id="container" StackPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+        <BarChart fx:id="chart" layoutX="40.0" title="%key.main.menu.charts.total.by.hour">
         <xAxis>
             <CategoryAxis fx:id="xAxis" label="%key.main.menu.charts.total.by.hour" side="BOTTOM"/>
         </xAxis>
@@ -15,4 +15,5 @@
             <NumberAxis fx:id="yAxis" label="Total QSO" side="LEFT"/>
         </yAxis>
     </BarChart>
-</AnchorPane>
+</VBox>
+</StackPane>

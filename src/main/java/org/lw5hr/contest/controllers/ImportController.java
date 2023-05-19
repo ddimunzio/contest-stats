@@ -19,6 +19,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
@@ -60,7 +61,31 @@ public class ImportController extends GenericContestController {
 
   @FXML
   private Label errorLabel;
+
+  @FXML
+  private Button browseButton;
   private File selectedFile;
+
+  public ImportController() {
+  }
+
+  public ImportController(Contest contest) {
+    if (contest.getkIndex() != null) {
+      this.kIndex.setText(contest.getkIndex().toString());
+    }
+    this.dateTo.setValue(LocalDate.from(Instant.ofEpochMilli(contest.getDateTo().getTime())));
+    this.dateFrom.setValue(LocalDate.from(Instant.ofEpochMilli(contest.getDateFrom().getTime())));
+    this.contestNameField.setText(contest.getContestName());
+    this.contestCategory.setText(contest.getCategory());
+    if (contest.getSfi() != null) {
+      this.sfiIndex.setText(contest.getSfi().toString());
+    }
+    if (contest.getaIndex() != null) {
+      this.aIndex.setText(contest.getaIndex().toString());
+    }
+    this.filePathField.setVisible(false);
+    this.browseButton.setVisible(false);
+  }
 
   private final ResourceBundle resources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
@@ -74,7 +99,7 @@ public class ImportController extends GenericContestController {
   /*TODO: Validate Fields*/
   @Override
   @FXML
-  protected void handleSave(final ActionEvent event) throws Exception {
+  protected void handleSave(final ActionEvent event) {
     QueryUtil q = MainWindow.getQueryUtil();
     if (validateFields() && !q.contestExist(contestNameField.getText())) {
       errorLabel.setVisible(false);
@@ -85,7 +110,7 @@ public class ImportController extends GenericContestController {
           contest.setContestName(contestNameField.getText());
           contest.setCategory(contestCategory.getText());
           contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-          contest.setDateTO(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+          contest.setDateTo(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
           contest.setSfi(Double.valueOf(sfiIndex.getText()));
           contest.setkIndex(Integer.parseInt(kIndex.getText()));
           contest.setaIndex(Integer.parseInt(aIndex.getText()));
@@ -185,5 +210,23 @@ public class ImportController extends GenericContestController {
   @Override
   public Node getStyleableNode() {
     return super.getStyleableNode();
+  }
+
+  public void setContest(Contest contest) {
+    if (contest.getkIndex() != null) {
+      this.kIndex.setText(contest.getkIndex().toString());
+    }
+    Instant toInstant = contest.getDateTo().toInstant();
+    this.dateTo.setValue(toInstant.atZone(ZoneId.systemDefault()).toLocalDate());
+    Instant fromInstant = contest.getDateFrom().toInstant();
+    this.dateFrom.setValue(fromInstant.atZone(ZoneId.systemDefault()).toLocalDate());
+    this.contestNameField.setText(contest.getContestName());
+    this.contestCategory.setText(contest.getCategory());
+    if (contest.getSfi() != null) {
+      this.sfiIndex.setText(contest.getSfi().toString());
+    }
+    if (contest.getaIndex() != null) {
+      this.aIndex.setText(contest.getaIndex().toString());
+    }
   }
 }

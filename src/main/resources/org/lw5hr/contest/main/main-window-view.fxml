@@ -25,36 +25,39 @@
               <Menu mnemonicParsing="false" text="%key.main.menu.charts">
                  <items>
                      <MenuItem mnemonicParsing="false" onAction="#handleTotalByHourAction" text="%key.main.menu.charts.total.by.hour" />
-                     <MenuItem mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
-                     <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperator" text="%key.main.menu.charts.total.hour.op" />
+                     <MenuItem fx:id="totalByOperator" mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.op" />
+                     <MenuItem fx:id="totalByBand" mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.band" />
+                     <MenuItem fx:id="operator" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.hour.op" />
+                     <MenuItem fx:id="band" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.qso.band" />
                      <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.total.hour.op.area" />
                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
-                     <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.total.qso.band.op" />
                      <SeparatorMenuItem mnemonicParsing="false" />
                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" />
                  </items>
               </Menu>
               <Menu fx:id="menuSettings" mnemonicParsing="false" text="%key.main.menu.settings">
-                  <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%key.main.menu.language">
-                      <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage"
-                                     text="%key.main.menu.language.english"/>
-                      <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage"
-                                     text="%key.main.menu.language.spanish"/>
-                  </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false"/>
-                  <Menu mnemonicParsing="false" text="%key.main.menu.live.dxlog">
-                      <RadioMenuItem fx:id="liveContestMenu" mnemonicParsing="false" onAction="#handleEnableDxLog"
-                                     text="%key.main.menu.live.enable"/>
-                      <MenuItem mnemonicParsing="false" onAction="#handleDxLogConnection" text="%key.main.menu.live.configuration"/>
-                  </Menu>
+                 <items>
+                     <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%key.main.menu.language">
+                        <items>
+                            <RadioMenuItem fx:id="en" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.english" />
+                            <RadioMenuItem fx:id="es" mnemonicParsing="false" onAction="#handleLanguage" text="%key.main.menu.language.spanish" />
+                        </items>
+                     </Menu>
+                     <SeparatorMenuItem mnemonicParsing="false" />
+                     <Menu mnemonicParsing="false" text="%key.main.menu.live.dxlog">
+                        <items>
+                            <RadioMenuItem fx:id="liveContestMenu" mnemonicParsing="false" onAction="#handleEnableDxLog" text="%key.main.menu.live.enable" />
+                            <MenuItem mnemonicParsing="false" onAction="#handleDxLogConnection" text="%key.main.menu.live.configuration" />
+                        </items>
+                     </Menu>
+                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="%key.main.menu.help">
-                  <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="%key.menu.help.about"/>
+                 <items>
+                     <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="%key.menu.help.about" />
+                 </items>
               </Menu>
           </menus>
        </MenuBar>
    </top>
-   <center>
-      <Canvas height="200.0" width="200.0" BorderPane.alignment="CENTER" />
-   </center>
 </BorderPane>

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StatsUtil {
@@ -61,23 +62,29 @@ public class StatsUtil {
     });
   }
 
-  /**
+/**
    * Get total QSO's by Operator
    *
    * @param qsos List<Qso>
    * @return ObservableList<XYChart.Series < String, Integer>>
    */
-  public ObservableList<XYChart.Series<String, Integer>> getTotalsByOp(List<Qso> qsos) {
-    ObservableList<XYChart.Series<String, Integer>> byOpList = FXCollections.observableArrayList();
-    Map<String, List<Qso>> byOp = qsos.stream().collect(Collectors.groupingBy(Qso::getOperator));
-    byOp.forEach((op, l) -> {
-      XYChart.Series<String, Integer> ByOpSeries = new XYChart.Series<>();
-      ByOpSeries.getData().add(new XYChart.Data<>(op, l.size()));
-      ByOpSeries.setName(op);
-      byOpList.add(ByOpSeries);
+  public <T> ObservableList<XYChart.Series<String, Integer>> getTotalsByParameter(List<Qso> qsos, Function<Qso, T> groupByFunction) {
+    Map<T, List<Qso>> byParam = qsos.stream().collect(Collectors.groupingBy(groupByFunction));
+    List<XYChart.Series<String, Integer>> seriesList = new ArrayList<>();
+    byParam.forEach((param, l) -> {
+      XYChart.Series<String, Integer> series = new XYChart.Series<>();
+      series.getData().add(new XYChart.Data<>(param.toString(), l.size()));
+      series.setName(param.toString());
+      seriesList.add(series);
     });
-    return byOpList;
+
+    // Sort the seriesList by total in ascending order
+    seriesList.sort(Comparator.comparingInt(series -> series.getData().get(0).getYValue()));
+
+    // Convert the sorted list to ObservableList
+    return FXCollections.observableArrayList(seriesList);
   }
+
 
   /**
    * Get total QSO's by Hour
@@ -117,25 +124,25 @@ public class StatsUtil {
    * @param qsos List<Qso>
    * @return ObservableList<XYChart.Series < String, Integer>>
    */
-  public ObservableList<XYChart.Series<String, Integer>> getByHourAndOperator(List<Qso> qsos) {
+  public <T> ObservableList<XYChart.Series<String, Integer>> getByHourAndX(List<Qso> qsos, Function<Qso, T> groupByFunction) {
     ObservableList<XYChart.Series<String, Integer>> byHourAndOperatorList = FXCollections.observableArrayList();
 
-    Map<String, Map<LocalDate, Map<Integer, Set<Qso>>>> groupedByDateOperatorAndHour = qsos.stream()
-            .collect(Collectors.groupingBy(Qso::getOperator, Collectors.groupingBy(Qso::getDate,
+    Map<T, Map<LocalDate, Map<Integer, Set<Qso>>>> grouped = qsos.stream()
+            .collect(Collectors.groupingBy(groupByFunction, Collectors.groupingBy(Qso::getDate,
                     Collectors.groupingBy(q -> q.getTime().getHour(), TreeMap::new, Collectors.toSet()))));
 
     AtomicReference<XYChart.Series<String, Integer>> byHourOperatorSeries = new AtomicReference<>();
-    groupedByDateOperatorAndHour.forEach((operator, dates) -> {
+    grouped.forEach((group, dates) -> {
       AtomicInteger day = new AtomicInteger(1);
       Map<LocalDate, Map<Integer, Set<Qso>>> sortedTreeMap = new TreeMap<>(dates);
       Optional<XYChart.Series<String, Integer>> series = byHourAndOperatorList.stream()
-              .filter(s -> s.getName().equalsIgnoreCase(operator)).findFirst();
+              .filter(s -> s.getName().equalsIgnoreCase(group.toString())).findFirst();
 
       if (series.isPresent()) {
         byHourOperatorSeries.set(series.get());
       } else {
         byHourOperatorSeries.set(new XYChart.Series<>());
-        byHourOperatorSeries.get().setName(operator);
+        byHourOperatorSeries.get().setName(group.toString());
       }
       sortedTreeMap.forEach((date, hList) -> {
         if (day.get() == 1) {
