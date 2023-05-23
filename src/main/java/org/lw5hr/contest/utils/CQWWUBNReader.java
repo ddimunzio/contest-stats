@@ -15,16 +15,16 @@ import java.util.*;
  *
  * @author diego
  */
-public class UBNReader {
-    public List<String> readUbnFile(File filePath, List<Qso> qsos) {
+public class CQWWUBNReader {
+    public List<String> readUbnFile(final File filePath, List<Qso> qsos) {
         List<String> result = new ArrayList<>();
         BufferedReader reader;
-        final Integer NIL = 1;
-        final Integer INCORRECT_CALL = 2;
-        final Integer INCORRECT_EXCHANGE_INFO = 3;
-        final Integer BAND_CHANGE_VIOLATION = 4;
+        final int NIL = 1;
+        final int INCORRECT_CALL = 2;
+        final int INCORRECT_EXCHANGE_INFO = 3;
+        final int BAND_CHANGE_VIOLATION = 4;
         final Integer UNIQUE_CALL = 5;
-        final Integer LOST_MULTI = 5;
+        final int LOST_MULTI = 5;
 
        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
         Integer currentReport = 0;
@@ -34,7 +34,7 @@ public class UBNReader {
 
             while (line != null) {
                 if (currentReport != 0 && line.length() > 0 && !line.startsWith("***")) {
-                    List<String> ubnLine = Arrays.stream(line.split(" ")).filter(a -> a != "").toList();
+                    List<String> ubnLine = Arrays.stream(line.split(" ")).filter(a -> !Objects.equals(a, "")).toList();
                     LocalDateTime UbnDateTime = LocalDateTime.parse(ubnLine.get(2) + " " + ubnLine.get(3), formatter);
                     Optional<Qso> qso = qsos.stream()
                             .filter(q -> q.getCall().equalsIgnoreCase(ubnLine.get(6)))

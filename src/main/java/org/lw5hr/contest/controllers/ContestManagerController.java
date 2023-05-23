@@ -12,17 +12,22 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.lw5hr.contest.db.QueryUtil;
-import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.utils.CQWWUBNReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ContestManagerController implements Initializable {
+
+  @FXML
+  private TableColumn<Contest, Contest> attach_ubn;
 
   @FXML
   private TableColumn<Contest, Contest> edit_contest;
@@ -57,6 +62,7 @@ public class ContestManagerController implements Initializable {
     contest_description.setCellValueFactory(new PropertyValueFactory<>("contestDescription"));
     delete_contest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
     edit_contest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+    attach_ubn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
     editableCols();
   }
 
@@ -73,6 +79,36 @@ public class ContestManagerController implements Initializable {
       Contest test = e.getTableView().getItems().get(e.getTablePosition().getRow());
       test.setContestDescription(e.getNewValue());
       q.updateContest(test);
+    });
+
+    attach_ubn.setCellFactory(column -> new TableCell<>() {
+      private final Button button = new Button("UBN");
+      {
+        button.setOnAction(e -> {
+          Contest contest = getItem();
+          // Create a FileChooser object
+          FileChooser fileChooser = new FileChooser();
+
+          // Show the file dialog and get the selected file
+          File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+          // Process the selected file (e.g., display its path)
+          if (selectedFile != null) {
+            CQWWUBNReader cqwwubnReader = new CQWWUBNReader();
+            cqwwubnReader.readUbnFile(selectedFile, contest.getQsos());
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+          }
+        });
+      }
+      @Override
+      protected void updateItem(Contest item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty) {
+          setGraphic(null);
+        } else {
+          setGraphic(button);
+        }
+      }
     });
     delete_contest.setCellFactory(column -> new TableCell<>() {
       private final Button button = new Button(mainResources.getString("key.contest.table.delete"));
@@ -95,7 +131,6 @@ public class ContestManagerController implements Initializable {
         }
       }
     });
-
     edit_contest.setCellFactory(column -> new TableCell<>(){
       private final Button button = new Button(mainResources.getString("key.contest.table.edit"));
       {

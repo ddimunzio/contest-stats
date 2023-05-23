@@ -3,6 +3,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -58,7 +59,7 @@ public class Contest implements Serializable {
         this.live = live;
     }
 
-    @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     List<Qso> qsos;
     public Long getId() {
         return id;

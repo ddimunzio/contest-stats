@@ -11,8 +11,9 @@
          <columns>
             <TableColumn fx:id="contest_name" prefWidth="200.0" text="%key.contest.table.name" />
             <TableColumn fx:id="contest_description" prefWidth="50.0" text="%key.contest.table.description" />
-            <TableColumn fx:id="delete_contest" prefWidth="70.0" text="%key.contest.table.delete" />
-            <TableColumn fx:id="edit_contest" prefWidth="70.0" text="%key.contest.table.edit" />
+            <TableColumn fx:id="delete_contest" prefWidth="60.0" text="%key.contest.table.delete" />
+            <TableColumn fx:id="edit_contest" prefWidth="60.0" text="%key.contest.table.edit" />
+            <TableColumn fx:id="attach_ubn" prefWidth="60.0" text="%key.contest.table.edit" />
          </columns>
       </TableView>
    </children>
