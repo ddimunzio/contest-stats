@@ -56,7 +56,7 @@ public class MainWindow extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", getLocale());
-    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
     setPrimaryStage(primaryStage);
     Scene scene = new Scene(fxmlLoader.load(), 1600, 760);
     primaryStage.setTitle(mainResources.getString("key.main.general.title"));

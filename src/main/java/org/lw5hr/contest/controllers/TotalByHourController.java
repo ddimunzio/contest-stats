@@ -11,9 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -21,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.MainWindow;
@@ -57,6 +56,18 @@ public class TotalByHourController extends GenericBarchartController implements 
         chart.setData(byHourData);
         chart.setBarGap(2);
         addLabelsToChart(chart);
+
+        // Set the preferred size of the chart with a 10-pixel margin on each side
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getBounds().getHeight();
+        double chartWidth = screenWidth - 20;  // Subtract 20 for left and right margin
+        double chartHeight = screenHeight - 20;  // Subtract 20 for top and bottom margin
+        chart.setPrefWidth(chartWidth);
+        chart.setPrefHeight(chartHeight);
+
+        // Set padding to create a margin around the chart
+        Insets padding = new Insets(10);
+        chart.setPadding(padding);
     }
 
     @FXML

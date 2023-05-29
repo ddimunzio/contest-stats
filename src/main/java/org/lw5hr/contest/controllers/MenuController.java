@@ -191,12 +191,14 @@ public class MenuController extends BorderPane implements Initializable {
 
   /**
    * This method is called when the menu is shown.  It is used to update the list of contests.
+   *
    * @param ignoredEvent not used but required by JavaFX
    */
   public void handleShow(Event ignoredEvent) {
     menuContestList.getItems().clear();
     addContestItems();
   }
+
   @FXML
   private void handleImportAdifAction(final ActionEvent ignoredEvent) {
     Locale loc = MainWindow.getLocale();
@@ -215,19 +217,20 @@ public class MenuController extends BorderPane implements Initializable {
   }
 
   public void handleDxLogConnection(ActionEvent ignoredActionEvent) throws Exception {
-      Locale loc = MainWindow.getLocale();
-      ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
-      FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("contest-dxlog-connection.fxml"), resources);
-      Parent root;
-      try {
-        root = loader.load();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      Stage stage = new Stage();
-      stage.setScene(new Scene(root));
-      stage.showAndWait();
+    Locale loc = MainWindow.getLocale();
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+    FXMLLoader loader = new FXMLLoader(MenuController.class.getResource("contest-dxlog-connection.fxml"), resources);
+    Parent root;
+    try {
+      root = loader.load();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root));
+    stage.showAndWait();
   }
+
   public void handleEnableDxLog(ActionEvent ignoredActionEvent) throws Exception {
     getQueryUtil().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
 
