@@ -30,9 +30,13 @@
         <property name="hbm2ddl.auto">update</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="org.lw5hr.contest.model.Contest"/>
         <mapping class="org.lw5hr.contest.model.Qso"/>
         <mapping class="org.lw5hr.contest.model.Settings"/>
+        <mapping class="org.lw5hr.contest.model.UBNCategories"/>
+        <mapping class="org.lw5hr.contest.model.Contest"/>
+        <mapping class="org.lw5hr.contest.model.ContestProperties"/>
+        <mapping class="org.lw5hr.contest.model.ContestCategory"/>
+
 
 
     </session-factory>

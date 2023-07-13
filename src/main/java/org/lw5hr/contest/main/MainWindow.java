@@ -84,6 +84,7 @@ public class MainWindow extends Application {
     InitApp();
     launch();
   }
+
   public static void InitApp () throws IOException {
     if (!getQueryUtil().settingsExist(DatabaseConstants.DEFAULT_LANG)) {
       getQueryUtil().initSetting(DatabaseConstants.DEFAULT_LANG,

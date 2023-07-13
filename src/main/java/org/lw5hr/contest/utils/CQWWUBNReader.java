@@ -23,11 +23,11 @@ public class CQWWUBNReader {
         final int INCORRECT_CALL = 2;
         final int INCORRECT_EXCHANGE_INFO = 3;
         final int BAND_CHANGE_VIOLATION = 4;
-        final Integer UNIQUE_CALL = 5;
+        final int UNIQUE_CALL = 5;
         final int LOST_MULTI = 5;
 
        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-        Integer currentReport = 0;
+        int currentReport = 0;
         try {
             reader = new BufferedReader(new FileReader(filePath));
             String line = reader.readLine();
@@ -80,13 +80,11 @@ public class CQWWUBNReader {
                     } else if (line.equalsIgnoreCase("********* Unique Calls Receiving Credit (not removed)*********")) {
                         System.out.println("********* Unique Calls Receiving Credit (not removed)*********");
                         result.add("********* Unique Calls Receiving Credit (not removed)*********");
-                        currentReport = BAND_CHANGE_VIOLATION;
-
+                        currentReport = UNIQUE_CALL;
                         line = reader.readLine();
                     } else if (line.equalsIgnoreCase("********************** Lost Multipliers **********************")) {
                         System.out.println("********************** Lost Multipliers **********************");
                         currentReport = LOST_MULTI;
-                        ;
                         line = reader.readLine();
                     } else if (line.equalsIgnoreCase("*******************  Multipliers by Band  ********************")) {
                         currentReport = 0;

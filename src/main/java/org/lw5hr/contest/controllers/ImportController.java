@@ -4,15 +4,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.model.ContestCategory;
+import org.lw5hr.contest.model.ContestProperties;
 import org.lw5hr.contest.utils.ADIFReader;
 
 import java.io.File;
@@ -25,6 +31,9 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 public class ImportController extends GenericContestController {
+
+  @FXML
+  private ComboBox<ContestProperties> contestProperties;
 
   @FXML
   private TextField kIndex;
@@ -48,10 +57,7 @@ public class ImportController extends GenericContestController {
   private TextField filePathField;
 
   @FXML
-  private TextField contestNameField;
-
-  @FXML
-  private TextField contestCategory;
+  private ComboBox<ContestCategory> contestCategory;
 
   @FXML
   private TextField sfiIndex;
@@ -75,8 +81,8 @@ public class ImportController extends GenericContestController {
     }
     this.dateTo.setValue(LocalDate.from(Instant.ofEpochMilli(contest.getDateTo().getTime())));
     this.dateFrom.setValue(LocalDate.from(Instant.ofEpochMilli(contest.getDateFrom().getTime())));
-    this.contestNameField.setText(contest.getContestName());
-    this.contestCategory.setText(contest.getCategory());
+    this.contestProperties.setValue(contest.getContestProperties());
+    this.contestCategory.setValue(contest.getContestCategory());
     if (contest.getSfi() != null) {
       this.sfiIndex.setText(contest.getSfi().toString());
     }
@@ -101,14 +107,14 @@ public class ImportController extends GenericContestController {
   @FXML
   protected void handleSave(final ActionEvent event) {
     QueryUtil q = MainWindow.getQueryUtil();
-    if (validateFields() && !q.contestExist(contestNameField.getText())) {
+    if (validateFields() && !q.contestExist(contestProperties.getValue().getEventName())) {
       errorLabel.setVisible(false);
       try {
         if (validateFields()) {
           Contest contest = new Contest();
           ADIFReader adiReader = new ADIFReader(selectedFile.getPath());
-          contest.setContestName(contestNameField.getText());
-          contest.setCategory(contestCategory.getText());
+          contest.setContestProperties(contestProperties.getValue());
+          contest.setContestCategory(contestCategory.getValue());
           contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
           contest.setDateTo(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
           contest.setSfi(Double.valueOf(sfiIndex.getText()));
@@ -141,7 +147,6 @@ public class ImportController extends GenericContestController {
     if (selectedFile != null) {
       try {
         filePathField.setText(selectedFile.getAbsolutePath());
-        contestNameField.setText(selectedFile.getName().substring(0, selectedFile.getName().indexOf(".")));
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -153,17 +158,12 @@ public class ImportController extends GenericContestController {
   protected boolean validateFields() {
     boolean isValid = true;
 
-    if (selectedFile == null) {
-      isValid = false;
-      System.out.println("Error: No file selected.");
-    }
-
-    if (contestNameField.getText().isEmpty()) {
+    if (contestProperties.getValue() == null) {
       isValid = false;
       System.out.println("Error: Contest name is required.");
     }
 
-    if (contestCategory.getText().isEmpty()) {
+    if (contestCategory.getValue() == null) {
       isValid = false;
       System.out.println("Error: Contest category is required.");
     }
@@ -203,6 +203,23 @@ public class ImportController extends GenericContestController {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    QueryUtil queryUtil = MainWindow.getQueryUtil();
+    contestProperties.getItems().addAll(queryUtil.getListOfContest());
+    contestCategory.getItems().addAll(queryUtil.getListOfContestCategories());
+    contestProperties.setCellFactory(new Callback<ListView<ContestProperties>, ListCell<ContestProperties>>() {
+      @Override
+      public ListCell<ContestProperties> call(ListView<ContestProperties> param) {
+        return new ListCell<ContestProperties>() {
+          @Override
+          protected void updateItem(ContestProperties item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null) {
+              setText(item.getEventName());
+            }
+          }
+        };
+      }
+    });
     dateFrom.setValue(LocalDate.now());
     dateTo.setValue(LocalDate.now());
   }
@@ -220,8 +237,8 @@ public class ImportController extends GenericContestController {
     this.dateTo.setValue(toInstant.atZone(ZoneId.systemDefault()).toLocalDate());
     Instant fromInstant = contest.getDateFrom().toInstant();
     this.dateFrom.setValue(fromInstant.atZone(ZoneId.systemDefault()).toLocalDate());
-    this.contestNameField.setText(contest.getContestName());
-    this.contestCategory.setText(contest.getCategory());
+    this.contestProperties.setValue(contest.getContestProperties());
+    this.contestCategory.setValue(contest.getContestCategory());
     if (contest.getSfi() != null) {
       this.sfiIndex.setText(contest.getSfi().toString());
     }

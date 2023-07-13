@@ -1,12 +1,16 @@
 package org.lw5hr.contest.model;
+
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -22,7 +26,6 @@ public class Contest implements Serializable {
 
     public Contest() {}
     public Contest(final String contestName, final Boolean live) {
-        this.contestName = contestName;
         this.live = live;
     }
 
@@ -30,14 +33,8 @@ public class Contest implements Serializable {
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
     private Long id;
-    
-    @Column(name = "contestName")
-    private String contestName;
-
     @Column(name = "contestDescription")
     private String contestDescription;
-    @Column(name = "category")
-    private String category;
     @Column(name = "live")
     private Boolean live;
     @Column(name = "sfi")
@@ -61,6 +58,13 @@ public class Contest implements Serializable {
 
     @OneToMany (mappedBy = "contest", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER)
     List<Qso> qsos;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ContestProperties contestProperties;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ContestCategory contestCategory;
+
     public Long getId() {
         return id;
     }
@@ -70,12 +74,9 @@ public class Contest implements Serializable {
     }
 
     public String getContestName() {
-        return contestName;
+        return contestProperties.getEventName();
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
-    }
 
     public String getContestDescription() {
         return contestDescription;
@@ -133,11 +134,24 @@ public class Contest implements Serializable {
         this.dateTo = dateTO;
     }
 
-    public String getCategory() {
-        return category;
+    public ContestProperties getContestProperties() {
+        return contestProperties;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setContestProperties(ContestProperties contestProperties) {
+        this.contestProperties = contestProperties;
+    }
+
+    public ContestCategory getContestCategory() {
+        return contestCategory;
+    }
+
+    public void setContestCategory(ContestCategory contestCategory) {
+        this.contestCategory = contestCategory;
+    }
+
+    @Override
+    public String toString() {
+        return contestProperties.getEventName();
     }
 }

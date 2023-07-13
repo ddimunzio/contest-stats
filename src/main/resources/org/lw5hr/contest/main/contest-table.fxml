@@ -13,7 +13,7 @@
             <TableColumn fx:id="contest_description" prefWidth="50.0" text="%key.contest.table.description" />
             <TableColumn fx:id="delete_contest" prefWidth="60.0" text="%key.contest.table.delete" />
             <TableColumn fx:id="edit_contest" prefWidth="60.0" text="%key.contest.table.edit" />
-            <TableColumn fx:id="attach_ubn" prefWidth="60.0" text="%key.contest.table.edit" />
+            <TableColumn fx:id="attach_ubn" prefWidth="60.0" text="%key.contest.table.ubn" />
          </columns>
       </TableView>
    </children>

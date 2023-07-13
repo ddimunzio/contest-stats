@@ -2,16 +2,20 @@ package org.lw5hr.contest.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import org.lw5hr.contest.model.ContestCategory;
+import org.lw5hr.contest.model.ContestProperties;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public abstract class GenericContestController extends Pane {
+public abstract class GenericContestController extends Pane implements Initializable {
   @FXML
   private TextField kIndex;
 
@@ -34,10 +38,10 @@ public abstract class GenericContestController extends Pane {
   private TextField filePathField;
 
   @FXML
-  private TextField contestNameField;
+  private ComboBox<ContestProperties> contestName;
 
   @FXML
-  private TextField contestCategory;
+  private ComboBox<ContestCategory> contestCategory;
 
   @FXML
   private TextField sfiIndex;

@@ -70,7 +70,7 @@ public class DxLogConnectionController extends GenericContestController {
     if (validateFields()) {
       q.initSetting(DatabaseConstants.DXLOG_DB_PATH, selectedFile.getAbsolutePath());
       Contest contest = new Contest(contestNameField.getText(), true);
-      contest.setCategory(contestCategory.getText());
+      //contest.setCategory(contestCategory.getText());
       contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       contest.setDateTo(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       contest.setSfi(Double.valueOf(sfiIndex.getText()));

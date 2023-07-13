@@ -24,10 +24,11 @@
                      <MenuItem fx:id="totalByBand" mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.band" />
                      <MenuItem fx:id="operator" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.hour.op" />
                      <MenuItem fx:id="band" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.qso.band" />
+                     <MenuItem fx:id="bandAndOperator" mnemonicParsing="false" text="%key.main.menu.charts.band.operator" onAction="#handleBandAndOperator"/>
                      <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.total.hour.op.area" />
                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
                      <SeparatorMenuItem mnemonicParsing="false" />
-                     <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" />
+                     <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" onAction="#handleCompare"/>
                  </items>
               </Menu>
               <Menu fx:id="menuSettings" mnemonicParsing="false" text="%key.main.menu.settings">

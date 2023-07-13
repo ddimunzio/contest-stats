@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.model.ContestCategory;
+import org.lw5hr.contest.model.ContestProperties;
 import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.model.Settings;
 
@@ -50,6 +52,7 @@ public class QueryUtil {
   }
 
   public Boolean contestExist(String name) {
+    //TOOD: refactor this should use now contest properties instead of name
     boolean res = false;
     Session s = getSession();
     s.beginTransaction();
@@ -224,4 +227,33 @@ public class QueryUtil {
     s.getTransaction().commit();
     return result;
   }
+
+  public ObservableList<ContestProperties> getListOfContest() {
+    Session s = getSession();
+    s.beginTransaction();
+    ObservableList<ContestProperties> result = FXCollections.observableArrayList();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<ContestProperties> contestProps = criteriaBuilder.createQuery(ContestProperties.class);
+    Root<ContestProperties> root = contestProps.from(ContestProperties.class);
+    contestProps.select(root);
+    TypedQuery<ContestProperties> allQuery = s.createQuery(contestProps);
+    result.addAll(allQuery.getResultList());
+    s.getTransaction().commit();
+    return result;
+  }
+
+  public ObservableList<ContestCategory> getListOfContestCategories() {
+    Session s = getSession();
+    s.beginTransaction();
+    ObservableList<ContestCategory> result = FXCollections.observableArrayList();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<ContestCategory> contestCategory = criteriaBuilder.createQuery(ContestCategory.class);
+    Root<ContestCategory> root = contestCategory.from(ContestCategory.class);
+    contestCategory.select(root);
+    TypedQuery<ContestCategory> allQuery = s.createQuery(contestCategory);
+    result.addAll(allQuery.getResultList());
+    s.getTransaction().commit();
+    return result;
+  }
+
 }

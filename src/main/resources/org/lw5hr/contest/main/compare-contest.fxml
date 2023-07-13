@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="776.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.CompareContestController">
+   <children>
+      <BarChart fx:id="chart" layoutX="13.0" layoutY="69.0" prefHeight="403.0" prefWidth="751.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </BarChart>
+      <ComboBox fx:id="contestOne" layoutX="130.0" layoutY="10.0" onAction="#handleContestOneSelected" prefWidth="150.0" />
+      <ComboBox fx:id="contestTwo" layoutX="367.0" layoutY="10.0" onAction="#handleContestTwoSelected" prefWidth="150.0" />
+   </children>
+</AnchorPane>

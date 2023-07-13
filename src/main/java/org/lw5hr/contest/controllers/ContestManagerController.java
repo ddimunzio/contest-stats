@@ -70,7 +70,6 @@ public class ContestManagerController implements Initializable {
     contest_name.setCellFactory(TextFieldTableCell.forTableColumn());
     contest_name.setOnEditCommit(e -> {
       Contest test = e.getTableView().getItems().get(e.getTablePosition().getRow());
-      test.setContestName(e.getNewValue());
       q.updateContest(test);
     });
 
@@ -82,7 +81,7 @@ public class ContestManagerController implements Initializable {
     });
 
     attach_ubn.setCellFactory(column -> new TableCell<>() {
-      private final Button button = new Button("UBN");
+      private final Button button = new Button(mainResources.getString("key.contest.table.ubn"));
       {
         button.setOnAction(e -> {
           Contest contest = getItem();

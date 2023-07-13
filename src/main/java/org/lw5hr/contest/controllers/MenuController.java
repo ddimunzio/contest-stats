@@ -12,6 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.About;
@@ -108,7 +109,7 @@ public class MenuController extends BorderPane implements Initializable {
   @FXML
   private void handleQsosByHourAndOperatorArea(final ActionEvent ignoredEvent) throws Exception {
     Stage stage = new Stage();
-    ByHourAndOperatorAreaController byHourAndOperatorArea = new ByHourAndOperatorAreaController();
+    ByHourAndOperatorAreaChart byHourAndOperatorArea = new ByHourAndOperatorAreaChart();
     byHourAndOperatorArea.start(stage);
   }
 
@@ -233,10 +234,35 @@ public class MenuController extends BorderPane implements Initializable {
 
   public void handleEnableDxLog(ActionEvent ignoredActionEvent) throws Exception {
     getQueryUtil().updateSetting(DatabaseConstants.LIVE_CONTEST_ON, liveContestMenu.isSelected() ? "true" : "false");
-
   }
 
-  public void handleBandAndOperator(ActionEvent actionEvent) throws Exception {
+  public void handleCompare(ActionEvent ignoredActionEvent) {
+    Locale loc = MainWindow.getLocale();
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+    FXMLLoader loader = new FXMLLoader(MainWindow.class.getResource("compare-contest.fxml"), resources);
+    Parent root;
+    try {
+      root = loader.load();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root));
+    stage.showAndWait();
+  }
 
+  public void handleBandAndOperator(ActionEvent ignoredActionEvent) throws Exception {
+    Locale loc = MainWindow.getLocale();
+    ResourceBundle resources = ResourceBundle.getBundle("i18n/main", loc);
+    FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("by-band-and-operator.fxml"), resources);
+    Parent root;
+    try {
+      root = fxmlLoader.load();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    Stage stage = new Stage();
+    stage.setScene(new Scene(root, 1600, 768));
+    stage.showAndWait();
   }
 }

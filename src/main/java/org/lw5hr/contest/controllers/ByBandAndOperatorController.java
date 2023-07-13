@@ -4,11 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Tooltip;
@@ -27,43 +24,24 @@ import org.lw5hr.contest.utils.StatsUtil;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
-public class ByXAndOperatorController extends GenericStackedBarCharController implements Initializable {
-  private final Function<Qso, String> BAND_FUNCTION = Qso::getBand;
-  private final Function<Qso, String> function;
-
-  public ByXAndOperatorController(final String field) {
-    Function<Qso, String> OPEARATOR_FUNCTION = Qso::getOperator;
-    switch (field) {
-      case "band" -> function = BAND_FUNCTION;
-      case "operator" -> function = OPEARATOR_FUNCTION;
-      default -> throw new IllegalArgumentException("Unknown field: " + field);
-    }
-  }
+public class ByBandAndOperatorController extends GenericStackedBarCharController{
+  @FXML
+  private  StackedBarChart<String, String> totalByBandAndOp;
 
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
-  @FXML
-  CategoryAxis xAxis;
-
-  @FXML
-  NumberAxis yAxis;
-
-  @FXML
-  StackedBarChart<String, Integer> chart;
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     QueryUtil q = MainWindow.getQueryUtil();
     Long selectedContest = q.getSelectedContest();
     List<Qso> qsos = q.getQsoByContest(selectedContest);
     StatsUtil st = new StatsUtil();
-    ObservableList<XYChart.Series<String, Integer>> byHourAndOpData = st.getByHourAndX(qsos, function);
+    ObservableList<XYChart.Series<String, Integer>> byBandAndOperator = st.getTotalsByTwoParameters(qsos, Qso::getBand, Qso::getOperator);
 
     String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
     titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
     chart.setTitle(titleLabel);
-    chart.setData(byHourAndOpData);
+    chart.setData(byBandAndOperator);
     addLabelsToChart(chart);
   }
 

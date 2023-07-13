@@ -16,8 +16,14 @@ import java.util.stream.Collectors;
 public class StatsUtil {
   private static final Integer ONE_DAY_HOURS = 24;
   private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;
+/**
+   * Get total QSO's by Hour
+   *
+   * @param qsos List<Qso>
+   * @return ObservableList<XYChart.Series < String, Integer>>
+   * @deprecated
+   */
 
-@Deprecated
   public Map<LocalDate, List<BarChartHelper>> getRatesByHour(List<Qso> qsos) {
     final Map<LocalDate, Map<Integer, List<Qso>>> grouped = qsos.stream()
             .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(a -> a.getTime().getHour())));
@@ -62,7 +68,7 @@ public class StatsUtil {
     });
   }
 
-/**
+  /**
    * Get total QSO's by Operator
    *
    * @param qsos List<Qso>
@@ -85,6 +91,43 @@ public class StatsUtil {
     return FXCollections.observableArrayList(seriesList);
   }
 
+  /**
+   * Get totals by two parameters.
+   *
+   * @param qsos                  List<Qso>
+   * @param groupByFunction       Function<Qso, T> to group by first parameter
+   * @param secondGroupByFunction Function<Qso, U> to group by second parameter
+   * @return ObservableList<XYChart.Series < String, Integer>>
+   */
+  public <T, U> ObservableList<XYChart.Series<String, Integer>> getTotalsByTwoParameters(
+          List<Qso> qsos,
+          Function<Qso, T> groupByFunction,
+          Function<Qso, U> secondGroupByFunction) {
+
+    Map<T, Map<U, List<Qso>>> byParams = qsos.stream()
+            .collect(Collectors.groupingBy(groupByFunction, Collectors.groupingBy(secondGroupByFunction)));
+    AtomicReference<XYChart.Series<String, Integer>> XySeries = new AtomicReference<>();
+    ObservableList<XYChart.Series<String, Integer>> seriesList = FXCollections.observableArrayList();
+    byParams.forEach((firstParam, innerMap) -> {
+      Optional<XYChart.Series<String, Integer>> series = seriesList.stream()
+              .filter(s -> s.getName().equalsIgnoreCase(firstParam.toString())).findFirst();
+      if (series.isPresent()) {
+        XySeries.set(series.get());
+      } else {
+        XySeries.set(new XYChart.Series<>());
+        XySeries.get().setName(firstParam.toString());
+      }
+      innerMap.forEach((secondParam, qsoList) -> {
+        XySeries.get().getData().add(new XYChart.Data<>(secondParam.toString(), qsoList.size()));
+      });
+      seriesList.add(XySeries.get());
+    });
+
+    // Sort the seriesList by total in ascending order
+    return seriesList.sorted(Comparator.comparing(XYChart.Series::getName));
+
+
+  }
 
   /**
    * Get total QSO's by Hour
@@ -119,55 +162,56 @@ public class StatsUtil {
   }
 
   /**
-   * Get total QSO's by Hour and Operator
-   *
-   * @param qsos List<Qso>
+   * @param qsos
+   * @param groupByFunction
+   * @param <T>             {@link Function}
    * @return ObservableList<XYChart.Series < String, Integer>>
    */
   public <T> ObservableList<XYChart.Series<String, Integer>> getByHourAndX(List<Qso> qsos, Function<Qso, T> groupByFunction) {
-    ObservableList<XYChart.Series<String, Integer>> byHourAndOperatorList = FXCollections.observableArrayList();
+    ObservableList<XYChart.Series<String, Integer>> byHourAndX = FXCollections.observableArrayList();
 
     Map<T, Map<LocalDate, Map<Integer, Set<Qso>>>> grouped = qsos.stream()
             .collect(Collectors.groupingBy(groupByFunction, Collectors.groupingBy(Qso::getDate,
                     Collectors.groupingBy(q -> q.getTime().getHour(), TreeMap::new, Collectors.toSet()))));
 
-    AtomicReference<XYChart.Series<String, Integer>> byHourOperatorSeries = new AtomicReference<>();
+    AtomicReference<XYChart.Series<String, Integer>> byHourAndXSeries = new AtomicReference<>();
     grouped.forEach((group, dates) -> {
       AtomicInteger day = new AtomicInteger(1);
       Map<LocalDate, Map<Integer, Set<Qso>>> sortedTreeMap = new TreeMap<>(dates);
-      Optional<XYChart.Series<String, Integer>> series = byHourAndOperatorList.stream()
+      Optional<XYChart.Series<String, Integer>> series = byHourAndX.stream()
               .filter(s -> s.getName().equalsIgnoreCase(group.toString())).findFirst();
 
       if (series.isPresent()) {
-        byHourOperatorSeries.set(series.get());
+        byHourAndXSeries.set(series.get());
       } else {
-        byHourOperatorSeries.set(new XYChart.Series<>());
-        byHourOperatorSeries.get().setName(group.toString());
+        byHourAndXSeries.set(new XYChart.Series<>());
+        byHourAndXSeries.get().setName(group.toString());
       }
       sortedTreeMap.forEach((date, hList) -> {
         if (day.get() == 1) {
           for (int i = 0; i <= ONE_DAY_HOURS_FROM_ZERO; i++) {
             if (hList.get(i) != null) {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i), hList.get(i).size()));
+              byHourAndXSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i), hList.get(i).size()));
             } else {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i), 0));
+              byHourAndXSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i), 0));
             }
           }
         } else {
           for (int i = 0; i <= ONE_DAY_HOURS_FROM_ZERO; i++) {
             if (hList.get(i) != null) {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), hList.get(i).size()));
+              byHourAndXSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), hList.get(i).size()));
             } else {
-              byHourOperatorSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), 0));
+              byHourAndXSeries.get().getData().add(new XYChart.Data<>(String.valueOf(i + ONE_DAY_HOURS), 0));
             }
           }
         }
         day.getAndIncrement();
       });
-      byHourAndOperatorList.add(byHourOperatorSeries.get());
+      byHourAndX.add(byHourAndXSeries.get());
     });
-    return byHourAndOperatorList;
+    return byHourAndX;
   }
+
 
 }
 
