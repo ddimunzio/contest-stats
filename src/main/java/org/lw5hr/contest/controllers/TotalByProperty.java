@@ -70,7 +70,8 @@ public class TotalByProperty extends GenericBarchartController implements Initia
     StatsUtil st = new StatsUtil();
     ObservableList<XYChart.Series<String, Integer>> chartData = st.getTotalsByParameter(qsos, function);
     String titleLabel = mainResources.getString(translationKey);
-    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
+    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
+            + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
     chart.setTitle(titleLabel);
     chart.setData(chartData);
     chart.setAnimated(false);
@@ -101,26 +102,24 @@ public class TotalByProperty extends GenericBarchartController implements Initia
     container.setStyle(chartStyle);
 
   }
-
-
   @Override
   protected void addLabelsToChart(BarChart<String, Integer> chart) {
-
     for (XYChart.Series<String, Integer> series : chart.getData()) {
       for (XYChart.Data<String, Integer> data : series.getData()) {
         // add label above bar
         Label label = new Label(data.getYValue().toString());
         label.setTextFill(Color.BLACK);
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 9));
         StackPane stackPane = (StackPane) data.getNode();
         stackPane.getChildren().add(label);
         StackPane.setAlignment(label, Pos.TOP_CENTER);
-        StackPane.setMargin(label, new Insets(-20, 0, 0, 0));
+        StackPane.setMargin(label, new Insets(-12, 0, 0, 0)); // updated margin value
 
         // add rotated text inside bar if number of contacts is greater than 100
         if (data.getYValue() > 100) {
           Text text = new Text(data.getXValue());
           text.setFill(Color.WHITE);
-          text.setFont(Font.font("Arial", FontWeight.BOLD, 9));
+          text.setFont(Font.font("Arial", FontWeight.BOLD, 11));
           StackPane rotatedStackPane = new StackPane();
           rotatedStackPane.setRotate(270);
           rotatedStackPane.getChildren().add(text);
@@ -133,6 +132,8 @@ public class TotalByProperty extends GenericBarchartController implements Initia
       }
     }
   }
+
+
 
   public String getTranslationKey() {
     return translationKey;

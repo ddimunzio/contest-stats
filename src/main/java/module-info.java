@@ -5,11 +5,11 @@ module org.lw5hr.contest {
   requires com.dlsc.formsfx;
   requires org.kordamp.ikonli.javafx;
 
-  requires org.hibernate.orm.core;
-  requires org.hibernate.commons.annotations;
-  requires java.sql;
+ requires org.hibernate.orm.core;
+ requires org.hibernate.commons.annotations;
+ requires java.sql;
 
-  requires  java.persistence;
+  requires java.persistence;
   requires java.naming;
   requires java.xml;
   requires java.logging;

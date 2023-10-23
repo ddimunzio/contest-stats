@@ -61,7 +61,8 @@ public class ByXAndOperatorController extends GenericStackedBarCharController im
     ObservableList<XYChart.Series<String, Integer>> byHourAndOpData = st.getByHourAndX(qsos, function);
 
     String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
-    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
+    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
+            + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
     chart.setTitle(titleLabel);
     chart.setData(byHourAndOpData);
     addLabelsToChart(chart);
@@ -73,13 +74,13 @@ public class ByXAndOperatorController extends GenericStackedBarCharController im
     for (final XYChart.Series<String, Integer> series : chart.getData()) {
       for (final XYChart.Data<String, Integer> data : series.getData()) {
         StackPane stackPane = (StackPane) data.getNode();
-        if (data.getYValue() != 0) {
+        if (data.getYValue()!= 0) {
           Text label = new Text(data.getYValue().toString());
           label.setFont(Font.font("Arial", FontWeight.BOLD, 10));
           label.setFill(Color.WHITE);
           label.setTextAlignment(TextAlignment.CENTER);
           stackPane.getChildren().add(label);
-          StackPane.setAlignment(label, Pos.CENTER);
+          StackPane.setAlignment(label, Pos.BOTTOM_CENTER); // adjust alignment
           // create and set tooltip
           String seriesName = null;
           for (XYChart.Series<String, Integer> s : chart.getData()) {
@@ -114,4 +115,5 @@ public class ByXAndOperatorController extends GenericStackedBarCharController im
       }
     }
   }
+
 }

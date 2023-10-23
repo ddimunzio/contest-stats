@@ -1,5 +1,6 @@
 package org.lw5hr.contest.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -7,12 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.lw5hr.contest.charts.ByHourAndOperatorAreaChart;
 import org.lw5hr.contest.db.DatabaseConstants;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.main.About;
@@ -20,6 +22,7 @@ import org.lw5hr.contest.main.ContestManager;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
 import org.lw5hr.contest.model.Settings;
+import org.lw5hr.contest.utils.StatsUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +34,12 @@ import java.util.ResourceBundle;
 import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
 public class MenuController extends BorderPane implements Initializable {
+  @FXML
+  private BarChart personalTopRates;
+
+  @FXML
+  private BarChart teamTopRates;
+
   @FXML
   private MenuItem operator;
 
@@ -182,6 +191,7 @@ public class MenuController extends BorderPane implements Initializable {
     if (getQueryUtil().getSetting(DatabaseConstants.DXLOG_DB_PATH).isEmpty()) {
       liveContestMenu.setDisable(true);
     }
+    initializeManinCharts();
   }
 
   private void setSelectedLanguage(String lang) {
@@ -264,5 +274,14 @@ public class MenuController extends BorderPane implements Initializable {
     Stage stage = new Stage();
     stage.setScene(new Scene(root, 1600, 768));
     stage.showAndWait();
+  }
+
+  private void initializeManinCharts() {
+    StatsUtil st = new StatsUtil();
+    ObservableList<XYChart.Series<String, Integer>> topTenTeam = st.teamTopRates();
+    ObservableList<XYChart.Series<String, Integer>> topTenPersonal = st.personalTopRates();
+    teamTopRates.getData().addAll(topTenTeam);
+    personalTopRates.getData().addAll(topTenPersonal);
+
   }
 }

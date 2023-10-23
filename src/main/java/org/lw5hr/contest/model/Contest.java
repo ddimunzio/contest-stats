@@ -25,7 +25,7 @@ import java.util.List;
 public class Contest implements Serializable {
 
     public Contest() {}
-    public Contest(final String contestName, final Boolean live) {
+    public Contest(final Boolean live) {
         this.live = live;
     }
 

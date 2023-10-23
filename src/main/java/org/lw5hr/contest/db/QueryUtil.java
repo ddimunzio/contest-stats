@@ -51,7 +51,7 @@ public class QueryUtil {
     return res;
   }
 
-  public Boolean contestExist(String name) {
+  public Boolean contestExist(Contest sContest) {
     //TOOD: refactor this should use now contest properties instead of name
     boolean res = false;
     Session s = getSession();
@@ -61,7 +61,7 @@ public class QueryUtil {
     Root<Contest> root = contest.from(Contest.class);
     contest.select(root);
     TypedQuery<Contest> allQuery = s.createQuery(contest);
-    res = allQuery.getResultList().stream().anyMatch(c -> c.getContestName().equalsIgnoreCase(name));
+    res = allQuery.getResultList().stream().anyMatch(c -> c.equals(sContest));
     s.getTransaction().commit();
     return res;
   }
@@ -256,4 +256,18 @@ public class QueryUtil {
     return result;
   }
 
+  public List<Qso> getAllQso() {
+    Session s = getSession();
+    s.beginTransaction();
+    CriteriaBuilder criteriaBuilder = getCriteriaBuilder(s);
+    CriteriaQuery<Qso> cq = criteriaBuilder.createQuery(Qso.class);
+    Root<Qso> root = cq.from(Qso.class);
+    cq.select(root);
+    TypedQuery<Qso> allQuery = s.createQuery(cq);
+    List<Qso> res = allQuery.getResultList().stream()
+            .sorted(Comparator.comparing(Qso::getDate)).toList();
+    s.getTransaction().commit();
+
+    return res;
+  }
 }

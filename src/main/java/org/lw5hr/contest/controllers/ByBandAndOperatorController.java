@@ -3,11 +3,14 @@ package org.lw5hr.contest.controllers;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -26,10 +29,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ByBandAndOperatorController extends GenericStackedBarCharController{
+  private CheckBox invert;
   @FXML
   private  StackedBarChart<String, String> totalByBandAndOp;
 
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
+
+  public ByBandAndOperatorController() {
+  }
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     QueryUtil q = MainWindow.getQueryUtil();
@@ -39,7 +47,8 @@ public class ByBandAndOperatorController extends GenericStackedBarCharController
     ObservableList<XYChart.Series<String, Integer>> byBandAndOperator = st.getTotalsByTwoParameters(qsos, Qso::getBand, Qso::getOperator);
 
     String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
-    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
+    titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
+            + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
     chart.setTitle(titleLabel);
     chart.setData(byBandAndOperator);
     addLabelsToChart(chart);
@@ -49,9 +58,29 @@ public class ByBandAndOperatorController extends GenericStackedBarCharController
   @Override
   protected void addLabelsToChart(StackedBarChart<String, Integer> chart) {
     for (final XYChart.Series<String, Integer> series : chart.getData()) {
+      int total = 0;
+      for (final XYChart.Data<String, Integer> data : series.getData()) {
+        total += data.getYValue();
+      }
+      Text totalLabel = new Text("Total: " + total);
+      totalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 11));
+      totalLabel.setFill(Color.BLACK);
+      totalLabel.setTextAlignment(TextAlignment.CENTER);
+      StackPane.setAlignment(totalLabel, Pos.CENTER);
+      for (int i = 0; i < series.getData().size(); i++) {
+        XYChart.Data<String, Integer> data = series.getData().get(i);
+        StackPane stackPane = (StackPane) data.getNode();
+        stackPane.getChildren().add(totalLabel);
+        Bounds textBounds = totalLabel.getLayoutBounds();
+        totalLabel.setTranslateX(series.getData().get(i).getXValue().length());
+        totalLabel.setTranslateY(-textBounds.getHeight() / 2 - i * textBounds.getHeight());
+      }
+    }
+
+    for (final XYChart.Series<String, Integer> series : chart.getData()) {
       for (final XYChart.Data<String, Integer> data : series.getData()) {
         StackPane stackPane = (StackPane) data.getNode();
-        if (data.getYValue() != 0) {
+        if (data.getYValue()!= 0) {
           Text label = new Text(data.getYValue().toString());
           label.setFont(Font.font("Arial", FontWeight.BOLD, 10));
           label.setFill(Color.WHITE);
@@ -91,5 +120,24 @@ public class ByBandAndOperatorController extends GenericStackedBarCharController
         }
       }
     }
+  }
+
+
+  public void handleInvert(final ActionEvent event) {
+    QueryUtil q = MainWindow.getQueryUtil();
+    Long selectedContest = q.getSelectedContest();
+    List<Qso> qsos = q.getQsoByContest(selectedContest);
+    ObservableList<XYChart.Series<String, Integer>> byBandAndOperator;
+    StatsUtil st = new StatsUtil();
+    CheckBox cb = (CheckBox) event.getSource();
+
+    if (cb.isSelected()) {
+       byBandAndOperator = st.getTotalsByTwoParameters(qsos, Qso::getOperator, Qso::getBand);
+    } else {
+       byBandAndOperator = st.getTotalsByTwoParameters(qsos, Qso::getBand, Qso::getOperator);
+    }
+
+    chart.setData(byBandAndOperator);
+    addLabelsToChart(chart);
   }
 }

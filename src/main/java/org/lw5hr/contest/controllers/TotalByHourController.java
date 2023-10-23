@@ -51,7 +51,8 @@ public class TotalByHourController extends GenericBarchartController implements 
         StatsUtil st = new StatsUtil();
         ObservableList<XYChart.Series<String, Integer>> byHourData = st.getTotalsByHour(qsos);
         String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
-        titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestName();
+        titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
+                + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
         chart.setTitle(titleLabel);
         chart.setData(byHourData);
         chart.setBarGap(2);

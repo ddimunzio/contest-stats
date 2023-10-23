@@ -21,7 +21,7 @@ public class ByHourAndOperatorAreaController implements Initializable {
   private CategoryAxis categoryAxis;
 
   @FXML
-  NumberAxis numberAxis;
+  private NumberAxis numberAxis;
 
   @FXML
   StackedAreaChart<String, Integer> byHourAndOperatorArea;
@@ -32,6 +32,9 @@ public class ByHourAndOperatorAreaController implements Initializable {
     List<Qso> qsos = q.getQsoByContest(q.getSelectedContest());
     StatsUtil st = new StatsUtil();
     ObservableList<XYChart.Series<String, Integer>> byHourAndOpAreaData = st.getByHourAndX(qsos, Qso::getOperator);
+    numberAxis.setForceZeroInRange(true);
+    byHourAndOperatorArea.setPrefSize(800, 600);
     byHourAndOperatorArea.getData().addAll(byHourAndOpAreaData);
+
   }
 }

@@ -11,6 +11,7 @@ import org.lw5hr.contest.db.HibernateUtil;
 import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.db.QueryUtilSql;
 import org.lw5hr.contest.model.Settings;
+import org.lw5hr.contest.utils.StatsUtil;
 import org.lw5hr.contest.utils.UDPListener;
 
 import java.io.IOException;
@@ -23,7 +24,18 @@ import java.util.ResourceBundle;
  */
 public class MainWindow extends Application {
 
-  private static final UDPListener udpListener;
+  private static Stage primaryStage;
+
+  public MainWindow() throws IOException {
+  }
+
+  public static void setPrimaryStage(Stage primaryStage) {
+    MainWindow.primaryStage = primaryStage;
+  }
+
+  private static QueryUtil queryUtil = new QueryUtil();
+
+  static UDPListener udpListener;
 
   static {
     try {
@@ -32,14 +44,6 @@ public class MainWindow extends Application {
       throw new RuntimeException(e);
     }
   }
-
-  private static Stage primaryStage;
-
-  public static void setPrimaryStage(Stage primaryStage) {
-    MainWindow.primaryStage = primaryStage;
-  }
-
-  private static QueryUtil queryUtil = new QueryUtil();
 
   @FXML
   public static void setLocale(Locale loc) throws IOException {
@@ -58,7 +62,7 @@ public class MainWindow extends Application {
     ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", getLocale());
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
     setPrimaryStage(primaryStage);
-    Scene scene = new Scene(fxmlLoader.load(), 1600, 760);
+    Scene scene = new Scene(fxmlLoader.load(), 1200, 760);
     primaryStage.setTitle(mainResources.getString("key.main.general.title"));
     primaryStage.setScene(scene);
     primaryStage.show();
@@ -77,7 +81,7 @@ public class MainWindow extends Application {
   public void stop() throws Exception {
     super.stop();
     HibernateUtil.getSessionFactory().close();
-    udpListener.close();
+    udpListener.stop();
   }
   public static void main(String[] args) throws IOException {
     HibernateUtil.getSessionFactory().getCurrentSession();
@@ -102,9 +106,10 @@ public class MainWindow extends Application {
     if (liveContest.isPresent() && liveContest.get().getSettingValue().equals("true")) {
       Optional<Settings> setting = getQueryUtil().getSetting(DatabaseConstants.DXLOG_DB_PATH);
       setting.ifPresent(settings -> qs.getAllLoggedQso(settings.getSettingValue()));
-   //   udpListener.listen();
     }
-
+    //udpListener.listen();
+    StatsUtil st = new StatsUtil();
+    st.teamTopRates();
   }
 
   public static QueryUtil getQueryUtil() {

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0"
-            prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.lw5hr.contest.controllers.ByBandAndOperatorController">
-    <StackedBarChart fx:id="chart" layoutX="40.0" title="Total QSO By Operator" AnchorPane.bottomAnchor="10.0"
-              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="598.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.lw5hr.contest.controllers.ByBandAndOperatorController">
+    <StackedBarChart fx:id="chart" layoutX="40.0" prefHeight="402.0" prefWidth="477.0" title="Total QSO By Operator" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="10.0">
         <xAxis>
-            <CategoryAxis label="%key.main.charts.operator" side="BOTTOM" fx:id="xAxis"/>
+            <CategoryAxis label="%key.main.charts.operator" side="BOTTOM" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-            <NumberAxis fx:id="yAxis" label="Total Qso" side="LEFT"/>
+            <NumberAxis fx:id="yAxis" label="Total Qso" side="LEFT" />
         </yAxis>
     </StackedBarChart>
+   <CheckBox fx:id="invert" layoutX="490.0" layoutY="48.0" mnemonicParsing="false" text="%key.main.charts.operator.invert" onAction="#handleInvert"/>
 </AnchorPane>

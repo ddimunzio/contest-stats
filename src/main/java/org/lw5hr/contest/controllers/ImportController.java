@@ -107,7 +107,7 @@ public class ImportController extends GenericContestController {
   @FXML
   protected void handleSave(final ActionEvent event) {
     QueryUtil q = MainWindow.getQueryUtil();
-    if (validateFields() && !q.contestExist(contestProperties.getValue().getEventName())) {
+    if (validateFields()) {
       errorLabel.setVisible(false);
       try {
         if (validateFields()) {
@@ -120,7 +120,12 @@ public class ImportController extends GenericContestController {
           contest.setSfi(Double.valueOf(sfiIndex.getText()));
           contest.setkIndex(Integer.parseInt(kIndex.getText()));
           contest.setaIndex(Integer.parseInt(aIndex.getText()));
-          adiReader.read(contest);
+          if (!q.contestExist(contest)) {
+            adiReader.read(contest);
+          } else {
+            errorLabel.setText(resources.getString("key.import.contest.exist"));
+            errorLabel.setVisible(true);
+          }
         }
       } catch (Exception e) {
         throw new RuntimeException(e);

@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
@@ -14,6 +16,8 @@ import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.db.QueryUtilSql;
 import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Contest;
+import org.lw5hr.contest.model.ContestCategory;
+import org.lw5hr.contest.model.ContestProperties;
 import org.lw5hr.contest.model.dxlog.HeaderInfo;
 
 import java.io.File;
@@ -26,6 +30,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class DxLogConnectionController extends GenericContestController {
+
+  @FXML
+  private Label contestNameDx;
+
+  @FXML
+  private Label contestCategoryDx;
+
   @FXML
   private  TextField kIndex;
 
@@ -48,10 +59,10 @@ public class DxLogConnectionController extends GenericContestController {
   private TextField filePathField;
 
   @FXML
-  private TextField contestNameField;
+  private ComboBox<ContestProperties> contestProperties;
 
   @FXML
- private TextField contestCategory;
+ private ComboBox<ContestCategory> contestCategory;
 
   @FXML
   private TextField sfiIndex;
@@ -69,8 +80,9 @@ public class DxLogConnectionController extends GenericContestController {
   protected void handleSave(final ActionEvent event) throws Exception {
     if (validateFields()) {
       q.initSetting(DatabaseConstants.DXLOG_DB_PATH, selectedFile.getAbsolutePath());
-      Contest contest = new Contest(contestNameField.getText(), true);
-      //contest.setCategory(contestCategory.getText());
+      Contest contest = new Contest( true);
+      contest.setContestCategory(contestCategory.getValue());
+      contest.setContestProperties(contestProperties.getValue());
       contest.setDateFrom(Date.from(dateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       contest.setDateTo(Date.from(dateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       contest.setSfi(Double.valueOf(sfiIndex.getText()));
@@ -103,12 +115,14 @@ public class DxLogConnectionController extends GenericContestController {
         QueryUtilSql qs = new QueryUtilSql();
         filePathField.setText(selectedFile.getAbsolutePath());
         List<HeaderInfo> info = qs.getDxLogContest(selectedFile.getAbsolutePath());
-        contestNameField.setText(info.stream()
+        String name = info.stream()
                 .filter(c -> c.getHdrname().equals(DatabaseConstants.DX_LOG_CONTEST_NAME))
-                .findFirst().get().getHdrvalue());
-        contestCategory.setText(info.stream()
+                .findFirst().get().getHdrvalue();
+        String category = info.stream()
                 .filter(c -> c.getHdrname().equals(DatabaseConstants.DX_LOG_CONTEST_CATEGORY))
-                .findFirst().get().getHdrvalue());
+                .findFirst().get().getHdrvalue();
+        contestNameDx.setText(name);
+        contestCategoryDx.setText(category);
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
@@ -124,12 +138,12 @@ public class DxLogConnectionController extends GenericContestController {
       System.out.println("Error: No file selected.");
     }
 
-    if (contestNameField.getText().isEmpty()) {
+    if (contestProperties.getValue().getEventName().isEmpty()) {
       isValid = false;
       System.out.println("Error: Contest name is required.");
     }
 
-    if (contestCategory.getText().isEmpty()) {
+    if (contestCategory.getValue().getCategoryName().isEmpty()) {
       isValid = false;
       System.out.println("Error: Contest category is required.");
     }
@@ -171,6 +185,8 @@ public class DxLogConnectionController extends GenericContestController {
   public void initialize(URL location, ResourceBundle resources) {
     dateFrom.setValue(LocalDate.now());
     dateTo.setValue(LocalDate.now());
+    contestProperties.getItems().addAll(q.getListOfContest());
+    contestCategory.getItems().addAll(q.getListOfContestCategories());
   }
 
   @Override

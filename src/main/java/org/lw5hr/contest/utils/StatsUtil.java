@@ -3,11 +3,21 @@ package org.lw5hr.contest.utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
+import javafx.util.Pair;
 import org.lw5hr.contest.charts.BarChartHelper;
+import org.lw5hr.contest.db.QueryUtil;
 import org.lw5hr.contest.model.Qso;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -210,6 +220,69 @@ public class StatsUtil {
       byHourAndX.add(byHourAndXSeries.get());
     });
     return byHourAndX;
+  }
+
+  public ObservableList<XYChart.Series<String, Integer>> teamTopRates() {
+    QueryUtil q = new QueryUtil();
+    List<Qso> qsos = q.getAllQso();
+
+    Map<LocalDate, Map<Integer, List<Qso>>> rates = qsos.stream()
+            .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(qs -> qs.getTime().getHour())));
+
+    List<Map.Entry<Pair<LocalDate, Integer>, Integer>> sortedRates = rates.entrySet().stream()
+            .flatMap(dateEntry -> dateEntry.getValue().entrySet().stream()
+                    .map(hourEntry -> new AbstractMap.SimpleEntry<>(new Pair<>(dateEntry.getKey(), hourEntry.getKey()),
+                            hourEntry.getValue().size())))
+            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+            .limit(10)
+            .collect(Collectors.toList());
+
+    System.out.println("Top 10 rates size: " + sortedRates.size()); // Debug
+
+    ObservableList<XYChart.Series<String, Integer>> resultList = FXCollections.observableArrayList();
+
+    XYChart.Series<String, Integer> series = new XYChart.Series<>();
+    for (Map.Entry<Pair<LocalDate, Integer>, Integer> entry : sortedRates) {
+      String key = entry.getKey().getKey() + " " + entry.getKey().getValue() + "h";
+      Integer value = entry.getValue();
+      series.setName("Top 10 rates");
+      series.getData().add(new XYChart.Data<>(key, value));
+    }
+
+    resultList.add(series);
+
+    return resultList;
+  }
+
+  public ObservableList<XYChart.Series<String, Integer>> personalTopRates() {
+    QueryUtil q = new QueryUtil();
+    List<Qso> qsos = q.getAllQso();
+
+    Map<LocalDate, Map<String, Map<Integer, List<Qso>>>> rates = qsos.stream()
+            .collect(Collectors.groupingBy(Qso::getDate, Collectors.groupingBy(Qso::getOperator,
+            Collectors.groupingBy(qso -> qso.getTime().getHour()))));
+
+    List<Map.Entry<Pair<LocalDate, String>, Integer>> sortedRates = rates.entrySet().stream()
+            .flatMap(dateEntry -> dateEntry.getValue().entrySet().stream()
+                    .map(hourEntry -> new AbstractMap.SimpleEntry<>(new Pair<>(dateEntry.getKey(), hourEntry.getKey()),
+                            hourEntry.getValue().size())))
+            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+            .limit(10)
+            .collect(Collectors.toList());
+
+    ObservableList<XYChart.Series<String, Integer>> resultList = FXCollections.observableArrayList();
+
+    XYChart.Series<String, Integer> series = new XYChart.Series<>();
+    for (Map.Entry<Pair<LocalDate, String>, Integer> entry : sortedRates) {
+      String key = entry.getKey().getKey() + " " + entry.getKey().getValue();
+      Integer value = entry.getValue();
+      series.setName("Top 10 personal rates");
+      series.getData().add(new XYChart.Data<>(key, value));
+    }
+
+    resultList.add(series);
+
+    return resultList;
   }
 
 

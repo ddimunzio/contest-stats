@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -7,15 +11,15 @@
        <MenuBar fx:id="menuBar" layoutY="-1.0" styleClass="">
           <menus>
               <Menu mnemonicParsing="false" onShowing="#handleShow" text="%key.main.menu.file">
-                 <items>
-                     <Menu mnemonicParsing="false" text="%key.main.menu.contest">
-                        <items>
-                            <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
-                            <MenuItem mnemonicParsing="false" onAction="#handleManageContest" text="%key.main.menu.contest.manage" />
-                            <Menu fx:id="menuContestList" mnemonicParsing="false" text="%key.main.menu.contest.select" />
-                        </items>
-                     </Menu>
-                 </items>
+                  <items>
+                      <Menu mnemonicParsing="false" text="%key.main.menu.contest">
+                          <items>
+                              <MenuItem mnemonicParsing="false" onAction="#handleImportAdifAction" text="%key.main.menu.import" />
+                              <MenuItem mnemonicParsing="false" onAction="#handleManageContest" text="%key.main.menu.contest.manage" />
+                              <Menu fx:id="menuContestList" mnemonicParsing="false" text="%key.main.menu.contest.select" />
+                          </items>
+                      </Menu>
+                  </items>
               </Menu>
               <Menu mnemonicParsing="false" text="%key.main.menu.charts">
                  <items>
@@ -24,11 +28,11 @@
                      <MenuItem fx:id="totalByBand" mnemonicParsing="false" onAction="#handleTotalByOpAction" text="%key.main.menu.charts.total.by.band" />
                      <MenuItem fx:id="operator" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.hour.op" />
                      <MenuItem fx:id="band" mnemonicParsing="false" onAction="#handleQsosXAndOperator" text="%key.main.menu.charts.total.qso.band" />
-                     <MenuItem fx:id="bandAndOperator" mnemonicParsing="false" text="%key.main.menu.charts.band.operator" onAction="#handleBandAndOperator"/>
+                     <MenuItem fx:id="bandAndOperator" mnemonicParsing="false" onAction="#handleBandAndOperator" text="%key.main.menu.charts.band.operator" />
                      <MenuItem mnemonicParsing="false" onAction="#handleQsosByHourAndOperatorArea" text="%key.main.menu.charts.total.hour.op.area" />
                      <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.rates" />
                      <SeparatorMenuItem mnemonicParsing="false" />
-                     <MenuItem mnemonicParsing="false" text="%key.main.menu.charts.compare" onAction="#handleCompare"/>
+                     <MenuItem mnemonicParsing="false" onAction="#handleCompare" text="%key.main.menu.charts.compare" />
                  </items>
               </Menu>
               <Menu fx:id="menuSettings" mnemonicParsing="false" text="%key.main.menu.settings">
@@ -56,4 +60,28 @@
           </menus>
        </MenuBar>
    </top>
+   <center>
+       <AnchorPane BorderPane.alignment="CENTER">
+           <BarChart fx:id="teamTopRates">
+               <xAxis>
+                   <CategoryAxis side="BOTTOM"/>
+               </xAxis>
+               <yAxis>
+                   <NumberAxis side="LEFT"/>
+               </yAxis>
+           </BarChart>
+       </AnchorPane>
+   </center>
+    <left>
+        <AnchorPane BorderPane.alignment="CENTER">
+            <BarChart fx:id="personalTopRates">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </BarChart>
+        </AnchorPane>
+    </left>
 </BorderPane>
