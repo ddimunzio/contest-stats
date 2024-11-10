@@ -23,13 +23,6 @@ To get started with the Contest Analysis Tool, simply clone this repository:
 ```bash
 git clone https://github.com/ddimunzio/contest-stats.git
 ```
-## Getting Started
-
-To get started with the Contest Analysis Tool, simply clone this repository:
-
-
-`git clone https://github.com/yourusername/contest-analysis-tool.git`
-
 
 A JavaFX application for analyzing contest results and connecting with other software such as DXLog.
 
