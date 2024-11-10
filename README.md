@@ -66,6 +66,13 @@ Analyzing logs for various statistics such as QSO count, unique call signs, and 
 Generating reports in various formats such as CSV, PDF, and HTML
 To use the application, simply launch it from the command line as described in the installation instructions. Once the application is running, you can use the menu and toolbar to perform various tasks such as importing logs, filtering logs, and generating reports.
 
+<H1>Sample Charts</H1>
+
+<img src="images/totalByHourAndBand.png" alt="Chart" />
+
+<img src="images/totalByHourAndOp.png" alt="Chart" />
+
+
 Configuration
 The Contest Analysis Tool uses an H2 database to store log data. The database is created automatically when the application is launched for the first time. By default, the database is stored in the user's home directory in a file named contest-analysis-tool.mv.db.
 
