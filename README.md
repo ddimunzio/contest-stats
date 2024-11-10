@@ -21,7 +21,7 @@ This project is built with the following technologies:
 To get started with the Contest Analysis Tool, simply clone this repository:
 
 ```bash
-git clone https://github.com/ddimunzio/contest-stats-by-LW5HR.git
+git clone https://github.com/ddimunzio/contest-stats.git
 ```
 ## Getting Started
 
