@@ -26,6 +26,9 @@ import org.lw5hr.contest.utils.StatsUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -35,10 +38,10 @@ import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
 public class MenuController extends BorderPane implements Initializable {
   @FXML
-  private BarChart personalTopRates;
+  private BarChart<String, Integer> personalTopRates;
 
   @FXML
-  private BarChart teamTopRates;
+  private BarChart<String, Integer> teamTopRates;
 
   @FXML
   private MenuItem operator;
@@ -163,7 +166,14 @@ public class MenuController extends BorderPane implements Initializable {
     Long selectedContest = q.getSelectedContest();
     List<Contest> contestList = q.getContestList();
     contestList.forEach(c -> {
-      RadioMenuItem r = new RadioMenuItem(c.getContestName());
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+      LocalDate dateFrom = c.getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      LocalDate dateTo = c.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+      String formattedDateFrom = dateFrom.format(formatter);
+      String formattedDateTo = dateTo.format(formatter);
+
+      RadioMenuItem r = new RadioMenuItem(c.getContestName() + " [" + formattedDateFrom + " - " + formattedDateTo + "]");
       r.setId(c.getId().toString());
       r.setSelected(c.getId().equals(selectedContest));
       r.setOnAction(event -> {

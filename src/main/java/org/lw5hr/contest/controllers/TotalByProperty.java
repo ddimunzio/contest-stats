@@ -12,7 +12,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -25,6 +24,7 @@ import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.utils.StatsUtil;
 
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -71,7 +71,7 @@ public class TotalByProperty extends GenericBarchartController implements Initia
     ObservableList<XYChart.Series<String, Integer>> chartData = st.getTotalsByParameter(qsos, function);
     String titleLabel = mainResources.getString(translationKey);
     titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
-            + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
+                + q.getContest(selectedContest).getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
     chart.setTitle(titleLabel);
     chart.setData(chartData);
     chart.setAnimated(false);

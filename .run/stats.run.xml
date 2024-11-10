@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="stats" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="org.lw5hr.contest.main.MainWindow" />
+    <module name="contest-stats" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

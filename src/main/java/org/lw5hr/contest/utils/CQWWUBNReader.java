@@ -33,7 +33,7 @@ public class CQWWUBNReader {
             String line = reader.readLine();
 
             while (line != null) {
-                if (currentReport != 0 && line.length() > 0 && !line.startsWith("***")) {
+                if (currentReport != 0 && !line.isEmpty() && !line.startsWith("***")) {
                     List<String> ubnLine = Arrays.stream(line.split(" ")).filter(a -> !Objects.equals(a, "")).toList();
                     LocalDateTime UbnDateTime = LocalDateTime.parse(ubnLine.get(2) + " " + ubnLine.get(3), formatter);
                     Optional<Qso> qso = qsos.stream()

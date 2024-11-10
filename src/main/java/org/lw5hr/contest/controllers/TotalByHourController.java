@@ -8,11 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,9 +30,16 @@ import org.lw5hr.contest.main.MainWindow;
 import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.utils.StatsUtil;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
+
+
 
 public class TotalByHourController extends GenericBarchartController implements Initializable {
     @FXML
@@ -39,6 +50,9 @@ public class TotalByHourController extends GenericBarchartController implements 
 
     @FXML
     CategoryAxis categoryAxis;
+
+    @FXML
+    private Button exportButton;
 
     private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
 
@@ -52,7 +66,7 @@ public class TotalByHourController extends GenericBarchartController implements 
         ObservableList<XYChart.Series<String, Integer>> byHourData = st.getTotalsByHour(qsos);
         String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
         titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
-                + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
+                + q.getContest(selectedContest).getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
         chart.setTitle(titleLabel);
         chart.setData(byHourData);
         chart.setBarGap(2);
@@ -69,6 +83,8 @@ public class TotalByHourController extends GenericBarchartController implements 
         // Set padding to create a margin around the chart
         Insets padding = new Insets(10);
         chart.setPadding(padding);
+        exportButton.setOnAction(event -> exportChartToPNG(chart, "chart.png"));
+
     }
 
     @FXML
@@ -118,4 +134,27 @@ public class TotalByHourController extends GenericBarchartController implements 
             }
         }
     }
+
+    public void exportChartToPNG(BarChart<String, Integer> chart, String filePath) {
+        WritableImage image = chart.snapshot(new SnapshotParameters(), null);
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        PixelReader pixelReader = image.getPixelReader();
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int argb = pixelReader.getArgb(x, y);
+                bufferedImage.setRGB(x, y, argb);
+            }
+        }
+
+        File file = new File(filePath);
+        try {
+            ImageIO.write(bufferedImage, "png", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

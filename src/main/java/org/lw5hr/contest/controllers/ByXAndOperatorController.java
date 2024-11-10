@@ -25,6 +25,7 @@ import org.lw5hr.contest.model.Qso;
 import org.lw5hr.contest.utils.StatsUtil;
 
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
@@ -62,7 +63,7 @@ public class ByXAndOperatorController extends GenericStackedBarCharController im
 
     String titleLabel = mainResources.getString("key.main.menu.charts.total.by.hour");
     titleLabel = titleLabel + " - " + q.getContest(selectedContest).getContestProperties().getEventName() + " - "
-            + q.getContest(selectedContest).getContestProperties().getStartDate().getYear();
+                + q.getContest(selectedContest).getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
     chart.setTitle(titleLabel);
     chart.setData(byHourAndOpData);
     addLabelsToChart(chart);

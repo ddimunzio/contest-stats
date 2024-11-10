@@ -62,24 +62,30 @@
    </top>
    <center>
        <AnchorPane BorderPane.alignment="CENTER">
-           <BarChart fx:id="teamTopRates">
+           <BarChart fx:id="teamTopRates" prefHeight="600.0" prefWidth="600.0" legendSide="TOP" title="Team Top Rates">
+               <padding>
+                   <Insets top="20" right="30" bottom="20" left="30"/>
+               </padding>
                <xAxis>
-                   <CategoryAxis side="BOTTOM"/>
+                   <CategoryAxis side="BOTTOM" label="Categories"/>
                </xAxis>
                <yAxis>
-                   <NumberAxis side="LEFT"/>
+                   <NumberAxis side="LEFT" label="Values"/>
                </yAxis>
            </BarChart>
        </AnchorPane>
    </center>
     <left>
         <AnchorPane BorderPane.alignment="CENTER">
-            <BarChart fx:id="personalTopRates">
+            <BarChart fx:id="personalTopRates" prefHeight="600.0" prefWidth="600.0" legendSide="TOP" title="Personal Top Rates">
+                <padding>
+                    <Insets top="20" right="30" bottom="20" left="30"/>
+                </padding>
                 <xAxis>
-                    <CategoryAxis side="BOTTOM"/>
+                    <CategoryAxis side="BOTTOM" label="Operadtor/Date"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT"/>
+                    <NumberAxis side="LEFT" label="Values"/>
                 </yAxis>
             </BarChart>
         </AnchorPane>

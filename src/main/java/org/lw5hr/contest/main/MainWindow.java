@@ -62,7 +62,7 @@ public class MainWindow extends Application {
     ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", getLocale());
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main-window-view.fxml"), mainResources, new JavaFXBuilderFactory());
     setPrimaryStage(primaryStage);
-    Scene scene = new Scene(fxmlLoader.load(), 1200, 760);
+    Scene scene = new Scene(fxmlLoader.load(), 1280, 700);
     primaryStage.setTitle(mainResources.getString("key.main.general.title"));
     primaryStage.setScene(scene);
     primaryStage.show();
