@@ -31,6 +31,10 @@ import org.lw5hr.contest.utils.StatsUtil;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class CompareContestController extends GenericBarchartController implements Initializable {
   @FXML
   private BarChart<String, Integer> chart;

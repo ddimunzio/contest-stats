@@ -11,6 +11,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 @Entity
 @Table(name = "ContestCategory")
 public class ContestCategory implements Serializable {

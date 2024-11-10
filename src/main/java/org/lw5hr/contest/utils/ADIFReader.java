@@ -10,6 +10,10 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class ADIFReader {
 
     private ArrayList<Qso> list = new ArrayList<Qso>();

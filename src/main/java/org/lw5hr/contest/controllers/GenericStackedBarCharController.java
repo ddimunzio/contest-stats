@@ -10,6 +10,10 @@ import javafx.scene.chart.StackedBarChart;
 import org.lw5hr.contest.main.MainWindow;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public abstract class GenericStackedBarCharController implements Initializable {
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
   @FXML

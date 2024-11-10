@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 @Entity
 @Table(name = "CONTEST_PROPERTIES")
 public class ContestProperties implements Serializable {

@@ -36,6 +36,10 @@ import java.util.ResourceBundle;
 
 import static org.lw5hr.contest.main.MainWindow.getQueryUtil;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class MenuController extends BorderPane implements Initializable {
   @FXML
   private BarChart<String, Integer> personalTopRates;

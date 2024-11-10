@@ -6,6 +6,11 @@ import javafx.scene.control.TextArea;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class AboutController implements Initializable {
   @FXML
   TextArea aboutText;

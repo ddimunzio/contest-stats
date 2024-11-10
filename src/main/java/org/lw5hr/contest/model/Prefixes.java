@@ -1,5 +1,9 @@
 package org.lw5hr.contest.model;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class Prefixes {
 
     private String prefix;

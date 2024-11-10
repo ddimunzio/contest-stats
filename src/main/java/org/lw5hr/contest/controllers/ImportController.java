@@ -30,6 +30,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
+
 public class ImportController extends GenericContestController {
 
   @FXML

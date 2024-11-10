@@ -7,9 +7,11 @@ import javafx.stage.Stage;
 
 
 import java.util.ResourceBundle;
+
 /**
- * Created by ddimunzio on 21.06.2017.
+ * Author: Diego Dimunzio - LW5HR   
  */
+
 public class ContestManager extends Application {
 
   @Override

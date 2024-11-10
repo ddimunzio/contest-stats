@@ -7,6 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 @Entity
 @Table(name = "UBN_CATEGORIES")
 public class UBNCategories {

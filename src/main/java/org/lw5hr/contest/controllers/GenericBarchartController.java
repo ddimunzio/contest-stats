@@ -5,6 +5,11 @@ import org.lw5hr.contest.main.MainWindow;
 
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
+
 public abstract class GenericBarchartController {
 
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());

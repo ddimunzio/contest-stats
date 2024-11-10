@@ -14,9 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
- * @author ddimunzio
- */
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 
 @Entity
 @Table(name = "COUNTRY")

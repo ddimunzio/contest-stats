@@ -15,6 +15,11 @@ import org.lw5hr.contest.model.ContestProperties;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
+
 public abstract class GenericContestController extends Pane implements Initializable {
   @FXML
   private TextField kIndex;

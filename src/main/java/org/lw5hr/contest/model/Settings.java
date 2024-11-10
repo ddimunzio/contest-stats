@@ -5,6 +5,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 @Entity
 @Table(name = "SETTINGS")
 public class Settings implements Serializable {

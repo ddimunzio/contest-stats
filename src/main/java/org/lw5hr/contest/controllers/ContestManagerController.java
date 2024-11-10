@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class ContestManagerController implements Initializable {
 
   @FXML

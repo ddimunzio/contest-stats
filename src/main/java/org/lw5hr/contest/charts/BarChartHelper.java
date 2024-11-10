@@ -2,6 +2,10 @@ package org.lw5hr.contest.charts;
 
 import java.time.LocalDate;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class BarChartHelper {
 
     private Integer value;

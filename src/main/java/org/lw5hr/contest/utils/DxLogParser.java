@@ -12,6 +12,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class DxLogParser {
    private final String APP = "app";
    private final String CONTEST_NAME = "contestname";

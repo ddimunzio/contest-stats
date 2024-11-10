@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.lw5hr.contest.main.MainWindow;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class ByHourAndOperatorAreaChart extends Application {
 
     @Override

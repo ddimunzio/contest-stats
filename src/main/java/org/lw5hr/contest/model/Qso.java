@@ -15,6 +15,10 @@ import java.util.Collection;
 import static org.lw5hr.contest.db.DatabaseConstants.DATE_FORMAT;
 import static org.lw5hr.contest.db.DatabaseConstants.NO_OPERATOR_SET;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 @Entity
 @Table(name = "QSOS")
 public class Qso implements Serializable {

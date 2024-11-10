@@ -5,9 +5,9 @@
 package org.lw5hr.contest.model;
 
 /**
- *
- * @author diego
- */
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class CsvLine {
     private String line;
    

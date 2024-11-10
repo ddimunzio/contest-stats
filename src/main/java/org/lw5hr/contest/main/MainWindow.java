@@ -19,9 +19,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 /**
- * Created by ddimunzio on 2023.
+ * Author: Diego Dimunzio - LW5HR   
  */
+
 public class MainWindow extends Application {
 
   private static Stage primaryStage;

@@ -29,6 +29,10 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class DxLogConnectionController extends GenericContestController {
 
   @FXML

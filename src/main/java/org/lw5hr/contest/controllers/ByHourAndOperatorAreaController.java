@@ -16,6 +16,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class ByHourAndOperatorAreaController implements Initializable {
   @FXML
   private CategoryAxis categoryAxis;

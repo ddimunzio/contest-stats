@@ -16,8 +16,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author diego
- */
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class CountryFinder {
 
     private static final List<CtyDat> ctyDatList = new ArrayList<>();

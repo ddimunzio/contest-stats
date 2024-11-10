@@ -23,6 +23,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class StatsUtil {
   private static final Integer ONE_DAY_HOURS = 24;
   private static final Integer ONE_DAY_HOURS_FROM_ZERO = 23;

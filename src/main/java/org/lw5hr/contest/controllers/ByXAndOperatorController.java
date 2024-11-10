@@ -30,6 +30,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
+
 public class ByXAndOperatorController extends GenericStackedBarCharController implements Initializable {
   private final Function<Qso, String> BAND_FUNCTION = Qso::getBand;
   private final Function<Qso, String> function;

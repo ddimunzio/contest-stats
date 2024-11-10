@@ -5,6 +5,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class UDPListener {
   private static final int PORT = 6789;
   private static final int BUFFER_SIZE = 1024;

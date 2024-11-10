@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
+/**
+ * Author: Diego Dimunzio - LW5HR   
+ */
+
 public class TotalByProperty extends GenericBarchartController implements Initializable {
   private final ResourceBundle mainResources = ResourceBundle.getBundle("i18n/main", MainWindow.getLocale());
   @FXML

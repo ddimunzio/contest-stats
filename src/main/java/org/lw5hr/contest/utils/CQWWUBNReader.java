@@ -12,9 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- *
- * @author diego
- */
+ * Author: Diego Dimunzio - LW5HR   
+**/
+
 public class CQWWUBNReader {
     public List<String> readUbnFile(final File filePath, List<Qso> qsos) {
         List<String> result = new ArrayList<>();
