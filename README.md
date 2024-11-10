@@ -21,7 +21,7 @@ This project is built with the following technologies:
 To get started with the Contest Analysis Tool, simply clone this repository:
 
 ```bash
-git clone https://github.com/yourusername/contest-analysis-tool.git
+git clone https://github.com/ddimunzio/contest-stats-by-LW5HR.git
 ```
 ## Getting Started
 
@@ -44,8 +44,6 @@ Maven
 Once you have installed the required software, follow these steps:
 
 Clone this repository to your local machine.
-
-Navigate to the root directory of the project in your terminal or command prompt.
 
 Run the following command to build the project:
 `mvn clean install`
